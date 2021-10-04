@@ -1,0 +1,68 @@
+{
+  "_from": "toaster-js",
+  "_id": "toaster-js@2.2.0",
+  "_inBundle": false,
+  "_integrity": "sha512-VlNTM+PBY+9xiRs93tu/mMegD3EhTcMV50QnV54xp47Uy6l4h4304cf2lkX+MCqlHyLjDudpdrn9oJhDHTp6YA==",
+  "_location": "/toaster-js",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "toaster-js",
+    "name": "toaster-js",
+    "escapedName": "toaster-js",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/toaster-js/-/toaster-js-2.2.0.tgz",
+  "_shasum": "e2ddbf95225b4298636de8826aed17f4c02d1fc5",
+  "_spec": "toaster-js",
+  "_where": "D:\\xampp\\htdocs\\toster",
+  "author": {
+    "name": "ZitRo"
+  },
+  "bugs": {
+    "url": "https://github.com/ZitRos/toaster-js/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "The vanilla JavaScript ES6 minimalistic toast pup-up messages module for your project.",
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-preset-es2015": "^6.24.1",
+    "node-sass": "^4.7.2",
+    "webpack": "^2.3.3"
+  },
+  "homepage": "https://github.com/ZitRos/toaster-js#readme",
+  "keywords": [
+    "toast",
+    "toasts",
+    "javascript",
+    "toaster",
+    "alert",
+    "hint",
+    "module",
+    "pop-up",
+    "message",
+    "notification"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "toaster-js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZitRos/toaster-js.git"
+  },
+  "scripts": {
+    "build": "npm run webpack -- -p && npm run css",
+    "css": "node-sass default.scss default.css",
+    "webpack": "webpack"
+  },
+  "version": "2.2.0"
+}

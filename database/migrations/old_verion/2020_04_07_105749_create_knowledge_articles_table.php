@@ -1,0 +1,40 @@
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateKnowledgeArticlesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('knowledge_articles', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('title');
+            $table->longText('content');
+            $table->string('subject');
+            $table->string('target');			
+            $table->string('image');
+            $table->bigInteger('author_id')->unsigned();
+            $table->boolean('status')->default(1);
+			
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('knowledge_articles');
+    }
+}

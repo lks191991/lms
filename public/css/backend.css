@@ -1,0 +1,16 @@
+
+a.detail-back-btn { float:right;max-width:100px; margin-right:32px; margin-bottom:5px; }
+
+.dataTables_length { margin-left:10px; }
+
+ul.profile-achievement { list-style: none; }
+
+table.dataTable thead .sorting_asc::before, 
+table.dataTable thead .sorting_asc::after,
+table.dataTable thead .sorting_desc::before, 
+table.dataTable thead .sorting_desc::after,
+table.dataTable thead .sorting::before, 
+table.dataTable thead .sorting::after {
+    top: 0.625rem;
+    margin-top: 0;
+}
