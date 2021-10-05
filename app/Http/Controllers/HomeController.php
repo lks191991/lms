@@ -29,6 +29,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+		return redirect()->route('login');
 		session()->forget('newCustomer');
 		
 		 $schools = School::where('status', '=', 1)->where('featured',1)

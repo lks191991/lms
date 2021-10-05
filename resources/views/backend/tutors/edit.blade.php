@@ -13,29 +13,9 @@
             <form action="{{route('backend.tutors.update', $tutor->id)}}" method = "post" enctype="multipart/form-data">
 			 @csrf
 				@method('PUT')
-				<div class="form-group row @role('school') d-none @endrole">
-                        <label class="col-form-label col-sm-2 text-sm-right">Institute Type</label>
-                        <div class="col-sm-10">
-                            <select name="institute_type" id="institute_type" class="custom-select" disabled>
-                                <option value="" selected="" disabled="" class="d-none">Select Institute Type</option>
-                                @foreach($institutes as $id => $type)
-									<option value="{{$id}}" @if($tutor->school->school_category == $id) selected @endif>{{$type}}</option>
-								@endforeach
-                            </select>
-						</div>
-				 </div>
+				
 					
-				<div class="form-group row @role('school') d-none @endrole">
-                    <label class="col-form-label col-sm-2 text-sm-right">School</label>
-                    <div class="col-sm-10">
-					<select name="school_name" id="school" class="custom-select" disabled>
-						<option value="">Select School</option>
-						 @foreach($schools as $id => $type)
-									<option value="{{$id}}" @if($tutor->school_id == $id) selected @endif>{{$type}}</option>
-						@endforeach
-					</select>
-					</div>
-                </div>
+				
 				<div class="form-group row">
                     <label class="col-form-label col-sm-2 text-sm-right">First Name</label>
                     <div class="col-sm-10">
@@ -151,23 +131,5 @@
     </div>
 @endsection
 @section('scripts')
-<!--<script src="{{ mix('/assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>-->
 
-<script>
-    $(document).ready(function () {
-        $("#institute_type").on("change", function () {
-            var category_id = $(this).val();
-			
-			$.ajax({
-                type: "POST",
-                url: '{{ route("ajax.category.schools") }}',
-                data: {'category': category_id, '_token': '{{ csrf_token() }}'},
-                success: function (data) {
-                    $("#school").html(data.schools);
-                }
-            });
-        });
-
-});
-</script>
 @stop

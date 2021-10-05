@@ -122,7 +122,7 @@
 
                         </form>
                         @endrole
-                        <a href ="{{route('backend.classes.show', $class->id)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="View class details"><i class="ion ion-md-eye"></i></a>
+                        <a href ="{{route('backend.classes.show', $class->id)}}" style="display:none" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="View class details"><i class="ion ion-md-eye"></i></a>
                     </td>
                 </tr>
                 @endforeach

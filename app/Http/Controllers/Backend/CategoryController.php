@@ -6,11 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SchoolCategory;
 use App\Models\School;
-use App\Models\Department;
 use App\Models\Course;
 use App\Models\Classes;
 use App\Models\Subject;
-use App\Models\Period;
 use App\Models\Topic;
 use App\Models\Video;
 use App\Models\Tutor;
@@ -168,13 +166,7 @@ class CategoryController extends Controller
 		//delete school
 		foreach($schools as $school) {
 			if(isset($school->id) && !empty($school->id)) {
-				$departments = Department::where('school_id', $school->id)->select('id')->get();
-				//delete department
-				foreach($departments as $department) {
-					if(isset($department->id) && !empty($department->id)) {
-						$department->delete();
-					}
-				}
+				
 				
 				$courses = Course::where('school_id', $school->id)->select('id')->get();
 				//delete course
@@ -198,14 +190,7 @@ class CategoryController extends Controller
 									}
 								}
 								
-								$periods = Period::where('class_id', $class->id)->select('id')->get();
 								
-								foreach($periods as $period) {
-									
-									if(isset($period->id) && !empty($period->id)) {
-									$period->delete();
-									}
-								}
 					
 								$class->delete();
 							}

@@ -43,6 +43,7 @@
 				  { "orderable": false },
 				  { "orderable": false },
 				  { "orderable": false },
+				  { "orderable": false },
 				  null,
 				  { "orderable": false }
 				],
@@ -121,6 +122,9 @@
                                 <option value="" selected="">All</option>                        
                         </select>
 					</th>
+					   <th class="align-top">
+					Price
+					</th>
                     <th class="align-top">Status</th>
                     <th class="align-top">Action</th>
                 </tr>
@@ -133,6 +137,7 @@
 					<td>{{$subject->school_details($subject->course_details($subject->subject_class->course_id)->school_id)}}</td>
 					<td>{{$subject->course_details($subject->subject_class->course_id)->name}}</td>
 					<td>@if(isset($subject->subject_class->class_name) && !empty(($subject->subject_class->class_name))){{$subject->subject_class->class_name}}@endif</td>
+					<td>{{$subject->subject_price}}</td>
                     <td>{{$subject->status ? 'Active':'Disabled'}}</td>
                    <td>
                         <a href ="{{route('backend.subjects.edit', $subject->id)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="Edit"><i class="ion ion-md-create"></i></a>
@@ -145,7 +150,7 @@
 
                         </form>
 						@endrole
-						<a href ="{{route('backend.subjects.show', $subject->id)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="View subject details"><i class="ion ion-md-eye"></i></a>
+						<a href ="{{route('backend.subjects.show', $subject->id)}}" style="display:none" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="View subject details"><i class="ion ion-md-eye"></i></a>
                     </td>
                 </tr>
                 @endforeach

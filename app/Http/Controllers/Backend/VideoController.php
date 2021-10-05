@@ -120,7 +120,6 @@ class VideoController extends Controller
             'course' => 'required',
             'class' => 'required',
             'date' => 'required',
-            'period' => 'required',
             'subject' => 'required',
             'topic' => 'required',
             'tutor' => 'required',
@@ -182,7 +181,6 @@ class VideoController extends Controller
             $video->course_id = $request->course;
             $video->class_id = $request->class;
             $video->play_on = $request->date;
-            $video->period_id = $request->period;
             $video->video_id = $video_id;
             $video->video_url = $request->video_url;
             $video->video_type = $request->video_type;
@@ -235,18 +233,9 @@ class VideoController extends Controller
     {
         
         $video = Video::uuid($uuid);
-        
-        if(!Auth::user()->hasAccessToSchool($video->school_id)){
-            return redirect()->route('backend.dashboard');           
-        }
-        
+       
         $query = SchoolCategory::where('status','=',1);
-        
-        if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            $query = $query->where('id','=',$profile->school->school_category);           
-        }
-        
+      
         $institutes = $query->orderBy('name')
                         ->pluck('name','id');
         
@@ -267,7 +256,6 @@ class VideoController extends Controller
             'course' => 'required',
             'class' => 'required',
             'date' => 'required',
-            'period' => 'required',
             'subject' => 'required',
             'topic' => 'required',            
             'video_type' => 'required',
@@ -326,21 +314,17 @@ class VideoController extends Controller
             }
             
 
-            //$video->school_id = $request->school;
             $video->course_id = $request->course;
             $video->class_id = $request->class;
             $video->play_on = $request->date;
-            $video->period_id = $request->period;
             $video->video_id = $video_id;
             $video->video_url = $request->video_url;
             $video->video_type = $request->video_type;
-            //$video->video_file = $request->video_file;
             $video->description = $request->description;
             $video->subject_id = $request->subject;
             $video->topic_id = $request->topic;
             $video->keywords = $request->keywords;            
             $video->tutor_id = $request->tutor;
-            //$video->user_id = Auth::user()->id;
             $video->status = ($request->input('status') !== null)? $request->input('status'):0;            
 
             $video->save();
@@ -365,7 +349,6 @@ class VideoController extends Controller
 		
 		//release date and period.
 		$video->play_on = NULL;
-        $video->period_id = NULL;
 		$video->status = 0;
 		$video->save();
 

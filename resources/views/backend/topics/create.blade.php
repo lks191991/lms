@@ -33,15 +33,7 @@
                             </select>
                         </div>
                     </div>
-					<div class="form-group row" id="department-field"  style="display:none;">
-						<label class="col-form-label col-sm-2 text-sm-right">Department</label>
-						<div class="col-sm-10">
-							
-							<select name="department" id="department" class="custom-select">
-								<option value="">Select Department</option>
-							</select>
-						</div>
-					</div>
+					
                     <div class="form-group row">
                         <label class="col-form-label col-sm-2 text-sm-right">Course</label>
                         <div class="col-sm-10">
@@ -103,13 +95,7 @@
         $("#institute_type").on("change", function () {
             var category_id = $(this).val();
 			
-			if(category_id && category_id == '{{config("constants.UNIVERSITY")}}') {
-				$("#department-field").show();
-				$("select#department").attr("required", "required");
-			} else {
-				$("#department-field").hide();
-				$("select#department").removeAttr("required");
-			}
+			
 			
             $.ajax({
                 type: "POST",
@@ -125,18 +111,6 @@
             var school_id = $(this).val();
             var institute_type = $("#institute_type").val();
 			
-			if(institute_type && institute_type == '{{config("constants.UNIVERSITY")}}') {
-				
-				$.ajax({
-					type: "POST",
-					url: '{{ route("ajax.school.departments") }}',
-					data: {'school_id': school_id, '_token': '{{ csrf_token() }}'},
-					success: function (data) {
-						$("#department").html(data);
-					}
-				});
-				
-			} else {
 				$.ajax({
 					type: "POST",
 					url: '{{ route("ajax.school.courses") }}',
@@ -145,24 +119,10 @@
 						$("#school_course").html(data);
 					}
 				});
-			}
         });
 		
 		
-		$("#department").on("change", function () {
-            var department_id = $(this).val();
-          
-            if(department_id) {                
-                $.ajax({
-					type: "POST",
-					url: '{{ route("ajax.department.courses") }}',
-					data: {'department_id': department_id, '_token': '{{ csrf_token() }}'},
-					success: function (data) {
-						$("#school_course").html(data);
-					}
-				});
-            }
-        });
+		
         
         $("#school_course").on("change", function () {
             var school_course = $('#school_course').val();

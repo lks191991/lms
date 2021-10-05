@@ -8,7 +8,6 @@ use App\Models\Student;
 use App\Models\School;
 use App\Models\SchoolCategory;
 use App\Models\Course;
-use App\Models\Department;
 use App\Models\Classes;
 use App\Models\StudentClasses;
 use App\User;
@@ -39,31 +38,9 @@ class StudentController extends Controller
 		$classes = array();
 		
         $query = Student::where('id','<>',0);
-        
-        if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            if(isset($profile->school_id)){
-                $query = $query->where('school_id','=',$profile->school_id);
-				$courses = Course::where('school_id',$profile->school_id)->where('status',1)->orderBy('name')->select('id', 'name')
-                        ->get();
-				$school_details = School::where('id', $profile->school_id)->select('school_category')->first();
-				if($school_details->school_category === config("constants.BASIC_SCHOOL")){
-					
-					if(isset($courses[0]->id)) {
-						$classes = Classes::where('course_id',$courses[0]->id)->where('status',1)->orderBy('class_name')
-								->pluck('class_name','id');
-					}
-				} 
-            } 
-			
-		} 
-        
         $students = $query->orderBy('id', 'desc')->get();
-		
-		
-		$institutes = SchoolCategory::orderBy('name')->where('status','=',1)->pluck('name','id');
         
-        return view('backend.students.index', compact('students', 'institutes', 'classes', 'courses'));
+        return view('backend.students.index', compact('students'));
     }
 
     /**
@@ -76,17 +53,6 @@ class StudentController extends Controller
 		$query = SchoolCategory::where('status','=',1);
 		$school_id = 0;
         $category_id = 0;
-        
-        //Check for the user profile      
-        if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            if(isset($profile->school_id)){
-                $school_id = $profile->school_id;
-                $category_id = $profile->school->school_category;
-                $query = $query->where('id','=',$profile->school->school_category);
-				
-			}            
-        }
         
         $institutes = $query->orderBy('name')
                         ->pluck('name','id');
@@ -105,10 +71,6 @@ class StudentController extends Controller
         $data = $request->all();
 
         $validator = Validator::make($data, [
-                    'institute_type' => 'required',
-                    'school_name' => 'required',
-					'course' => 'required',
-					'class' => 'required',
                     'first_name' => 'required|min:2',
                     'username' => 'required|string|min:4|max:255|regex:/^(?=.*[a-z]).+$/|unique:users',
                     'password' => 'required|confirmed|string|min:6',
@@ -171,10 +133,6 @@ class StudentController extends Controller
         $student->last_name = $data['last_name'];
         $student->email = $data['email'];
         $student->mobile = $data['mobile'];
-		$student->school_category = $data['institute_type'];
-        $student->school_id = $data['school_name'];
-		$student->course_id = $data['course'];
-		$student->class_id = $data['class'];
         $student->status = ($data['status'] !== null) ? $data['status'] : 0;
         $student->country = $data['phone_code'];
         
@@ -182,7 +140,7 @@ class StudentController extends Controller
         $student->save(); //persist the data 
 
         $studentdata = Student::findOrFail($student->id);
-        $studentdata->school_name = $studentdata->school->school_name;
+        //$studentdata->school_name = $studentdata->school->school_name;
 
         //save user other information
         $user_more_info = User::find($user->id);
@@ -190,8 +148,8 @@ class StudentController extends Controller
         $user_more_info->mobile_verified_at = date('Y-m-d H:i:s');
         $user_more_info->save(); //persist the data
 
-        if (!empty($user->email))
-            Mail::to($user->email, "New student on " . env('APP_NAME', 'Xtra Class'))->send(new sendEmailtoSchoolstudent($studentdata));
+        //if (!empty($user->email))
+           // Mail::to($user->email, "New student on " . env('APP_NAME', 'BhiLearning'))->send(new sendEmailtoSchoolstudent($studentdata));
 
 
         return redirect()->route('backend.students.index')->with('success', 'Student Created Successfully');
@@ -207,10 +165,6 @@ class StudentController extends Controller
     {
         $student = Student::findOrFail($id);
         
-        if(!Auth::user()->hasAccessToSchool($student->school_id)){
-            return redirect()->route('backend.dashboard');           
-        }
-		
 		$student_videos = StudentVideo::where('student_id', $student->user_id)->pluck('video_id', 'video_id');
 		//pr($student_videos); exit;
         $classesWatched = Video::whereIn('id', $student_videos)->count();
@@ -254,32 +208,11 @@ class StudentController extends Controller
     {
 		//Find the student
         $student = Student::find($id);
-        
-        if(!Auth::user()->hasAccessToSchool($student->school_id)){
-            return redirect()->route('backend.dashboard');           
-        }
-        
+       
         $query = SchoolCategory::where('status','=',1);
         
-        if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            $query = $query->where('id','=',$profile->school->school_category);
-          //  $schools = $schools->where('id','=',$profile->school_id);
-        }
-        
-        $institutes = $query->orderBy('name')
-                        ->pluck('name','id');
-        
-        $schools = School::orderBy('school_name')
-                        ->where('school_category', $student->school->school_category)->where('status', '=', 1)
-                        ->pluck('school_name', 'id');
-						
-		$courses = Course::where('school_id', $student->school_id)->orderBy('name')->where('status','=',1)->pluck('name','id');
-		$classes = Classes::where('course_id', $student->course_id)->orderBy('class_name')->where('status','=',1)->pluck('class_name','id');
-	    $departments = Department::where('school_id',$student->school_id)->where('status','=',1)->pluck('name','id');	
 		
-		
-        return view('backend.students.edit', compact('student', 'institutes', 'schools', 'courses', 'classes', 'departments'));
+        return view('backend.students.edit', compact('student'));
     }
 
     /**

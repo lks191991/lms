@@ -5,27 +5,6 @@
 <script type="text/javascript">
    $(document).ready(function () {
 	
-		 $("#institute_type").on("change", function () {
-            //var category_id = $(this).attr("data-id");
-			var category_id = $('#institute_type option:selected').attr('data-id');
-			
-			if(category_id && category_id == '{{config("constants.UNIVERSITY")}}') {
-				$("#department-field").show();
-				$("select#department").attr("required", "required");
-			} else {
-				$("#department-field").hide();
-				$("select#department").removeAttr("required");
-			}
-			
-            $.ajax({
-                type: "POST",
-                url: '{{ route("ajax.category.schools", 1) }}',
-                data: {'category': category_id, '_token': '{{ csrf_token() }}'},
-                success: function (data) {
-                    $("#school").html(data.schools);
-                }
-            });
-        });
 	
         
 		
@@ -36,9 +15,6 @@
               { "orderable": false },
             { "orderable": false },
 			 { "orderable": false },
-              { "orderable": false },
-              { "orderable": false },
-			  
               null,
 			  null,
               { "orderable": false }
@@ -53,19 +29,7 @@
 	  // table.search(this.value, true, false).draw();   
 	});
 	
-	$('#institute_type').on('change', function(){		
-	    //alert('gdfgfd');
-	    regExSearch = this.value +'\\s*$';
-		table.column(4).search(regExSearch, true, false).draw();
-	  // table.search(this.value, true, false).draw();   
-	});
 	
-	$('#school').on('change', function(){		
-	   //alert('gdfgfd');
-	    regExSearch = this.value +'\\s*$';
-		table.column(5).search(regExSearch, true, false).draw();
-	   //table.search(this.value, true, false).draw();   
-	});
 		
 			
 		
@@ -93,25 +57,7 @@
 					</th>
                     <th class="align-top">Username</th>
 					<th class="align-top">Mobile</th>
-					<th style="min-width: 7rem" class="align-top">
-						Institute
-						@role('admin|subadmin')
-						 <select name="institute_type" id="institute_type" class="custom-select" required>
-							<option value="" selected="">All</option>
-							@foreach($institutes as $id => $type)
-								<option value="{{$type}}" data-id="{{$id}}">{{$type}}</option>
-							@endforeach
-						 </select>
-						 @endrole
-					</th>
-					<th style="min-width: 7rem" class="align-top">
-						School
-						@role('admin|subadmin')
-						<select name="school" id="school" class="custom-select" required>
-							<option value="" selected="">All</option>                        
-						</select>
-						@endrole
-					</th>
+					
 					<th class="align-top">Status</th>
 					<th class="align-top">Verify Status</th>
                     <th class="align-top">Action</th>
@@ -124,8 +70,6 @@
                     <td>{{$tutor->getFullNameAttribute()}}</td>
                     <td>{{$tutor->user_details->username}}</td>
 					<td>{{$tutor->mobile}}</td>
-					<td>{{$tutor->category_details($tutor->school->school_category)}}</td>
-					<td>{{$tutor->school->school_name}}</td>
 					<td>{{$tutor->status ? 'Active':'Disabled'}}</td>
 					<td>{{$tutor->user_details->mobile_verified_at ? 'Verified':'Not Verified'}}</td>
                     <td>
@@ -139,7 +83,7 @@
 
                         </form>
 						@endrole
-						<a href ="{{route('backend.tutors.show', $tutor->id)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="View tutor details"><i class="ion ion-md-eye"></i></a>
+						<a href ="{{route('backend.tutors.show', $tutor->id)}}" style="display:none" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="View tutor details"><i class="ion ion-md-eye"></i></a>
 						
                     </td>
                 </tr>

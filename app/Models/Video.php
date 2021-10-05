@@ -60,14 +60,7 @@ class Video extends Model
         return $this->belongsTo(Topic::Class, 'topic_id')->withDefault();
     }
     
-    /*
-     * Get referenced record of period.
-     */
-    public function Period()
-    {
-        return $this->belongsTo(Period::Class, 'period_id')->withDefault();
-    }
-
+   
     /*
      * Get referenced record of tutor.
      */

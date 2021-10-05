@@ -17,7 +17,7 @@
 			<div class="form-group row">
                         <label class="col-form-label col-sm-2 text-sm-right">Institute Type</label>
                         <div class="col-sm-10">
-                            <select name="institute_type" id="institute_type" class="custom-select" disabled required>
+                            <select name="institute_type" id="institute_type" class="custom-select" readonly required>
                                 <option value="" selected="" disabled="" class="d-none">Select Institute Type</option>
                                 @foreach($institutes as $id => $type)
                                 <option value="{{$id}}" @if($id == $topic->category_id ) selected @endif>{{$type}}</option>
@@ -29,7 +29,7 @@
                     <div class="form-group row">
                         <label class="col-form-label col-sm-2 text-sm-right">School</label>
                         <div class="col-sm-10">
-                            <select name="school" id="school" class="custom-select" disabled required>
+                            <select name="school" id="school" class="custom-select" readonly required>
                                 <option value="" disabled selected="">Select School</option>
 								@foreach($schools as $id => $val)
                                 <option value="{{$id}}" @if($id == $topic->school_id ) selected @endif>{{$val}}</option>
@@ -37,23 +37,11 @@
                             </select>
                         </div>
                     </div>
-					<div class="form-group row" id="department-field" @if($topic->category_id != config("constants.UNIVERSITY")) style="display:none;" @endif>
-						<label class="col-form-label col-sm-2 text-sm-right">Department</label>
-						<div class="col-sm-10">
-							
-							<select name="department" id="department" class="custom-select" disabled>
-								<option value="">Select Department</option>
-								@foreach($departments as $id => $type)
-									<option value="{{$id}}" @if($topic->department_id == $id) selected @endif>{{$type}}</option>
-								@endforeach
-							</select>
-							<input type="hidden" name="department" value="{{$topic->department_id}}">
-						</div>
-					</div>
+					
                     <div class="form-group row">
                         <label class="col-form-label col-sm-2 text-sm-right">Course</label>
                         <div class="col-sm-10">
-                            <select name="course" id="school_course" class="custom-select" disabled required>
+                            <select name="course" id="school_course" class="custom-select" readonly required>
                                 <option value="" disabled selected="">Select Course</option>
 								@foreach($courses as $id => $val)
                                 <option value="{{$id}}" @if($id == $topic->course_id ) selected @endif>{{$val}}</option>
@@ -65,7 +53,7 @@
                     <div class="form-group row">
                         <label class="col-form-label col-sm-2 text-sm-right">Class</label>
                         <div class="col-sm-10">
-                            <select name="class" id="class" class="custom-select" disabled required>
+                            <select name="class" id="class" class="custom-select" readonly required>
                                 <option value="" disabled selected="">Select Class</option>
 								@foreach($classes as $id => $val)
                                 <option value="{{$id}}" @if($id == $topic->class_id ) selected @endif>{{$val}}</option>
@@ -77,7 +65,7 @@
 			<div class="form-group row">
                 <label class="col-form-label col-sm-2 text-sm-right">Subject</label>
                 <div class="col-sm-10">
-                    <select name="subject" id="subject" class="custom-select" disabled required>
+                    <select name="subject" id="subject" class="custom-select" readonly required>
                         <option value="" selected="" disabled="">Choose Subject</option>
                     @foreach($subjects as $id => $name)
                         <option value="{{$id}}" @if($id == $topic->subject_id ) selected @endif>{{$name}}</option>

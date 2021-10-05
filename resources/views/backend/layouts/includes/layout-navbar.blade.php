@@ -6,7 +6,7 @@
         <span class="app-brand-logo demo bg-primary">
             <img src="{{asset('images/xt_white.png')}}" width="24">
         </span>
-        <span class="app-brand-text demo font-weight-normal ml-2">XtraClass</span>
+        <span class="app-brand-text demo font-weight-normal ml-2">BhiLearning</span>
     </a>
 
     @empty($hide_layout_sidenav_toggle)

@@ -170,7 +170,7 @@
                     <td>{{$topic->status ? 'Active':'Disabled'}}</td>
                     <td>
                         <a href ="{{route('backend.topics.edit', $topic->id)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="Edit"><i class="ion ion-md-create"></i></a>
-                        @role('admin')
+                        
 						<form method="POST" action="{{route('backend.topics.destroy', $topic->id)}}" style="display: inline-block;">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
@@ -178,7 +178,7 @@
                             <button type="submit" onclick="return confirm('You are about to delete this record?')" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="Remove"><i class="ion ion-md-close"></i></button>
 
                         </form>
-						@endrole
+						
                     </td>
                 </tr>
                 @endforeach

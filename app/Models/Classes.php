@@ -43,15 +43,7 @@ class Classes extends Model
         return $this->belongsTo('App\Models\Course', 'course_id', 'id');
     }
     
-    /*
-     * Get all related periods.
-     */
-    public function periods()
-    {
-        $query = $this->hasMany(Period::class, 'class_id')->orderBy('weight', 'asc');
-
-        return $query;
-    }   
+    
     
     /*
      * Get all related subjects.

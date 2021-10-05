@@ -10,7 +10,6 @@ use App\Models\Classes;
 use App\Models\Course;
 use App\Models\School;
 use App\Models\SchoolCategory;
-use App\Models\Department;
 use Illuminate\Validation\Rule;
 use Validator;
 use Illuminate\Support\Facades\Redirect;
@@ -25,9 +24,7 @@ class TopicController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->hasRole('school')) {
-            return redirect()->route('backend.dashboard');
-        }
+       
 
         $query = School::where('status', '=', 1);
 
@@ -55,9 +52,6 @@ class TopicController extends Controller
      */
     public function create()
     {
-        if (Auth::user()->hasRole('school')) {
-            return redirect()->route('backend.dashboard');
-        }
         $institutes = SchoolCategory::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
         $subjects = Subject::orderBy('subject_name')->where('status', '=', 1)->pluck('subject_name', 'id');
 
@@ -78,9 +72,7 @@ class TopicController extends Controller
         $course_id = $subject_details->subject_class->course_id;
 
         $course_details = Course::where('id', $course_id)->select('school_id')->first();
-        if (!Auth::user()->hasAccessToSchool($course_details->school_id)) {
-            return redirect()->route('backend.dashboard');
-        }
+      
 
         if (!empty($request->input('ajax_request'))) {
             $validator = Validator::make($request->all(), [
@@ -161,12 +153,10 @@ class TopicController extends Controller
         $classes_details = Classes::where("id", $subject_details->class_id)->select('course_id')->first();
         $topic->course_id = $classes_details->course_id;
         //echo $topic->course_id; exit;
-        $course_details = Course::where("id", $topic->course_id)->select('school_id', 'department_id')->first();
+        $course_details = Course::where("id", $topic->course_id)->select('school_id')->first();
         $topic->school_id = $course_details->school_id;
 
-        $topic->department_id = $course_details->department_id;
 
-        $departments = Department::where('school_id', $topic->school_id)->where('status', '=', 1)->pluck('name', 'id');
 
         $school_details = School::where("id", $topic->school_id)->select('school_category')->first();
         $topic->category_id = $school_details->school_category;
@@ -177,7 +167,7 @@ class TopicController extends Controller
 
         $subjects = Subject::orderBy('subject_name')->where('class_id', $subject_details->class_id)->where('status', '=', 1)->pluck('subject_name', 'id');
 
-        return view('backend.topics.edit', compact('topic', 'subjects', 'institutes', 'schools', 'courses', 'classes', 'departments'));
+        return view('backend.topics.edit', compact('topic', 'subjects', 'institutes', 'schools', 'courses', 'classes'));
     }
 
     /**
@@ -206,13 +196,11 @@ class TopicController extends Controller
         $subject_id = $request->subject;
 
         $subject_details = Subject::where('id', $subject_id)->first();
+	
         $course_id = $subject_details->subject_class->course_id;
 
         $course_details = Course::where('id', $course_id)->select('school_id')->first();
-        if (!Auth::user()->hasAccessToSchool($course_details->school_id)) {
-            return redirect()->route('backend.dashboard');
-        }
-
+       
         $topic = Topic::find($id);
 
         if (!empty($request->input('ajax_request'))) {
@@ -237,7 +225,6 @@ class TopicController extends Controller
                         ],
             ]);
 
-            // $topic->subject_id = $request->subject;
         }
 
         // if the validator fails, redirect back to the form
@@ -273,10 +260,7 @@ class TopicController extends Controller
         $course_id = $subject_details->subject_class->course_id;
 
         $course_details = Course::where('id', $course_id)->select('school_id')->first();
-        if (!Auth::user()->hasAccessToSchool($course_details->school_id)) {
-            return redirect()->route('backend.dashboard');
-        }
-
+       
         $topic->delete();
 
         if (!empty($request->input('ajax_request'))) {

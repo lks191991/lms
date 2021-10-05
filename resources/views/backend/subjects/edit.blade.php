@@ -36,19 +36,7 @@
                             </select>
                         </div>
                     </div>
-					<div class="form-group row" id="department-field" @if($subject->category_id != config("constants.UNIVERSITY")) style="display:none;" @endif>
-						<label class="col-form-label col-sm-2 text-sm-right">Department</label>
-						<div class="col-sm-10">
-							
-							<select name="department" id="department" class="custom-select" disabled>
-								<option value="">Select Department</option>
-								@foreach($departments as $id => $type)
-									<option value="{{$id}}" @if($subject->department_id == $id) selected @endif>{{$type}}</option>
-								@endforeach
-							</select>
-							<input type="hidden" name="department" value="{{$subject->department_id}}">
-						</div>
-					</div>
+					
                     <div class="form-group row">
                         <label class="col-form-label col-sm-2 text-sm-right">Course</label>
                         <div class="col-sm-10">
@@ -77,6 +65,12 @@
                 <label class="col-form-label col-sm-2 text-sm-right">Subject Name</label>
                 <div class="col-sm-10">
                     <input type="text" name="subject_name" placeholder="Subject Name" class="form-control" value="{{$subject->subject_name}}" required>
+                </div>
+            </div>
+			<div class="form-group row">
+                <label class="col-form-label col-sm-2 text-sm-right">Price</label>
+                <div class="col-sm-10">
+                    <input type="text" name="subject_price" placeholder="Subject Price" class="form-control" value="{{$subject->subject_price}}" required>
                 </div>
             </div>
 			

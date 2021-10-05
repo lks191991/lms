@@ -25,32 +25,11 @@
                 <hr class="border-light m-0">
                 <div class="card-body">                   
 
-<!--                    <div class="form-group @role('school') d-none @endrole">
-                        <label>Institution</label> 
-                        <select name="institute_type" id="institute_type" class="custom-select" required disabled="">
-                            <option value="" disabled="">Choose Institute Type</option>
-                            @foreach($institutes as $id => $type)                            
-                            <option value="{{$id}}">{{$type}}</option>
-                            @endforeach
-                        </select>
-
-                    </div>
-                    <div class="form-group @role('school') d-none @endrole">
-                        <label>School</label>
-                        <select name="school" id="school" class="custom-select" required disabled="">
-                            <option value="" disabled>Select School</option>                        
-                        </select>
-                    </div>                    -->
 
                     <input type="hidden" name="institute_type" value="{{$video->school_id}}" id="institute_type" />
                     <input type="hidden" name="school" value="{{$video->school_id}}" id="school" />
                     
-                    <div class="form-group department_wrapper d-none">
-                        <label>Department</label>
-                        <select name="department" id="department" class="custom-select">
-                            <option value="" disabled selected="">Select Department</option>                        
-                        </select>
-                    </div>
+                 
 
                     <div class="form-group course_wrapper">
                         <label>Course</label>
@@ -70,12 +49,6 @@
                         <label>Date</label>
                         <input class="flatpickr flatpickr-input date form-control" value="{{$video->play_on}}" type="text" name="date" id="date" required />
                     </div>
-
-                    <div class="form-group period_field_group">
-                        <label>Periods</label>
-                        <div class="row period_list"></div>
-                    </div>
-
 
                     <div class="form-group">
                         <label>Subject</label>
@@ -99,17 +72,9 @@
                 <div class="card-header">Video Details</div>
                 <hr class="border-light m-0">
                 <div class="card-body">
-                    <div class="form-inline mb-4">
-                        <label class="custom-control custom-radio justify-content-start mr-2">
-                            <input name="video_type" type="radio" class="custom-control-input video_type" value="url" required="" @if($video->video_type == 'url') checked @endif />
-                            <span class="custom-control-label">Video by URL</span>
-                        </label>
-                        <label class="custom-control custom-radio justify-content-start mr-2">
-                            <input name="video_type" type="radio" class="custom-control-input video_type" value="file"  @if($video->video_type == 'file') checked @endif />
-                            <span class="custom-control-label">Video by File</span>
-                        </label>
-                    </div>
-                    <div class="form-group video_url_section" @if($video->video_type == 'file') style="display:none;" @endif>
+                   
+					<input name="video_type" type="hidden" class="custom-control-input video_type" value="url">
+                    <div class="form-group video_url_section" >
                         <label>Video URL</label>
                         <input type="url" value="{{$video->video_url}}" placeholder="Video URL" class="form-control" name="video_url" />
                         <small class="form-text text-muted">Example - https://vimeo.com/{video_id} </small>
@@ -194,66 +159,13 @@ $size = $video->noteFileSize();
         var course_id = "{{$video->course_id}}";
         var class_id = "{{$video->class_id}}";      
         var play_on = "{{$video->play_on}}";        
-        var period_id = "{{$video->period_id}}";
         var subject_id = "{{$video->subject_id}}";
         var topic_id = "{{$video->topic_id}}";
         var tutor_id = "{{$video->tutor_id}}";  
         
-        /*
-        
-        $("#institute_type").on("change", function () {
-            var category_id = $(this).val();
-          
-            $.ajax({
-                type: "POST",
-                url: '{{ route("ajax.category.schools") }}',
-                data: {'category': category_id, '_token': '{{ csrf_token() }}'},
-                success: function (data) {
-                    $("#school").html(data.schools);
-                    if(school_id){
-                        //$("#school").val(school_id);
-                        $("#school").find('option[value="'+school_id+'"]').attr("selected",true);
-                        $("#school").trigger('change');
-                    }
-                }
-            });
-        });
-        
-        if(category_id){
-            $("#institute_type").val(category_id).trigger('change');
-        }
-        */
+       
         if(school_id) {         
         
-            var univ_cat = "{{config('constants.UNIVERSITY')}}";
-            if(univ_cat == category_id){                
-                $.ajax({
-                    type: "POST",
-                    url: '{{ route("ajax.school.departments") }}',
-                    data: {'school_id': school_id, '_token': '{{ csrf_token() }}'},
-                    success: function (data) {
-                        $("#department").html(data);
-                        $(".department_wrapper").removeClass('d-none');
-                        if(department_id){
-                            $("#department").val(department_id).trigger('change');
-                        }
-                    }
-                });
-            } else {
-
-                $(".department_wrapper").addClass('d-none');
-                $.ajax({
-                    type: "POST",
-                    url: '{{ route("ajax.school.courses") }}',
-                    data: {'school_id': school_id, '_token': '{{ csrf_token() }}'},
-                    success: function (data) {
-                        $("#school_course").html(data);
-                        if(course_id){
-                            $("#school_course").val(course_id).trigger('change');
-                        }
-                    }
-                });
-            }
 
             $.ajax({
                 type: "POST",
@@ -268,20 +180,6 @@ $size = $video->noteFileSize();
             });
         }
     
-        $("#department").on("change", function () {
-            var department_id = $(this).val();
-            $.ajax({
-                type: "POST",
-                url: '{{ route("ajax.department.courses") }}',
-                data: {'department_id': department_id, '_token': '{{ csrf_token() }}'},
-                success: function (data) {
-                    $("#school_course").html(data);
-                    if(course_id){
-                        $("#school_course").val(course_id).trigger('change');
-                    }
-                }
-            });            
-        });
         
         $("#school_course").on("change", function () {
             var school_course = $('#school_course').val();
@@ -377,7 +275,7 @@ $size = $video->noteFileSize();
         
         
         
-        $(".video_type").click(function() {
+        /* $(".video_type").click(function() {
            
             var type = $(this).val();
             
@@ -387,7 +285,7 @@ $size = $video->noteFileSize();
                 $(".video_url_section").hide();
             }
             
-        });
+        }); */
    
    /********* Upload Note file using dropzone *******************/
     // Dropzone class:

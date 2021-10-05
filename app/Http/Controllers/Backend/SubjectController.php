@@ -9,7 +9,6 @@ use App\Models\Subject;
 use App\Models\Course;
 use App\Models\Classes;
 use App\Models\School;
-use App\Models\Department;
 use App\Models\Topic;
 use Illuminate\Validation\Rule;
 use Validator;
@@ -25,19 +24,10 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->hasRole('school')) {
-            return redirect()->route('backend.dashboard');
-        }
+       
 
         $query = School::where('status', '=', 1);
 
-        if (Auth::user()->hasRole('school')) {
-            $profile = Auth::user()->profile;
-            if (isset($profile->school_id)) {
-                $school_id = $profile->school_id;
-                $query = $query->where('id', '=', $school_id);
-            }
-        }
 
         $schools = $query->orderBy('school_name')
                 ->pluck('school_name', 'id');
@@ -55,9 +45,7 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        if (Auth::user()->hasRole('school')) {
-            return redirect()->route('backend.dashboard');
-        }
+        
         $institutes = SchoolCategory::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
         return view('backend.subjects.create', compact('institutes'));
     }
@@ -73,12 +61,9 @@ class SubjectController extends Controller
         $class_id = $request->input('class');
 
         $classes_details = Classes::where('id', $class_id)->first();
-
-        if (!Auth::user()->hasAccessToSchool($classes_details->course->school_id)) {
-            return redirect()->route('backend.dashboard');
-        }
-
+      
         $validator = Validator::make($request->all(), [
+					'subject_price' => 'required|numeric',
                     'subject_name' => [
                         'required',
                         'max:180',
@@ -99,16 +84,17 @@ class SubjectController extends Controller
         $subject = new Subject();
 
         $subject->subject_name = $request->input('subject_name');
+		$subject->subject_price = $request->input('subject_price');
         $subject->class_id = $request->input('class');
         $subject->status = ($request->input('status') !== null) ? $request->input('status') : 0;
 
         $subject->save();
 
-        if (!empty($request->input('ajax_request'))) {
+        /* if (!empty($request->input('ajax_request'))) {
             return redirect()->route('backend.classes.show', $subject->class_id)->with('success', 'Subject created Successfully');
-        } else {
+        } else { */
             return redirect()->route('backend.subjects.index')->with('success', 'Subject created Successfully');
-        }
+        //}
     }
 
     /**
@@ -122,11 +108,6 @@ class SubjectController extends Controller
         $subject = Subject::findOrFail($id);
 
         $classes_details = Classes::where('id', $subject->class_id)->first();
-
-        if (!Auth::user()->hasAccessToSchool($classes_details->course->school_id)) {
-            return redirect()->route('backend.dashboard');
-        }
-
 
         $class = Classes::findOrFail($subject->class_id);
         $course = Course::findOrFail($class->course_id);
@@ -142,9 +123,6 @@ class SubjectController extends Controller
      */
     public function edit($id)
     {
-        if (Auth::user()->hasRole('school')) {
-            return redirect()->route('backend.dashboard');
-        }
         //Find the subject
         $subject = Subject::find($id);
 
@@ -152,12 +130,10 @@ class SubjectController extends Controller
         $classes_details = Classes::where("id", $subject->class_id)->select('course_id')->where('status', '=', 1)->first();
         $subject->course_id = $classes_details->course_id;
 
-        $course_details = Course::where("id", $subject->course_id)->select('school_id', 'department_id')->where('status', '=', 1)->first();
+        $course_details = Course::where("id", $subject->course_id)->select('school_id')->where('status', '=', 1)->first();
         $subject->school_id = $course_details->school_id;
 
-        $subject->department_id = $course_details->department_id;
 
-        $departments = Department::where('school_id', $subject->school_id)->where('status', '=', 1)->pluck('name', 'id');
 
         $school_details = School::where("id", $subject->school_id)->select('school_category')->where('status', '=', 1)->first();
         $subject->category_id = $school_details->school_category;
@@ -166,7 +142,7 @@ class SubjectController extends Controller
         $courses = Course::where('school_id', $subject->school_id)->orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
         $classes = Classes::where('course_id', $subject->course_id)->orderBy('class_name')->where('status', '=', 1)->pluck('class_name', 'id');
 
-        return view('backend.subjects.edit', compact('subject', 'institutes', 'schools', 'courses', 'classes', 'departments'));
+        return view('backend.subjects.edit', compact('subject', 'institutes', 'schools', 'courses', 'classes'));
     }
 
     /**
@@ -197,11 +173,9 @@ class SubjectController extends Controller
 
         $classes_details = Classes::where('id', $class_id)->first();
 
-        if (!Auth::user()->hasAccessToSchool($classes_details->course->school_id)) {
-            return redirect()->route('backend.dashboard');
-        }
 
         $validator = Validator::make($request->all(), [
+			'subject_price' => 'required|numeric',
                     'subject_name' => [
                         'required',
                         'max:180',
@@ -219,14 +193,12 @@ class SubjectController extends Controller
         }
 
         $subject->subject_name = $request->input('subject_name');
+		$subject->subject_price = $request->input('subject_price');
         $subject->status = ($request->input('status') !== null) ? $request->input('status') : 0;
         $subject->save(); //persist the data
 
-        if (!empty($request->input('ajax_request'))) {
-            return redirect()->route('backend.classes.show', $subject->class_id)->with('success', 'Subject Information Updated Successfully');
-        } else {
+       
             return redirect()->route('backend.subjects.index')->with('success', 'Subject Information Updated Successfully');
-        }
     }
 
     /**
@@ -255,11 +227,7 @@ class SubjectController extends Controller
 
         $subject->delete();
 
-        if (!empty($request->input('ajax_request'))) {
-            return redirect()->route('backend.classes.show', $subject->class_id)->with('success', 'Subject Deleted Successfully');
-        } else {
             return redirect()->route('backend.subjects.index')->with('success', 'Subject Deleted Successfully');
-        }
     }
 
 }

@@ -93,8 +93,8 @@ table.dataTable thead .sorting::after {
 							</form>
 						@endrole
 						
-						<a href ="{{route('backend.school.show', $school->id)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="View school details"><i class="ion ion-md-eye"></i></a>
-						<!-- <a href ="{{route('backend.course.create', $school->id)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="Create school course"><i class="ion ion-md-add"></i></a> -->
+						<a href ="{{route('backend.school.show', $school->id)}}" style="display:none" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="View school details"><i class="ion ion-md-eye"></i></a>
+						
                     </td>
                 </tr>
                 @endforeach

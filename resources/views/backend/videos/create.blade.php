@@ -39,13 +39,7 @@
                             <option value="" disabled selected="">Select School</option>                        
                         </select>
                     </div>  
-                    <div class="form-group department_wrapper d-none">
-                        <label>Department</label>
-                        <select name="department" id="department" class="custom-select">
-                            <option value="" disabled selected="">Select Department</option>                        
-                        </select>
-                    </div>
-                    
+                  
                     <div class="form-group course_wrapper">
                         <label>Course</label>
                         <select name="course" id="school_course" class="custom-select" required>
@@ -64,12 +58,7 @@
                         <label>Date</label>
                         <input class="flatpickr flatpickr-input date form-control" value="{{old('date')}}" type="text" name="date" id="date" required />
                     </div>
-                    
-                    <div class="form-group period_field_group">
-                        <label>Periods</label>
-                        <div class="row period_list"></div>
-                    </div>
-                    
+                 
                     
                     <div class="form-group">
                         <label>Subject</label>
@@ -100,17 +89,17 @@
                 <div class="card-header">Video Details</div>
                 <hr class="border-light m-0">
                 <div class="card-body">
-                    <div class="form-inline mb-4">
+                    <!--  <div class="form-inline mb-4">
                         <label class="custom-control custom-radio justify-content-start mr-2">
                             <input name="video_type" type="radio" class="custom-control-input video_type" value="url" required="">
                             <span class="custom-control-label">Video by URL</span>
                         </label>
-                        <label class="custom-control custom-radio justify-content-start mr-2">
+                     <label class="custom-control custom-radio justify-content-start mr-2">
                             <input name="video_type" type="radio" class="custom-control-input video_type" value="file" >
                             <span class="custom-control-label">Video by File</span>
-                        </label>
-                    </div>
-                    
+                        </label> 
+                    </div>-->
+                     <input name="video_type" type="hidden" class="custom-control-input video_type" value="url">
                     <div class="form-group video_url_section" style="display: none;">
                         <label>Video URL</label>
                         <input type="url" value="{{old('video_url')}}" placeholder="Video URL" class="form-control" name="video_url" />
@@ -193,13 +182,11 @@ if(old('note_file')) {
         
         $('#keywords').tagsinput({ tagClass: 'badge badge-secondary' });
         
-        $('.period_field_group').hide();        
         
         var department_id = "{{old('department')}}";
         var course_id = "{{old('course')}}";
         var class_id = "{{old('class')}}";
         var play_on = "{{old('date')}}";
-        var period_id = "{{old('period')}}";
         var subject_id = "{{old('subject')}}";
         var topic_id = "{{old('topic')}}";
         var tutor_id = "{{old('tutor')}}";
@@ -227,36 +214,7 @@ if(old('note_file')) {
         $("#school").on("change", function () {
             var school_id = $(this).val();
             var category_id = $("#institute_type").val();
-            var univ_cat = "{{config('constants.UNIVERSITY')}}";
-            if(univ_cat == category_id){                
-                $.ajax({
-                    type: "POST",
-                    url: '{{ route("ajax.school.departments") }}',
-                    data: {'school_id': school_id, '_token': '{{ csrf_token() }}'},
-                    success: function (data) {
-                        $("#department").html(data);
-                        $(".department_wrapper").removeClass('d-none');
-                        if(department_id){
-                            $("#department").val(department_id).trigger('change');
-                        }
-                    }
-                });
-            } else {
-                                        
-                $(".department_wrapper").addClass('d-none');
-                $.ajax({
-                    type: "POST",
-                    url: '{{ route("ajax.school.courses") }}',
-                    data: {'school_id': school_id, '_token': '{{ csrf_token() }}'},
-                    success: function (data) {
-                        $("#school_course").html(data);
-                        if(course_id){
-                            $("#school_course").val(course_id).trigger('change');
-                        }
-                    }
-                });
-            }
-            
+          
             $.ajax({
                 type: "POST",
                 url: '{{ route("ajax.school.tutors") }}',
@@ -271,20 +229,7 @@ if(old('note_file')) {
             
         });
         
-        $("#department").on("change", function () {
-            var department_id = $(this).val();
-            $.ajax({
-                type: "POST",
-                url: '{{ route("ajax.department.courses") }}',
-                data: {'department_id': department_id, '_token': '{{ csrf_token() }}'},
-                success: function (data) {
-                    $("#school_course").html(data);
-                    if(course_id){
-                        $("#school_course").val(course_id).trigger('change');
-                    }
-                }
-            });            
-        });
+       
         
         $("#school_course").on("change", function () {
             var school_course = $('#school_course').val();
@@ -381,10 +326,10 @@ if(old('note_file')) {
         $(".video_type[value=url]").prop( "checked", true );
         $(".video_url_section").show();
         $('.status').prop( "checked", true );
-        $('.status').prop( "disabled", true );
+        //$('.status').prop( "disabled", true );
         
         
-        $(".video_type").click(function() {
+        /* $(".video_type").click(function() {
            
             var type = $(this).val();
             
@@ -400,7 +345,7 @@ if(old('note_file')) {
             }
             
         });
-        
+         */
         
     
     /********* Upload Note file using dropzone *******************/

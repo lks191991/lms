@@ -15,13 +15,13 @@
 
     <!-- Counters -->
     <div class="row">
-        <div class="col-sm-6 col-xl-3">
+        <div class="col-sm-6 col-xl-4">
 
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-list"></i>
-                        <div class="ml-3">
+                        <div class="ml-4">
                             <div class="text-muted small">Institutions</div>
                             <div class="text-large">{{$institute_count}}</div>
                         </div>
@@ -30,13 +30,13 @@
             </div>
 
         </div>
-        <div class="col-sm-6 col-xl-3">
+        <div class="col-sm-6 col-xl-4">
 
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-school"></i>
-                        <div class="ml-3">
+                        <div class="ml-4">
                             <div class="text-muted small">Schools</div>
                             <div class="text-large">{{$school_count}}</div>
                         </div>
@@ -44,29 +44,15 @@
                 </div>
 			</div>
         </div>
-        <div class="col-sm-6 col-xl-3">
-
-            <div class="card mb-4">
-              <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-list"></i>
-                        <div class="ml-3">
-                            <div class="text-muted small">Departments</div>
-                            <div class="text-large">{{$department_count}}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-sm-6 col-xl-3">
+       
+        <div class="col-sm-6 col-xl-4">
 
             <div class="card mb-4">
                 
 				<div class="card-body">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-graduation-cap"></i>
-                        <div class="ml-3">
+                        <div class="ml-4">
                             <div class="text-muted small">Courses</div>
                             <div class="text-large">{{$courses_count}}</div>
                         </div>
@@ -79,14 +65,14 @@
     </div>
 	
 	<div class="row">
-        <div class="col-sm-6 col-xl-3">
+        <div class="col-sm-6 col-xl-4">
 
             <div class="card mb-4">
 			
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-university"></i>
-                        <div class="ml-3">
+                        <div class="ml-4">
                             <div class="text-muted small">Classes</div>
                             <div class="text-large">{{$classes_count}}</div>
                         </div>
@@ -96,31 +82,15 @@
             </div>
 
         </div>
-        <div class="col-sm-6 col-xl-3">
-
-            <div class="card mb-4">
-			
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <i class="sidenav-icon fas fa-clock"></i>
-                        <div class="ml-3">
-                            <div class="text-muted small">Periods</div>
-                            <div class="text-large">{{$periods_count}}</div>
-                        </div>
-                    </div>
-                </div>
-				
-            </div>
-
-        </div>
-        <div class="col-sm-6 col-xl-3">
+      
+        <div class="col-sm-6 col-xl-4">
 
             <div class="card mb-4">
 			
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <i class="sidenav-icon fas fa-book"></i>
-                        <div class="ml-3">
+                        <div class="ml-4">
                             <div class="text-muted small">Subjects</div>
                             <div class="text-large">{{$subject_count}}</div>
                         </div>
@@ -130,14 +100,14 @@
             </div>
 
         </div>
-        <div class="col-sm-6 col-xl-3">
+        <div class="col-sm-6 col-xl-4">
 
             <div class="card mb-4">
 			
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <i class="sidenav-icon fas fa-tags"></i>
-                        <div class="ml-3">
+                        <div class="ml-4">
                             <div class="text-muted small">Topics</div>
                             <div class="text-large">{{$topic_count}}</div>
                         </div>
@@ -150,14 +120,14 @@
     </div>
 	
 	<div class="row">
-        <div class="col-sm-6 col-xl-3">
+        <div class="col-sm-6 col-xl-4">
 
             <div class="card mb-4">
 			
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <i class="sidenav-icon fas fa-video"></i>
-                        <div class="ml-3">
+                        <div class="ml-4">
                             <div class="text-muted small">Videos</div>
                             <div class="text-large">{{$videos_count}}</div>
                         </div>
@@ -167,14 +137,14 @@
             </div>
 
         </div>
-        <div class="col-sm-6 col-xl-3">
+        <div class="col-sm-6 col-xl-4">
 
             <div class="card mb-4">
 			
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="lnr lnr-users display-4"></div>
-                        <div class="ml-3">
+                        <div class="ml-4">
                             <div class="text-muted small">Students</div>
                             <div class="text-large">{{$student_count}}</div>
                         </div>
@@ -184,14 +154,14 @@
             </div>
 
         </div>
-        <div class="col-sm-6 col-xl-3">
+        <div class="col-sm-6 col-xl-4">
 
             <div class="card mb-4">
 			
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="lnr lnr-users display-4"></div>
-                        <div class="ml-3">
+                        <div class="ml-4">
                             <div class="text-muted small">Tutors</div>
                             <div class="text-large">{{$tutor_count}}</div>
                         </div>
@@ -201,23 +171,7 @@
             </div>
 
         </div>
-        <div class="col-sm-6 col-xl-3">
-
-            <div class="card mb-4">
-			
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="lnr lnr-users display-4"></div>
-                        <div class="ml-3">
-                            <div class="text-muted small">School Managers</div>
-                            <div class="text-large">{{$schoolmanager_count}}</div>
-                        </div>
-                    </div>
-                </div>
-				
-            </div>
-
-        </div>
+        
     </div>
     <!-- / Counters -->
 

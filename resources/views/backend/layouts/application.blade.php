@@ -2,7 +2,7 @@
 
 <html lang="en" class="default-style">
     <head>
-        <title>XtraClass Admin Panel</title>
+        <title>BhiLearning Admin Panel</title>
 
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">

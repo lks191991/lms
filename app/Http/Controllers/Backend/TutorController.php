@@ -5,8 +5,6 @@ namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Tutor;
-use App\Models\School;
-use App\Models\SchoolCategory;
 use App\User;
 use Illuminate\Validation\Rule;
 use Validator;
@@ -30,32 +28,11 @@ class TutorController extends Controller
     public function index()
     {
         $query = Tutor::where('id','<>',0);
-        
-        if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            if(isset($profile->school_id)){
-                $query = $query->where('school_id','=',$profile->school_id);
-            }
-        } 
+       
         
         $tutors = $query->orderBy('id', 'desc')->get();
-		
-		$query = SchoolCategory::where('status','=',1);
-		
-        //Check for the user profile      
-        if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            if(isset($profile->school_id)){
-                $school_id = $profile->school_id;
-                $category_id = $profile->school->school_category;
-                $query = $query->where('id','=',$profile->school->school_category);
-            }            
-        }
-        
-        $institutes = $query->orderBy('name')
-                        ->pluck('name','id');
 						
-        return view('backend.tutors.index', compact('tutors', 'institutes'));
+        return view('backend.tutors.index', compact('tutors'));
     }
 
     /**
@@ -65,21 +42,8 @@ class TutorController extends Controller
      */
     public function create()
     {
-        $query = SchoolCategory::where('status','=',1);
-		$school_id = 0;
-        $category_id = 0;
         
-        if(Auth::user()->hasRole('school')){
-			$profile = Auth::user()->profile;
-            $school_id = $profile->school_id;
-            $category_id = $profile->school->school_category;
-            $query = $query->where('id','=',$profile->school->school_category);           
-        }
-        
-        $institutes = $query->orderBy('name')
-                        ->pluck('name','id');
-        
-        return view('backend.tutors.create', compact('institutes','school_id','category_id'));
+        return view('backend.tutors.create');
     }
 
     /**
@@ -93,8 +57,6 @@ class TutorController extends Controller
         $data = $request->all();
 
         $validator = Validator::make($data, [
-                  //  'institute_type' => 'required',
-                    'school_name' => 'required',
                     'first_name' => 'required|min:2',
                     'username' => 'required|string|min:4|max:255|regex:/^(?=.*[a-z]).+$/|unique:users',
                     'password' => 'required|confirmed|string|min:6',
@@ -156,7 +118,6 @@ class TutorController extends Controller
         $tutor->last_name = $data['last_name'];
         $tutor->email = $data['email'];
         $tutor->mobile = $data['mobile'];
-        $tutor->school_id = $data['school_name'];
         $tutor->status = ($data['status'] !== null) ? $data['status'] : 0;
 		$tutor->upload_access = isset($data['upload_access']) ? $data['upload_access'] : 0;
         $tutor->country = $data['phone_code'];
@@ -165,7 +126,6 @@ class TutorController extends Controller
         $tutor->save(); //persist the data 
 
         $tutordata = Tutor::findOrFail($tutor->id);
-        $tutordata->school_name = $tutordata->school->school_name;
 
         //save user other information
         $user_more_info = User::find($user->id);
@@ -173,8 +133,8 @@ class TutorController extends Controller
         $user_more_info->mobile_verified_at = date('Y-m-d H:i:s');
         $user_more_info->save(); //persist the data
 
-        if (!empty($user->email))
-            Mail::to($user->email, "New tutor on " . env('APP_NAME', 'Xtra Class'))->send(new sendEmailtoSchooltutor($tutordata));
+        //if (!empty($user->email))
+          //  Mail::to($user->email, "New tutor on " . env('APP_NAME', 'BhiLearning'))->send(new sendEmailtoSchooltutor($tutordata));
 
 
         return redirect()->route('backend.tutors.index')->with('success', 'Tutor Created Successfully');
@@ -216,28 +176,7 @@ class TutorController extends Controller
     {
         //Find the tutor
         $tutor = Tutor::find($id);
-        
-        if(!Auth::user()->hasAccessToSchool($tutor->school_id)){
-            return redirect()->route('backend.dashboard');           
-        }
-        
-        $query = SchoolCategory::where('status','=',1);
-        $schools = School::where('status', '=', 1);
-        
-        if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            $query = $query->where('id','=',$profile->school->school_category);
-            $schools = $schools->where('id','=',$profile->school_id);
-        }
-        
-        $institutes = $query->orderBy('name')
-                        ->pluck('name','id');
-        
-        $schools = $schools->orderBy('school_name')
-                        ->where('school_category', $tutor->school->school_category)
-                        ->pluck('school_name', 'id');
-
-        return view('backend.tutors.edit', compact('tutor', 'institutes', 'schools'));
+        return view('backend.tutors.edit', compact('tutor'));
     }
 
     /**
@@ -254,8 +193,6 @@ class TutorController extends Controller
         $data = $request->all();
         $user_id = $tutor->user_id;
         $validator = Validator::make($data, [
-                   // 'institute_type' => 'required',
-                  //  'school_name' => 'required',
                     'first_name' => 'required|min:2',
                     'password' => 'nullable|confirmed|string|min:6',
                     'email' => [
@@ -319,7 +256,6 @@ class TutorController extends Controller
         $tutor->last_name = $data['last_name'];
         $tutor->email = $data['email'];
         $tutor->mobile = $data['mobile'];
-        //$tutor->school_id = $data['school_name'];
         $tutor->status = ($data['status'] !== null) ? $data['status'] : 0;
         $tutor->upload_access = isset($data['upload_access']) ? $data['upload_access'] : 0;
         $tutor->country = $data['phone_code'];

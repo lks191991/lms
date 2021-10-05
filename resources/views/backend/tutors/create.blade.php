@@ -2,36 +2,19 @@
 
 @section('content')
     <h4 class="font-weight-bold py-3 mb-4">
-        <span class="text-muted font-weight-light">School Tutors /</span> Create School Tutor
+        <span class="text-muted font-weight-light">Tutors /</span> Create
     </h4>
 	<div class="card mb-4">
         <h6 class="card-header">
-            Create School Tutor
+            Create Tutor
         </h6>
         <div class="card-body">
 			@includeif('backend.message')
             <form action="{{route('backend.tutors.store')}}" method = "post" enctype="multipart/form-data">
 			@csrf
-				<div class="form-group row @role('school') d-none @endrole">
-                        <label class="col-form-label col-sm-2 text-sm-right">Institute Type</label>
-                        <div class="col-sm-10">
-                            <select name="institute_type" id="institute_type" class="custom-select" required>
-                                <option value="" selected="" disabled="" class="d-none">Select Institute Type</option>
-                                @foreach($institutes as $id => $type)
-									<option value="{{$id}}" >{{$type}}</option>
-								@endforeach
-                            </select>
-						</div>
-				 </div>
+				
 					
-				<div class="form-group row @role('school') d-none @endrole">
-                    <label class="col-form-label col-sm-2 text-sm-right">School</label>
-                    <div class="col-sm-10">
-					<select name="school_name" id="school" class="custom-select" required>
-						<option value="">Select School</option>
-					</select>
-					</div>
-                </div>
+				
 				<div class="form-group row">
                     <label class="col-form-label col-sm-2 text-sm-right">First Name</label>
                     <div class="col-sm-10">
@@ -145,40 +128,5 @@
     </div>
 @endsection
 @section('scripts')
-@role('admin|subadmin')
-<script>
-    var category_id = "{{old('institute_type')}}";
-    var school_id = "{{old('school_name')}}";
-</script>
-@endrole
-@role('school')
-<script>
-    var category_id = "{{$category_id}}";
-    var school_id = "{{$school_id}}";
-</script>
-@endrole
-<script>
-    $(document).ready(function () {
-        $("#institute_type").on("change", function () {
-            var category_id = $(this).val();
-			
-			$.ajax({
-                type: "POST",
-                url: '{{ route("ajax.category.schools") }}',
-                data: {'category': category_id, '_token': '{{ csrf_token() }}'},
-                success: function (data) {
-                    $("#school").html(data.schools);
-					if(school_id){
-                        $("#school").val(school_id).trigger('change');
-                    }
-                }
-            });
-        });
-		
-		if(category_id){
-            $("#institute_type").val(category_id).trigger('change');
-        }
 
-});
-</script>
 @stop

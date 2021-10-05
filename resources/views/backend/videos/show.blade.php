@@ -68,10 +68,7 @@
                     <div class="col-sm-6 col-xl-9">{{$video->playOn()}} </div>
                 </div>
                 
-                <div class="row">
-                    <div class="col-sm-6 col-xl-3 mb-2"><strong>Period</strong></div>
-                    <div class="col-sm-6 col-xl-9">{{$video->period->title}} </div>
-                </div>
+               
                 <div class="row">
                     <div class="col-sm-6 col-xl-3 mb-2"><strong>Class</strong></div>
                     <div class="col-sm-6 col-xl-9">{{$video->classDetail->class_name}}</div>
@@ -85,12 +82,7 @@
                     </div>
                     <div class="col-sm-6 col-xl-9">{{$video->course->name}}</div>
                 </div>
-                @if($video->school->school_category == config('constants.UNIVERSITY'))
-                <div class="row">
-                    <div class="col-sm-6 col-xl-3 mb-2"><strong>Department</strong></div>
-                    <div class="col-sm-6 col-xl-9">{{$video->course->department->name}}</div>
-                </div>
-                @endif                
+                           
                 
                 <div class="row">
                     <div class="col-sm-6 col-xl-3 mb-2"><strong>School Name</strong></div>
@@ -140,36 +132,4 @@
     </div>
 </div>
 
-@if(!$reported_video_detail->isEmpty())
-	<div class="card">
-		<div class="card-header row ml-0 mr-0">
-			<div class="col-md-9"><strong>Reported By</strong></div>
-		</div>
-	<div class="card-body">
-		<div class="card-datatable table-responsive">
-			<table id="reported-user-list" class="table table-striped table-bordered">
-				<thead>
-					<tr>
-						<th>S.No</th>
-						<th>Name</th>
-						<th>Reason</th>
-						<th>Date</th>
-					</tr>
-				<tbody>
-					@php $i=0; @endphp
-					@foreach($reported_video_detail as $video_user)
-					<tr>
-						<td>{{ ++$i }}</td>
-						<td>{{ isset($video_user->user->name)?ucfirst($video_user->user->name):$video_user->user->username}}</td>
-						<td>{{(isset($video_user->message) && !empty($video_user->message))?$video_user->message:'N/A'}}</td>
-						<td>{{$video_user->created_at}}</td>
-					</tr>
-					@endforeach
-				</tbody>
-				</thead>
-			</table>
-		</div>
-		</div>
-	</div>
-@endif		
 @endsection

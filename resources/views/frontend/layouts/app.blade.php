@@ -98,13 +98,13 @@
             <header class="header sticky-top">
                 <div class="container">
                     <div class="row align-items-center">		
-                        <div class="col-6 col-lg-3">
+                        <!--<div class="col-6 col-lg-3">
                             <div class="logo">
                                 <a href="{{ URL::to('/') }}">
                                     <img src="{{asset('images/logo.png')}}" alt="{{ config('app.name', 'Laravel') }}">
                                 </a>
                             </div>
-                        </div>	
+                        </div>	-->
 
                         <div class="col-6 col-lg-9">
                             <div class="mobile-toggle-btn"> <span></span> </div>
@@ -126,7 +126,7 @@
                                      </li> --->
                                      @endif	
                                     @endif
-                                    <li class="header-search pl-0 pl-lg-3">
+                                    <!--<li class="header-search pl-0 pl-lg-3">
                                         <form action="{{route('frontend.search')}}" method="get" class="search-form">
                                             @csrf
                                             <div class="form-group">
@@ -134,17 +134,17 @@
                                                 <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
                                             </div>	
                                         </form>
-                                    </li>
+                                    </li>-->
 
                                     <!-- Authentication Links -->
                                     @guest
                                     <li>
-                                        <a href="javascript:void(0)" title="" class="btn-custom "  onclick="loginObj.openPopup()" >
+                                       <!-- <a href="javascript:void(0)" title="" class="btn-custom "  onclick="loginObj.openPopup()" >
                                             <span class="icon">
                                                 <i class="fas fa-user"></i>
                                             </span>
                                             {{ __('Login') }}
-                                        </a>
+                                        </a>-->
                                         @include('frontend.includes.login_popup')
                                     </li>
                                     @else
@@ -194,7 +194,7 @@
 
             @yield('content')
 
-            <footer class="footer">
+            <!--<footer class="footer">
                 <div class="container">
                     <ul class="footer-menu">
                         @guest
@@ -209,7 +209,7 @@
                     <hr>
                     <h6 class="footer-copyright"><strong>Xtra</strong>Class (c) 2020 All rights reserved     <a href="{{route('frontend.pages.terms_condition')}}" class="d-none">Terms & conditions</a></h6>
                 </div>
-            </footer>
+            </footer>-->
 
         </div>
 

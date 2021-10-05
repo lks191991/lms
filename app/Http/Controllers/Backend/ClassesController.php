@@ -8,9 +8,7 @@ use App\Models\Classes;
 use App\Models\Course;
 use App\Models\SchoolCategory;
 use App\Models\School;
-use App\Models\Department;
 use App\Models\Subject;
-use App\Models\Period;
 use App\Models\Topic;
 use Illuminate\Validation\Rule;
 use Validator;
@@ -26,23 +24,11 @@ class ClassesController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->hasRole('school')) {
-            return redirect()->route('backend.dashboard');
-        }
-
+       
         $query = School::where('status', '=', 1);
-
-        if (Auth::user()->hasRole('school')) {
-            $profile = Auth::user()->profile;
-            if (isset($profile->school_id)) {
-                $school_id = $profile->school_id;
-                $query = $query->where('id', '=', $school_id);
-            }
-        }
 
         $schools = $query->orderBy('school_name')
                 ->pluck('school_name', 'id');
-
 
         //get all classes
         $classes = Classes::orderBy('id', 'desc')->get();
@@ -57,21 +43,10 @@ class ClassesController extends Controller
      */
     public function create()
     {
-        if (Auth::user()->hasRole('school')) {
-            return redirect()->route('backend.dashboard');
-        }
-
+        
         $query = SchoolCategory::where('status', '=', 1);
 
-        //Check for the user profile      
-        if (Auth::user()->hasRole('school')) {
-            $profile = Auth::user()->profile;
-            if (isset($profile->school_id)) {
-                $school_id = $profile->school_id;
-                $category_id = $profile->school->school_category;
-                $query = $query->where('id', '=', $profile->school->school_category);
-            }
-        }
+       
 
         $institutes = $query->orderBy('name')
                 ->pluck('name', 'id');
@@ -93,9 +68,7 @@ class ClassesController extends Controller
 
         $course = Course::where('id', $course_id)->select('school_id')->first();
 
-        if (!Auth::user()->hasAccessToSchool($course->school_id)) {
-            return redirect()->route('backend.dashboard');
-        }
+       
 
         if (!empty($request->input('ajax_request'))) {
 
@@ -161,10 +134,6 @@ class ClassesController extends Controller
         $class = Classes::findOrFail($id);
         $course = Course::where('id', $class->course_id)->select('school_id')->first();
 
-        if (!Auth::user()->hasAccessToSchool($course->school_id)) {
-            return redirect()->route('backend.dashboard');
-        }
-
         return view('backend.classes.show', compact('course', 'class'));
     }
 
@@ -176,24 +145,15 @@ class ClassesController extends Controller
      */
     public function edit($id)
     {
-        if (Auth::user()->hasRole('school')) {
-            return redirect()->route('backend.dashboard');
-        }
-
+      
         $institutes = SchoolCategory::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
 
         $class = Classes::find($id);
 
-        $course_details = Course::where("id", $class->course_id)->select('school_id', 'department_id')->first();
+        $course_details = Course::where("id", $class->course_id)->select('school_id')->first();
         $class->school_id = $course_details->school_id;
 
-        if (!Auth::user()->hasAccessToSchool($course_details->school_id)) {
-            return redirect()->route('backend.dashboard');
-        }
-
-        $class->department_id = $course_details->department_id;
-
-        $departments = Department::where('school_id', $class->school_id)->where('status', '=', 1)->pluck('name', 'id');
+       
 
         $school_details = School::where("id", $class->school_id)->select('school_category')->where('status', '=', 1)->first();
         $class->category_id = $school_details->school_category;
@@ -202,13 +162,11 @@ class ClassesController extends Controller
 
         $courses = Course::where('school_id', $class->school_id)->orderBy('name');
 
-        if (isset($class->department_id) && !empty($class->department_id)) {
-            $courses = $courses->where('department_id', $class->department_id);
-        }
+      
 
         $courses = $courses->where('status', '=', 1)->pluck('name', 'id');
 
-        return view('backend.classes.edit', compact('class', 'institutes', 'schools', 'courses', 'departments'));
+        return view('backend.classes.edit', compact('class', 'institutes', 'schools', 'courses'));
     }
 
     /**
@@ -237,10 +195,7 @@ class ClassesController extends Controller
         $class = Classes::find($id);
         $course_id = $class->course_id;
 
-        if (!Auth::user()->hasAccessToSchool($class->course->school_id)) {
-            return redirect()->route('backend.dashboard');
-        }
-
+       
         if (!empty($request->input('ajax_request'))) {
 
             $validator = Validator::make($request->all(), [
@@ -255,9 +210,6 @@ class ClassesController extends Controller
         } else {
 
             $validator = Validator::make($request->all(), [
-                        //'institute_type' => 'required',
-                        //'school' => 'required',
-                        //'course' => 'required',
                         'class_name' => [
                             'required',
                             'max:180',
@@ -267,7 +219,6 @@ class ClassesController extends Controller
                         ],
             ]);
 
-            //$class->course_id = $request->input('course');
         }
 
         // if the validator fails, redirect back to the form
@@ -299,11 +250,7 @@ class ClassesController extends Controller
     public function destroy(Request $request, $id)
     {
         $class = Classes::find($id);
-
-        if (!Auth::user()->hasAccessToSchool($class->course->school_id)) {
-            return redirect()->route('backend.dashboard');
-        }
-
+       
         if (isset($class->id) && !empty($class->id)) {
             $subjects = Subject::where('class_id', $class->id)->select('id')->get();
             foreach ($subjects as $subject) {
@@ -318,11 +265,6 @@ class ClassesController extends Controller
                 }
             }
 
-            $periods = Period::where('class_id', $class->id)->select('id')->get();
-            foreach ($periods as $period) {
-                if (isset($period->id) && !empty($period->id))
-                    $period->delete();
-            }
         }
 
         $class->delete();

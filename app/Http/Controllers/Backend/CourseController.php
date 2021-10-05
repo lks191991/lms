@@ -7,10 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\School;
 use App\Models\Course;
 use App\Models\SchoolCategory;
-use App\Models\Department;
 use App\Models\Classes;
 use App\Models\Subject;
-use App\Models\Period;
 use App\Models\Topic;
 use Illuminate\Validation\Rule;
 use Validator;
@@ -104,27 +102,6 @@ class CourseController extends Controller
 		$institute_type = $request->input('institute_type');
 		$ajax_request = $request->input('ajax_request');
 		
-		
-		if(isset($institute_type) && $institute_type == config("constants.UNIVERSITY")) {
-			$department_id = $request->input('department');
-			$validator = Validator::make($request->all(), [
-				'institute_type' => 'required',
-				'school_name' => 'required',
-				'department' => 'required',
-				'name' => [
-					'required',
-					'max:180',
-					Rule::unique('courses')->where(function ($query) use($school_id, $department_id) {  
-						return $query->where('school_id', $school_id)->where('department_id', $department_id);
-					})
-				],
-				
-			]);
-			
-			$course->department_id = $request->input('department');
-			$course->type = "program";
-			
-		} else {
 			
 			$validator = Validator::make($request->all(), [
 				'institute_type' => 'required',
@@ -138,7 +115,6 @@ class CourseController extends Controller
 				],
 				
 			]);
-		}
 		
 		if ($validator->fails()) {
             return Redirect::back()
@@ -154,13 +130,7 @@ class CourseController extends Controller
 		$course->status = ($request->input('status') !== null)? $request->input('status'):0;
 		$course->save(); //persist the data
 		
-		if(!empty($request->input('ajax_request'))) {
-			return redirect()->route('backend.school.show', $course->school_id)->with('success','Course Created Successfully');
-		} else if(!empty($request->input('department_ajax_request'))) {
-			return redirect()->route('backend.departments.show', $course->department_id)->with('success','Course Created Successfully');
-		} else {
 			return redirect()->route('backend.courses')->with('success','Course Created Successfully');
-		}
     }
 
     /**
@@ -195,16 +165,12 @@ class CourseController extends Controller
        //Find the course
         $course = Course::find($id);
 		
-		if(!Auth::user()->hasAccessToSchool($course->school_id)){
-            return redirect()->route('backend.dashboard');           
-        }
 		
 		$institutes = SchoolCategory::orderBy('name')->where('status','=',1)->pluck('name','id');
 		$school_details = School::where('id',$course->school_id)->select('school_category')->first();
 		$schools = School::where('status',1)->where('school_category',$school_details->school_category)->get();
-		$departments = Department::where('school_id',$course->school_id)->where('status','=',1)->pluck('name','id');
 		
-		return view('backend.course.edit',compact('course', 'schools', 'institutes', 'school_details', 'departments'));
+		return view('backend.course.edit',compact('course', 'schools', 'institutes', 'school_details'));
 
     }
 	
@@ -237,33 +203,11 @@ class CourseController extends Controller
         $course = Course::find($id);
 		//echo "<pre>"; print_r($school); exit;
       //  $course->school_id = $request->input('school_name');
-		$ajax_request = $request->input('ajax_request');
 		$school_id = $course->school_id;
 		
-		if(!Auth::user()->hasAccessToSchool($school_id)){
-            return redirect()->route('backend.dashboard');           
-        }
-		
 		$institute_type = $request->input('institute_type');
-		$department_id = $request->input('department');
 		
-		if(isset($department_id) && !empty($department_id)) { 
-			
-			$validator = Validator::make($request->all(), [
-				'name' => [
-					'required',
-					'max:180',
-					Rule::unique('courses')->where(function ($query) use($school_id, $department_id, $id) {  
-						return $query->where('school_id', $school_id)->where('department_id', $department_id)->where('id','<>', $id);
-					})
-				],
-				
-			]);
-			
-			$course->department_id = $request->input('department');
-			$course->type = "program";
-			
-		} else {
+		
 			
 			$validator = Validator::make($request->all(), [
 				//'institute_type' => 'required',
@@ -277,7 +221,6 @@ class CourseController extends Controller
 				],
 				
 			]);
-		}
 		
 		if ($validator->fails()) {
             return Redirect::back()
@@ -291,14 +234,7 @@ class CourseController extends Controller
 		$course->status = ($request->input('status') !== null)? $request->input('status'):0;
         $course->save(); //persist the data
 		
-		if(!empty($request->input('ajax_request'))) {
-			
-			return redirect()->route('backend.school.show', $school_id)->with('success','Course Information Updated Successfully');
-		} else if(!empty($request->input('department_ajax_request'))) {
-			return redirect()->route('backend.departments.show', $course->department_id)->with('success','Course Information Updated Successfully');
-		} else {
-			return redirect()->route('backend.courses')->with('success','Course Information Updated Successfully');
-		}
+        return redirect()->route('backend.courses')->with('success','Course Information Updated Successfully');
 		
         
 
@@ -313,10 +249,6 @@ class CourseController extends Controller
     public function destroy(Request $request, $id)
     {
 		$course = Course::find($id);
-		
-		if(!Auth::user()->hasAccessToSchool($course->school_id)){
-            return redirect()->route('backend.dashboard');           
-        }
 		
 		if(isset($course->id) && !empty($course->id)){
 				$classes = Classes::where('course_id', $course->id)->select('id')->get();
@@ -334,11 +266,7 @@ class CourseController extends Controller
 								$subject->delete();
 							}
 						}
-						$periods = Period::where('class_id', $class->id)->select('id')->get();
-						foreach($periods as $period) {
-							if(isset($period->id) && !empty($period->id))
-							$period->delete();
-						}
+						
 			
 						$class->delete();
 					}
@@ -347,15 +275,6 @@ class CourseController extends Controller
 		
         $course->delete();
 		
-		$ajax_request = $request->input('ajax_request');
-		
-		if(!empty($ajax_request)) {
-			
-			return redirect()->route('backend.school.show', $course->school_id)->with('success','Course Deleted Successfully');
-		} else if(!empty($request->input('department_ajax_request'))) {
-			return redirect()->route('backend.departments.show', $course->department_id)->with('success','Course Deleted Successfully');
-		} else {
 			return redirect()->route('backend.courses')->with('success','Course Deleted Successfully');
-		}
 	}
 }

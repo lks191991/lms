@@ -69,7 +69,6 @@
                     <td>{{$course->school->school_name}}</td>
 					<td>{{$course->status ? 'Active':'Disabled'}}</td>
                     <td>
-						@if($course->school->school_category != config("constants.BASIC_SCHOOL"))
 							<a href ="{{route('backend.course.edit', $course->id)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="Edit"><i class="ion ion-md-create"></i></a>
 							@role('admin')
 							<form method="POST" action="{{route('backend.course.destroy', $course->id)}}" style="display: inline-block;">
@@ -80,8 +79,7 @@
 
 							</form>
 							@endrole
-						@endif
-						<a href ="{{route('backend.course.show', $course->id)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="View course details"><i class="ion ion-md-eye"></i></a>
+						<a href ="{{route('backend.course.show', $course->id)}}" style="display:none" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="View course details"><i class="ion ion-md-eye"></i></a>
                     </td>
                 </tr>
                 @endforeach

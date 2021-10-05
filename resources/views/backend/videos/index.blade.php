@@ -55,7 +55,6 @@
             "columns": [
                 null,
                 null,
-                null,
                 {"orderable": false},
                 {"orderable": false},
                 {"orderable": false},
@@ -119,7 +118,6 @@
                 <tr>
                     <th class="align-top">S.No</th>
                     <th class="align-top">Date</th>
-                    <th class="align-top">Period</th>
                     <th class="align-top">
                         School
                         @role('admin|subadmin')
@@ -138,14 +136,6 @@
                             <option value="" selected="">All</option>
                         </select>
                         @endrole
-                        @if(Auth::user()->hasRole('school') && empty($classes))
-                        <select name="course" id="school_course" class="custom-select">
-                            <option value="" selected="">All</option>
-                            @foreach($courses as $course)
-                            <option value="{{$course->name}}" data-id="{{$course->id}}">{{$course->name}}</option>
-                            @endforeach
-                        </select>
-                        @endif
                     </th>
                     <th class="align-top">
                         Class
@@ -174,7 +164,6 @@
                 <tr>
                     <td>{{ ++$i }}</td>
                     <td>{{$video->playOn()}}</td>
-                    <td>{{$video->period->title}}</td>
                     <td>{{$video->school->school_name}}</td>
                     <td>{{$video->course->name}}</td>
                     <td>{{$video->classDetail->class_name}}</td>
@@ -187,15 +176,15 @@
                     <td>
                         <a href ="{{route('backend.videos.show', $video->uuid)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="View video details"><i class="ion ion-md-eye"></i></a>
                         <a href ="{{route('backend.videos.edit', $video->uuid)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="Edit"><i class="ion ion-md-create"></i></a>
-                        @if($repoted_count[$video->id] > 0)<a href ="{{route('backend.videos.show', $video->uuid)}}" title="Reported By"><i class="fas fa-flag" style="color:red"></i> {{$repoted_count[$video->id]}}</a>@endif
-                        @role('admin')                     
+                        
+                                         
                         <form method="POST" action="{{route('backend.videos.destroy', $video->id)}}" style="display: inline-block;">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
 
                             <button type="submit" onclick="return confirm('You are about to delete this record?')" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="Remove"><i class="ion ion-md-close"></i></button>
                         </form>
-                        @endrole
+                        
                     </td>
                 </tr>
                 @endforeach

@@ -40,21 +40,6 @@
                     </div>
             </div>
 			
-			
-			<div class="form-group row" id="department-field" @if($school_details->school_category != config("constants.UNIVERSITY")) style="display:none;" @endif>
-                    <label class="col-form-label col-sm-2 text-sm-right">Department</label>
-                    <div class="col-sm-10">
-						
-                        <select name="department" id="department" class="custom-select" disabled>
-							<option value="">Select Department</option>
-							@foreach($departments as $id => $type)
-                                <option value="{{$id}}" @if($course->department_id == $id) selected @endif>{{$type}}</option>
-                            @endforeach
-						</select>
-						<input type="hidden" name="department" value="{{$course->department_id}}">
-                    </div>
-             </div>
-			 
 			 
                 <div class="form-group row">
                     <label class="col-form-label col-sm-2 text-sm-right">Course Name</label>
@@ -96,13 +81,7 @@
         $("#institute_type").on("change", function () {
           
 		  var category_id = $(this).val();
-          if(category_id && category_id == '{{config("constants.UNIVERSITY")}}') {
-				$("#department-field").show();
-				$("select#department").attr("required");
-			} else {
-				$("#department-field").hide();
-				$("select#department").removeAttr("required");
-			}
+         
 			
             $.ajax({
                 type: "POST",
@@ -118,17 +97,7 @@
         $("#school").on("change", function () {
             var school_id = $(this).val();
             var institute_type = $("#institute_type").val();
-			if(institute_type && institute_type == '{{config("constants.UNIVERSITY")}}') {
-				$.ajax({
-					type: "POST",
-					url: '{{ route("ajax.school.departments") }}',
-					data: {'school_id': school_id, '_token': '{{ csrf_token() }}'},
-					success: function (data) {
-						$("#department").html(data);
-					}
-				});
-				
-			} 
+			
         });
         
  });
