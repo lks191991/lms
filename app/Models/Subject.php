@@ -18,7 +18,7 @@ class Subject extends Model
      */
     public $table = "subjects";
 
-    protected $fillable = ['subject_name', 'status', 'price'];
+    protected $fillable = ['subject_name','banner_image', 'status', 'price'];
 
     public function video()
     {

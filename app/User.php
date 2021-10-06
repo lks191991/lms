@@ -124,9 +124,6 @@ use HasRoleAndPermission;
             return $this->hasOne(User::class, 'id');
         } else if ($slug == 'subadmin') {
             return $this->hasOne(User::class, 'id');
-        }
-		else if ($slug == 'school') {
-            return $this->hasOne(Models\SchoolManager::class, 'user_id');
         } else if ($slug == 'tutor') {
             return $this->hasOne(Models\Tutor::class, 'user_id');
         } else if ($slug == 'student') {
@@ -158,14 +155,7 @@ use HasRoleAndPermission;
         $theme = config('constants.default_theme');
         $slug = $this->userRole->role->slug;
 
-        if ($slug == 'school') {
-            $schoolManager = $this->userData()->first();
-            $school_theme = $schoolManager->school->theme;
-
-            if (!empty($school_theme)) {
-                $theme = $school_theme;
-            }
-        }
+        
 
         return 'theme-' . $theme;
     }
@@ -175,8 +165,6 @@ use HasRoleAndPermission;
         $slug = $this->userRole->role->slug;
         if ($slug == 'admin') {
             return $this->hasOne(User::class, 'id');
-        } else if ($slug == 'school') {
-            return $this->hasOne(Models\SchoolManager::class, 'user_id');
         } else if ($slug == 'tutor') {
             return $this->hasOne(Models\Tutor::class, 'user_id');
         } else if ($slug == 'student') {

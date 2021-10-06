@@ -12,146 +12,15 @@
  */
 
 
-Route::get('/videotest', 'Frontend\ClassroomController@videotest')->name('videotest');
-Route::get('/emailtest', function() {
-    return view('emails.sendContactInquiry');
-});
-Route::get('/tab_page', function() {
-    return view('frontend.pages.tab_page');
-});
-
 Auth::routes();
+Route::group(['prefix' => 'admin', 'as' => 'admin'], function () {
 Route::namespace('Auth')->group(function () {
     /* Below route for all register get routes land on that route */
-    Route::get('/register/step{num}', 'RegisterController@step')->name('registerStep');
-
-    /* Below routes create user and save user extra inforamtion */
-    Route::post('/register/step2', 'RegisterController@step2')->name('registerStep2');
-    Route::post('/register/step3', 'RegisterController@step3')->name('registerStep3');
-    Route::post('/register/step4', 'RegisterController@step4')->name('registerStep4');
-    /* End routes create user and save user extra inforamtion */
-
-    Route::get('/register-success/{id}', 'RegisterController@success')->name('registerSuccess');
-
-    Route::get('/user/verify/{token}', 'RegisterController@verifyUser');
+	Route::get('/', 'LoginController@loginView')->name('loginView');
+});
 });
 
-Route::get('/', 'HomeController@index')->name('front');
-Route::get('/home', 'HomeController@index')->name('home');
-//Route::get('/user/verify/{token}', 'HomeController@verifyUser')->name('verifyUser');
 
-
-/* ----------------------------------------------------------------------- */
-
-/*
- * Frontend Routes
- * Namespaces indicate folder structure
- */
-Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
-
-    /* Static pages route start  */
-    Route::get('/about', 'PageController@getAbout')->name('pages.about');
-    Route::get('/contact', 'PageController@getContact')->name('pages.contact');
-    Route::post('/contact', 'PageController@sendContact')->name('pages.sendContact');
-    Route::get('/terms-and-condition', 'PageController@getPrivacy')->name('pages.terms_condition');
-    Route::get('/how-to-access', 'PageController@getHowToAccess')->name('pages.how_to_access');
-    Route::get('/help', 'PageController@getHelp')->name('pages.help');
-
-    /* Knowledge Article route start  */
-    Route::get('/articles', 'KnowledgeArticleController@index')->name('knowledge.articles.index');
-
-    /* Ajax Login Route */
-    Route::post('/ajax-login', 'AjaxLoginController@login')->name('ajaxLogin');
-
-    /* Student route start  */
-
-    /* Student Profiule Route */
-    Route::get('/profile', 'StudentController@profile')->name('profile');
-    /* Student history Route */
-    Route::post('/student-history', 'StudentController@studentHistory')->name('studentHistory');
-    /* Student remove history Route */
-    Route::post('/remove-student-history', 'StudentController@removeHtudentHistory')->name('removeHtudentHistory');
-
-    /* Student favourites Route */
-    Route::post('/student-favourites', 'StudentController@studentFavourites')->name('studentFavourites');
-    Route::post('/upload-urofile', 'StudentController@uploadProfile')->name('uploadProfile');
-    Route::post('/change-avatar', 'StudentController@changeAvatar')->name('changeAvatar');
-
-    /* Student route end  */
-
-    /* Tutor route start  */
-    Route::get('/tutor-lecture', 'StudentController@tutorLecture')->name('tutorLecture');
-    Route::get('/tutor-posts', 'StudentController@tutorPosts')->name('tutorPosts');
-    Route::post('/upload-notes', 'StudentController@uploadNotes')->name('uploadNotes');
-    Route::get('/video/upload-file/{uuid}', 'StudentController@uploadVideoFile')->name('uploadVideoFile');
-    /* Tutor route end  */
-
-    /* Schools route start  */
-    Route::get('/search', 'SchoolController@searchResult')->name('search');
-
-    Route::post('/search', 'SchoolController@search')->name('schools');
-    Route::post('/school-data.json', 'SchoolController@schoolData')->name('schoolData');
-    Route::post('/course-data.json', 'SchoolController@courseData')->name('courseData');
-    Route::post('/classes-data.json', 'SchoolController@classesData')->name('classesData');
-    /* Schools route end  */
-
-    /* Classroom route start  */
-    Route::get('/classroom/{id}', 'ClassroomController@index')->name('classroom');
-    Route::get('/playing-data.json', 'ClassroomController@playingData')->name('playingData');
-    Route::get('/questions-data.json', 'ClassroomController@questionsData')->name('questionsData');
-    Route::get('/archive-data.json', 'ClassroomController@archiveData')->name('archiveData');
-    Route::get('/favourites-data.json', 'ClassroomController@favouritesData')->name('favouritesData');
-    Route::get('/insert-play-video-status', 'ClassroomController@playVideo')->name('playVideo');
-    Route::get('/post-questions', 'ClassroomController@postQuestions')->name('postQuestions');
-    Route::get('/set-favourites', 'ClassroomController@setFavourites')->name('setFavourites');
-    Route::get('/fleg-video', 'ClassroomController@flegVideo')->name('flegVideo');
-    Route::get('/student-downloads', 'ClassroomController@studentDownloads')->name('studentDownloads');
-    Route::get('/archive-search', 'ClassroomController@archiveSearch')->name('archiveSearch');
-    Route::get('/get-semester-options.json', 'ClassroomController@getSemesterOptions')->name('getSemesterOptions');
-    Route::get('/get-semester-daterange.json', 'ClassroomController@getSemesterDaterange')->name('getSemesterDaterange');
-    /* Classroom route end  */
-
-    /*
-     * Frontend Routes
-     * Namespaces indicate folder structure
-     */
-    Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
-
-        /* Api route start  */
-        Route::post('/change-password-api', 'ApiController@changePasswordApi')->name('changePasswordApi');
-        Route::post('/update-tutor', 'ApiController@updateTutor')->name('updateTutor');
-        Route::post('/update-student', 'ApiController@updateStudent')->name('updateStudent');
-        Route::post('/get-institution-optinns.json', 'ApiController@getInstitutionOptinns')->name('getInstitutionOptinns');
-
-        Route::post('/get-school-optinns.json', 'ApiController@getSchoolOptinns')->name('getSchoolOptinns');
-
-        Route::post('/get-course-or-department-optinns.json', 'ApiController@getDepartmentOrCourseOptions')->name('getDepartmentOrCourseOptions');
-        Route::post('/get-class-optinns.json', 'ApiController@getClassOptions')->name('getClassOptions');
-        Route::get('/get-topic-optinns.json', 'ApiController@getTopicOptions')->name('getTopicOptions');
-        Route::get('/get-period-optinns.json', 'ApiController@getPeriodOptions')->name('getPeriodOptions');
-        Route::get('/get-program-full-optinns.json', 'ApiController@getProgramFullOptions')->name('getProgramFullOptions');
-        Route::get('/get-classes-full-optinns.json', 'ApiController@getClassesFullOptions')->name('getClassesFullOptions');
-        Route::get('/get-subjects-full-optinns.json', 'ApiController@getSubjectsFullOptions')->name('getSubjectsFullOptions');
-        Route::post('/create-video', 'ApiController@createVideo')->name('createVideo');
-        Route::post('/create-article', 'ApiController@createArticle')->name('createArticle');
-        /* Api route end  */
-
-        Route::get('/update-uuid/{table}', 'ApiController@updateUUID')->name('updateUUID');
-    });
-
-
-    /*
-     * Frontend Ajax Routes
-     * prefix indicate the url common profix
-     */
-    Route::group(['prefix' => 'admin', 'as' => 'ajax.'], function () {
-        Route::post('/send-otp', 'AjaxController@sendOtp')->name('sendOtp');
-        Route::post('/verify-otp', 'AjaxController@verifyOtp')->name('verifyOtp');
-        Route::post('/searchschool', 'AjaxController@searchschool')->name('searchschool');
-        Route::post('/schoolcourses', 'AjaxController@schoolcourses')->name('schoolcourses');
-        Route::post('/schoolclasses', 'AjaxController@schoolclasses')->name('schoolclasses');
-    });
-});
 
 /* ----------------------------------------------------------------------- */
 /*
@@ -181,7 +50,6 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'ajax.'], f
  */
 Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['admin', 'preventBackHistory']], function () {
 
-    Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     //Route::resource('schools', 'SchoolController')->name('schools');
     //schools routes
@@ -246,11 +114,6 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.',
     
 });
 
-//------------------ Axios Routes Starts--------------------------
-Route::group(['prefix' => 'axios', 'namespace' => 'axios'], function () {
-    Route::any('index/{page}', 'AxiosController@index')->where('page', ".*");
-});
-//------------------ Axios Routes Ends----------------------------
 
 /* Function for print array in formated form */
 if (!function_exists('pr')) {

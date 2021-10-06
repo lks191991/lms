@@ -75,7 +75,7 @@ class StudentController extends Controller
                     'username' => 'required|string|min:4|max:255|regex:/^(?=.*[a-z]).+$/|unique:users',
                     'password' => 'required|confirmed|string|min:6',
                     'email' => 'email|max:255|unique:users',
-                    'mobile' => 'required|numeric|unique:school_managers',
+                    'mobile' => 'required|numeric',
                         ], [
                     'username.regex' => "Username must be contains At least one lowercase",
                    // 'password.regex' => "Password must be contains minimum 8 character with at least one lowercase, one uppercase, one digit, one special character",

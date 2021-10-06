@@ -10,7 +10,7 @@
         </h6>
         <div class="card-body">
 			@includeif('backend.message')
-            <form action="{{route('backend.course.store')}}" method = "post">
+            <form action="{{route('backend.course.store')}}" method = "post" enctype="multipart/form-data">
 			@csrf
 			
 			<div class="form-group row">
@@ -45,12 +45,22 @@
                 </div>
 				
 				<div class="form-group row">
+                    <label class="col-form-label col-sm-2 text-sm-right">Banner Image</label>
+                    <div class="col-sm-10">
+                       <input type="file" id="banner_image" name="banner_image">
+						<small class="form-text mb-4">
+							.jpg .png .bmp  |  Size max >= 2mb<br>
+						</small>
+					</div>
+                </div>
+				
+				<div class="form-group row">
                     <label class="col-form-label col-sm-2 text-sm-right">Course Description</label>
                     <div class="col-sm-10">
                         <textarea name="description" class="form-control" placeholder="Course Description">{{ old('description') }}</textarea>
                     </div>
                 </div>
-				
+					
 				<div class="form-group row">
                 <label class="col-form-label col-sm-2 text-sm-right"></label>
                 <div class="col-sm-10">

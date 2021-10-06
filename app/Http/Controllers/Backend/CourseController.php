@@ -122,6 +122,33 @@ class CourseController extends Controller
                 ->withInput();
         }
 		
+		 /** Below code for save banner_image * */
+        if ($request->hasFile('banner_image')) {
+
+            $validator = Validator::make($request->all(), [
+                        'banner_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                            ], [
+                        'banner_image.max' => 'The banner image may not be greater than 2 mb.',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->route('backend.courses.create')->withErrors($validator)->withInput();
+            }
+
+            $destinationPath = public_path('/uploads/course/');
+            $newName = '';
+            $fileName = $request->all()['banner_image']->getClientOriginalName();
+            $file = request()->file('banner_image');
+            $fileNameArr = explode('.', $fileName);
+            $fileNameExt = end($fileNameArr);
+            $newName = date('His') . rand() . time() . '__' . $fileNameArr[0] . '.' . $fileNameExt;
+
+            $file->move($destinationPath, $newName);
+
+            $imagePath = 'uploads/course/' . $newName;
+            $course->banner_image = $imagePath;
+        }
+		
        //input method is used to get the value of input with its
         //name specified
 		$course->name = $request->input('name');
@@ -228,6 +255,37 @@ class CourseController extends Controller
                 ->withInput();
         }
 		
+		if ($request->hasFile('banner_image')) {
+
+            $validator = Validator::make($request->all(), [
+                        'banner_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                            ], [
+                        'banner_image.max' => 'The banner image may not be greater than 2 mb.',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->route('backend.subjects.edit', $id)->withErrors($validator)->withInput();
+            }
+
+            $destinationPath = public_path('/uploads/course/');
+            $newName = '';
+            $fileName = $request->all()['banner_image']->getClientOriginalName();
+            $file = request()->file('banner_image');
+            $fileNameArr = explode('.', $fileName);
+            $fileNameExt = end($fileNameArr);
+            $newName = date('His') . rand() . time() . '__' . $fileNameArr[0] . '.' . $fileNameExt;
+
+            $file->move($destinationPath, $newName);
+
+            $oldImage = public_path($course->banner_image);
+            //echo $oldImage; exit;
+            if (!empty($course->banner_image) && file_exists($oldImage)) {
+                unlink($oldImage);
+            }
+
+            $imagePath = 'uploads/course/' . $newName;
+            $course->banner_image = $imagePath;
+        }
 		
 		$course->name = $request->input('name');
 		$course->description = $request->input('description');

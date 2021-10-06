@@ -11,6 +11,7 @@ use App\Models\School;
 use App\Models\Note;
 use App\Models\Course;
 use App\Models\Classes;
+use App\Models\Tutor;
 use Validator;
 use Illuminate\Support\Facades\Redirect;
 use Auth;
@@ -88,23 +89,14 @@ class VideoController extends Controller
         $query = SchoolCategory::where('status','=',1);
         $school_id = 0;
         $category_id = 0;
-        
-        //Check for the user profile      
-        if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            if(isset($profile->school_id)){
-                $school_id = $profile->school_id;
-                $category_id = $profile->school->school_category;
-                $query = $query->where('id','=',$profile->school->school_category);
-            }            
-        } 
-        
+        $tutors = Tutor::where('status','=',1)->select('first_name','last_name','id')->get();
+   
         $institutes = $query->orderBy('name')
                         ->pluck('name','id');
         
         
         
-        return view('backend.videos.create',  compact('institutes','school_id','category_id'));
+        return view('backend.videos.create',  compact('institutes','school_id','category_id','tutors'));
     }
 
     /**
@@ -124,7 +116,7 @@ class VideoController extends Controller
             'topic' => 'required',
             'tutor' => 'required',
             'video_type' => 'required',
-            'video_url' => 'required_if:video_type,url',
+            'video_url' => 'required',
             //'video_url' => 'required_without:video_file',
             //'video_file' => 'required_without:video_url',
             'description' => 'required',  
@@ -143,9 +135,10 @@ class VideoController extends Controller
             $video_id = '';
             if($request->video_type == 'url') {
                 $video_url = $request->video_url;
-                
-                $video_data = SiteHelpers::getVimeoVideoData($video_url);
-
+                $video_id = 1;
+                //$video_data = SiteHelpers::getVimeoVideoData($video_url);
+				/* print_r($video_data);
+				exit;
                 if(!isset($video_data->video_id) || empty($video_data->video_id)){
 
                     $validator->errors()->add('video_url', 'Invalid Video URL');
@@ -155,13 +148,13 @@ class VideoController extends Controller
                             ->withInput();
                 } else {
                     $video_id = $video_data->video_id;
-                }
+                } */
             }
             
             
             $note = null;
             
-            if ($request->note_file != '') {               
+            /* if ($request->note_file != '') {               
                 
                 $path = $request->note_file;
                 
@@ -172,7 +165,7 @@ class VideoController extends Controller
                 $note->storage = 's3';
                 $note->status = 1;
                 $note->save();
-            } 
+            }  */
             
             //form data is available in the request object
             $video = new Video();
@@ -233,13 +226,13 @@ class VideoController extends Controller
     {
         
         $video = Video::uuid($uuid);
-       
+		
         $query = SchoolCategory::where('status','=',1);
-      
+       $tutors = Tutor::where('status','=',1)->select('first_name','last_name','id')->get();
         $institutes = $query->orderBy('name')
                         ->pluck('name','id');
         
-        return view('backend.videos.edit', compact('video','institutes'));
+        return view('backend.videos.edit', compact('video','institutes','tutors'));
     }
 
     /**
@@ -259,7 +252,7 @@ class VideoController extends Controller
             'subject' => 'required',
             'topic' => 'required',            
             'video_type' => 'required',
-            'video_url' => 'required_if:video_type,url',
+            'video_url' => 'required',
             //'video_url' => 'required_without:video_file',
             //'video_file' => 'required_without:video_url',
             'description' => 'required',  
@@ -277,7 +270,7 @@ class VideoController extends Controller
             $video = Video::find($id);
             
             $video_id = $video->video_id;
-            if($request->video_type == 'url') {
+            /* if($request->video_type == 'url') {
                 $video_url = $request->video_url;
                 
                 $video_data = SiteHelpers::getVimeoVideoData($video_url);
@@ -292,13 +285,13 @@ class VideoController extends Controller
                 } else {
                     $video_id = $video_data->video_id;
                 }
-            }
+            } */
             
             
             
             
             $note = null;
-            if ($request->note_file != '') {
+            /* if ($request->note_file != '') {
                 
                 $path = $request->note_file;
                 
@@ -311,7 +304,7 @@ class VideoController extends Controller
                 $note->save();                
                 
                 $video->note_id = isset($note->id)? $note->id : 0;
-            }
+            } */
             
 
             $video->course_id = $request->course;
@@ -329,9 +322,9 @@ class VideoController extends Controller
 
             $video->save();
             
-            if($request->video_type == 'file') {
+           /*  if($request->video_type == 'file') {
                 return redirect()->route('backend.videos.show',$video->uuid)->with('success', 'Video created Successfully, please uplaod video file for it. ');
-            }
+            } */
             
             return redirect()->route('backend.videos.index')->with('success', 'Video Updated Successfully');
         }      

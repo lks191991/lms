@@ -79,9 +79,38 @@ class SubjectController extends Controller
                             ->withErrors($validator) // send back all errors to the form
                             ->withInput();
         }
+		
+		$subject = new Subject();
+		 /** Below code for save banner_image * */
+        if ($request->hasFile('banner_image')) {
+
+            $validator = Validator::make($request->all(), [
+                        'banner_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                            ], [
+                        'banner_image.max' => 'The banner image may not be greater than 2 mb.',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->route('backend.subjects.create')->withErrors($validator)->withInput();
+            }
+
+            $destinationPath = public_path('/uploads/subject/');
+            $newName = '';
+            $fileName = $request->all()['banner_image']->getClientOriginalName();
+            $file = request()->file('banner_image');
+            $fileNameArr = explode('.', $fileName);
+            $fileNameExt = end($fileNameArr);
+            $newName = date('His') . rand() . time() . '__' . $fileNameArr[0] . '.' . $fileNameExt;
+
+            $file->move($destinationPath, $newName);
+
+            $imagePath = 'uploads/subject/' . $newName;
+            $subject->banner_image = $imagePath;
+        }
+		
 
         //form data is available in the request object
-        $subject = new Subject();
+        
 
         $subject->subject_name = $request->input('subject_name');
 		$subject->subject_price = $request->input('subject_price');
@@ -192,6 +221,38 @@ class SubjectController extends Controller
                             ->withInput();
         }
 
+			if ($request->hasFile('banner_image')) {
+
+            $validator = Validator::make($request->all(), [
+                        'banner_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                            ], [
+                        'banner_image.max' => 'The banner image may not be greater than 2 mb.',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->route('backend.subjects.edit', $id)->withErrors($validator)->withInput();
+            }
+
+            $destinationPath = public_path('/uploads/subject/');
+            $newName = '';
+            $fileName = $request->all()['banner_image']->getClientOriginalName();
+            $file = request()->file('banner_image');
+            $fileNameArr = explode('.', $fileName);
+            $fileNameExt = end($fileNameArr);
+            $newName = date('His') . rand() . time() . '__' . $fileNameArr[0] . '.' . $fileNameExt;
+
+            $file->move($destinationPath, $newName);
+
+            $oldImage = public_path($subject->banner_image);
+            //echo $oldImage; exit;
+            if (!empty($subject->banner_image) && file_exists($oldImage)) {
+                unlink($oldImage);
+            }
+
+            $imagePath = 'uploads/subject/' . $newName;
+            $subject->banner_image = $imagePath;
+        }
+		
         $subject->subject_name = $request->input('subject_name');
 		$subject->subject_price = $request->input('subject_price');
         $subject->status = ($request->input('status') !== null) ? $request->input('status') : 0;

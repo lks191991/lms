@@ -21,8 +21,15 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+    logout as performLogout;
+	}
 
+	public function logout(Request $request)
+	{
+		$this->performLogout($request);
+		return redirect('/admin');
+	}
     /**
      * Where to redirect users after login.
      *
@@ -40,12 +47,13 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');		
     }
     
+	public function loginView()
+    {
+        return view('auth.login');
+    }
+	
 	public function login(Request $request)
 	{
-		/* $this->validate($request, [
-			'email' => 'required|email',
-			'password' => 'required|string|min:8',
-		]); */
 		
 		$validator = Validator::make($request->all(), [
 			'username' => 'required|string|min:4|max:255|regex:/^(?=.*[a-z]).+$/',

@@ -23,8 +23,6 @@ class Tutor extends Model
         'mobile',
         'profile_image',
         'tutor_subject',
-        'school_id'
-       
     ];
 
     public function profilePercentage($userId){
@@ -51,10 +49,7 @@ class Tutor extends Model
 	   }
     }
 
-    public function school()
-    {
-        return $this->hasOne(School::Class, 'id', 'school_id')->withDefault();
-    }
+   
 	
 	public function user_details()
     {

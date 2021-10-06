@@ -103,8 +103,11 @@
                     
                     <div class="form-group course_wrapper">
                         <label>Tutor</label>
-                        <select name="tutor" id="tutor" class="custom-select" required>
+                         <select name="tutor" id="tutor" class="custom-select" required>
                             <option value="" disabled selected="">Select Tutor</option>
+							 @foreach($tutors as $id => $type)
+                            <option value="{{$type->id}}" @if($type->id == $video->tutor_id ) selected @endif>{{$type->first_name}} {{$type->last_name}}</option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -155,7 +158,6 @@ $size = $video->noteFileSize();
         
         var category_id = "{{$video->school->school_category}}";
         var school_id = "{{$video->school_id}}";
-        var department_id = "{{$video->course->department_id}}";
         var course_id = "{{$video->course_id}}";
         var class_id = "{{$video->class_id}}";      
         var play_on = "{{$video->play_on}}";        
@@ -165,19 +167,17 @@ $size = $video->noteFileSize();
         
        
         if(school_id) {         
-        
-
-            $.ajax({
-                type: "POST",
-                url: '{{ route("ajax.school.tutors") }}',
-                data: {'school_id': school_id, '_token': '{{ csrf_token() }}'},
-                success: function (data) {
-                    $("#tutor").html(data);
-                    if(tutor_id){
-                        $("#tutor").val(tutor_id);
-                    }
-                }
-            });
+             $.ajax({
+					type: "POST",
+					url: '{{ route("ajax.school.courses") }}',
+					data: {'school_id': school_id, '_token': '{{ csrf_token() }}'},
+					success: function (data) {
+						$("#school_course").html(data);
+						 if(course_id){
+                            $("#school_course").val(course_id).trigger('change');
+                        }
+					}
+				});
         }
     
         
@@ -221,23 +221,6 @@ $size = $video->noteFileSize();
         $("#date").on("change", function () {
             var class_id = $('#class').val();
             var playon = $('#date').val();
-            $('.period_field_group').show();
-            
-            if(class_id) {
-                var period = 0
-                if(period_id) {
-                    period = period_id;
-                }
-                
-                $.ajax({
-                    type: "POST",
-                    url: '{{ route("ajax.class.period") }}',
-                    data: {'class_id' : class_id,'date' : playon,'period': period, '_token': '{{ csrf_token() }}'},
-                    success: function (data) {
-                        $(".period_list").html(data);                        
-                    }
-                });
-            }
         });
         
         

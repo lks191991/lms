@@ -78,6 +78,9 @@
                         <label>Tutor</label>
                         <select name="tutor" id="tutor" class="custom-select" required>
                             <option value="" disabled selected="">Select Tutor</option>
+							 @foreach($tutors as $id => $type)
+                            <option value="{{$type->id}}">{{$type->first_name}} {{$type->last_name}}</option>
+                            @endforeach
                         </select>
                     </div>
                        
@@ -165,31 +168,24 @@ if(old('note_file')) {
 
 <script src="{{asset('assets/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/dropzone/dropzone.js')}}"></script>
-@role('admin|subadmin')
 <script>
-    var category_id = "{{old('institute_type')}}";
-    var school_id = "{{old('school')}}";
+var category_id = "{{old('institute_type')}}";
+var school_id = "{{old('school')}}";
+var class_id = "{{old('class')}}";
+var course_id = "{{old('course')}}";
+var subject_id = "{{old('subject')}}";
+var topic_id = "{{old('topic')}}";
+var tutor_id = "{{old('tutor')}}";
 </script>
-@endrole
-@role('school')
-<script>
-    var category_id = "{{$category_id}}";
-    var school_id = "{{$school_id}}";
-</script>
-@endrole
+
 <script>
     $(document).ready(function () {
         
         $('#keywords').tagsinput({ tagClass: 'badge badge-secondary' });
         
-        
-        var department_id = "{{old('department')}}";
-        var course_id = "{{old('course')}}";
-        var class_id = "{{old('class')}}";
+       
         var play_on = "{{old('date')}}";
-        var subject_id = "{{old('subject')}}";
-        var topic_id = "{{old('topic')}}";
-        var tutor_id = "{{old('tutor')}}";
+      
         
         $("#institute_type").on("change", function () {
             var category_id = $(this).val();
@@ -211,22 +207,21 @@ if(old('note_file')) {
             $("#institute_type").val(category_id).trigger('change');
         }
         
-        $("#school").on("change", function () {
+       $("#school").on("change", function () {
             var school_id = $(this).val();
-            var category_id = $("#institute_type").val();
-          
-            $.ajax({
-                type: "POST",
-                url: '{{ route("ajax.school.tutors") }}',
-                data: {'school_id': school_id, '_token': '{{ csrf_token() }}'},
-                success: function (data) {
-                    $("#tutor").html(data);
-                    if(tutor_id){
-                        $("#tutor").val(tutor_id);
-                    }
-                }
-            });
-            
+            var institute_type = $("#institute_type").val();
+			
+				$.ajax({
+					type: "POST",
+					url: '{{ route("ajax.school.courses") }}',
+					data: {'school_id': school_id, '_token': '{{ csrf_token() }}'},
+					success: function (data) {
+						$("#school_course").html(data);
+						 if(course_id){
+                            $("#school_course").val(course_id).trigger('change');
+                        }
+					}
+				});
         });
         
        
@@ -271,23 +266,7 @@ if(old('note_file')) {
         $("#date").on("change", function () {
             var class_id = $('#class').val();
             var playon = $('#date').val();
-            $('.period_field_group').show();
             
-            if(class_id) {
-                var period = 0
-                if(period_id && play_on == playon) {
-                    //period = period_id;
-                }
-                
-                $.ajax({
-                    type: "POST",
-                    url: '{{ route("ajax.class.period") }}',
-                    data: {'class_id' : class_id,'date' : playon,'period': period, '_token': '{{ csrf_token() }}'},
-                    success: function (data) {
-                        $(".period_list").html(data);                        
-                    }
-                });
-            }
         });
         
         

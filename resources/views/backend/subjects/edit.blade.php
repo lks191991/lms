@@ -10,7 +10,7 @@
     </h6>
     <div class="card-body">
         @includeif('backend.message')
-        <form action="{{route('backend.subjects.update', $subject->id)}}" method = "POST">
+        <form action="{{route('backend.subjects.update', $subject->id)}}" enctype="multipart/form-data" method = "POST">
             @csrf
             @method('PUT')
 			<div class="form-group row">
@@ -74,6 +74,19 @@
                 </div>
             </div>
 			
+			<div class="form-group row">
+                    <label class="col-form-label col-sm-2 text-sm-right">Banner Image</label>
+                    <div class="col-sm-10">
+						@if(isset($subject->banner_image) && !empty($subject->banner_image))
+							<img class="photo mb-2" style="max-width:200px;" src='{{url("$subject->banner_image")}}' /><br />
+						@endif
+                       <input type="file" id="banner_image" name="banner_image">
+						<small class="form-text mb-4">
+							.jpg .png .bmp  |  Size max >= 2mb<br>
+						</small>
+					</div>
+                </div>
+				
             <div class="form-group row">
                 <label class="col-form-label col-sm-2 text-sm-right"></label>
                 <div class="col-sm-10">

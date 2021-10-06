@@ -61,7 +61,7 @@ class TutorController extends Controller
                     'username' => 'required|string|min:4|max:255|regex:/^(?=.*[a-z]).+$/|unique:users',
                     'password' => 'required|confirmed|string|min:6',
                     'email' => 'email|max:255|unique:users',
-                    'mobile' => 'required|numeric|unique:school_managers',
+                    'mobile' => 'required|numeric',
                         ], [
                     'username.regex' => "Username must be contains At least one lowercase",
                     //'password.regex' => "Password must be contains minimum 8 character with at least one lowercase, one uppercase, one digit, one special character",
@@ -150,10 +150,7 @@ class TutorController extends Controller
     {
         $tutor = Tutor::findOrFail($id);
         
-        if(!Auth::user()->hasAccessToSchool($tutor->school_id)){
-            return redirect()->route('backend.dashboard');           
-        }
-		
+       
 		$tutor_videos = StudentVideo::where('student_id', $tutor->user_id)->pluck('video_id', 'video_id');
         $classesHosted = Video::whereIn('id', $tutor_videos)->groupBy('class_id')->count();
         $questionsAsked = Question::where('sender_id', $tutor->user_id)->where('type', 'question')->count();

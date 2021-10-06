@@ -23,7 +23,7 @@
 		</button>
 		
 		<p class="mb-0">
-			<a href="{{ route('login') }}" class="btn btn-secondary btn-block btn-flat">{{ __('Back to login') }}</a>
+			<a href="{{ url('/admin') }}" class="btn btn-secondary btn-block btn-flat">{{ __('Back to login') }}</a>
 		</p>
 	</div>
 </form>
