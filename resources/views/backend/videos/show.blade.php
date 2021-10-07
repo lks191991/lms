@@ -55,6 +55,10 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-6 col-xl-7">
+			<div class="row">
+                    <div class="col-sm-6 col-xl-3 mb-2"><strong>Vedio Type</strong></div>
+                    <div class="col-sm-6 col-xl-9">{{$video->video_upload_type}}</div>
+                </div>
                 <div class="row">
                     <div class="col-sm-6 col-xl-3 mb-2"><strong>Subject</strong></div>
                     <div class="col-sm-6 col-xl-9">{{$video->topic->subject->subject_name}}</div>

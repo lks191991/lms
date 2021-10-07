@@ -154,7 +154,7 @@ class VideoController extends Controller
             
             $note = null;
             
-            /* if ($request->note_file != '') {               
+            if ($request->note_file != '') {               
                 
                 $path = $request->note_file;
                 
@@ -165,11 +165,37 @@ class VideoController extends Controller
                 $note->storage = 's3';
                 $note->status = 1;
                 $note->save();
-            }  */
+            } 
             
             //form data is available in the request object
             $video = new Video();
+			 /** Below code for save banner_image * */
+			if ($request->hasFile('banner_image')) {
 
+				$validator = Validator::make($request->all(), [
+							'banner_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+								], [
+							'banner_image.max' => 'The banner image may not be greater than 2 mb.',
+				]);
+
+				if ($validator->fails()) {
+					return redirect()->route('backend.videos.create')->withErrors($validator)->withInput();
+				}
+
+				$destinationPath = public_path('/uploads/video_banner/');
+				$newName = '';
+				$fileName = $request->all()['banner_image']->getClientOriginalName();
+				$file = request()->file('banner_image');
+				$fileNameArr = explode('.', $fileName);
+				$fileNameExt = end($fileNameArr);
+				$newName = date('His') . rand() . time() . '__' . $fileNameArr[0] . '.' . $fileNameExt;
+
+				$file->move($destinationPath, $newName);
+
+				$imagePath = 'uploads/video_banner/' . $newName;
+				$video->banner_image = $imagePath;
+			}
+		
             $video->school_id = $request->school;
             $video->course_id = $request->course;
             $video->class_id = $request->class;
@@ -182,6 +208,7 @@ class VideoController extends Controller
             $video->topic_id = $request->topic;
             $video->keywords = $request->keywords;
             $video->tutor_id = $request->tutor;
+			$video->video_upload_type = $request->video_upload_type;
             $video->note_id = isset($note->id)? $note->id : 0;
             $video->user_id = Auth::user()->id;
             $video->status = ($request->input('status') !== null)? $request->input('status'):0;            
@@ -291,7 +318,7 @@ class VideoController extends Controller
             
             
             $note = null;
-            /* if ($request->note_file != '') {
+            if ($request->note_file != '') {
                 
                 $path = $request->note_file;
                 
@@ -304,9 +331,40 @@ class VideoController extends Controller
                 $note->save();                
                 
                 $video->note_id = isset($note->id)? $note->id : 0;
-            } */
+            }
             
+			if ($request->hasFile('banner_image')) {
 
+            $validator = Validator::make($request->all(), [
+                        'banner_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                            ], [
+                        'banner_image.max' => 'The banner image may not be greater than 2 mb.',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->route('backend.videos.edit', $id)->withErrors($validator)->withInput();
+            }
+
+            $destinationPath = public_path('/uploads/video_banner/');
+            $newName = '';
+            $fileName = $request->all()['banner_image']->getClientOriginalName();
+            $file = request()->file('banner_image');
+            $fileNameArr = explode('.', $fileName);
+            $fileNameExt = end($fileNameArr);
+            $newName = date('His') . rand() . time() . '__' . $fileNameArr[0] . '.' . $fileNameExt;
+
+            $file->move($destinationPath, $newName);
+
+            $oldImage = public_path($video->banner_image);
+            //echo $oldImage; exit;
+            if (!empty($video->banner_image) && file_exists($oldImage)) {
+                unlink($oldImage);
+            }
+
+            $imagePath = 'uploads/video_banner/' . $newName;
+            $video->banner_image = $imagePath;
+			
+        }	
             $video->course_id = $request->course;
             $video->class_id = $request->class;
             $video->play_on = $request->date;
@@ -316,6 +374,7 @@ class VideoController extends Controller
             $video->description = $request->description;
             $video->subject_id = $request->subject;
             $video->topic_id = $request->topic;
+			$video->video_upload_type = $request->video_upload_type;
             $video->keywords = $request->keywords;            
             $video->tutor_id = $request->tutor;
             $video->status = ($request->input('status') !== null)? $request->input('status'):0;            

@@ -72,7 +72,17 @@
                 <div class="card-header">Video Details</div>
                 <hr class="border-light m-0">
                 <div class="card-body">
-                   
+                   <div class="form-inline mb-4">
+					 <label class="custom-control custom-radio justify-content-start mr-2">
+                            <input name="video_upload_type" type="radio" class="custom-control-input " value="main" @if($video->video_upload_type=='main') checked @endif  >
+                            <span class="custom-control-label">Main Video</span>
+                        </label> 
+                        <label class="custom-control custom-radio justify-content-start mr-2">
+                            <input name="video_upload_type" type="radio" class="custom-control-input" value="demo" @if($video->video_upload_type=='demo') checked @endif required="">
+                            <span class="custom-control-label">Demo Video</span>
+                        </label>
+                    
+                    </div>
 					<input name="video_type" type="hidden" class="custom-control-input video_type" value="url">
                     <div class="form-group video_url_section" >
                         <label>Video URL</label>
@@ -94,7 +104,18 @@
                           </div>
                         </div>
                     </div> 
-                    
+                    <div class="form-group row">
+                    <label class="col-form-label col-sm-2 text-sm-right">Banner Image</label>
+                    <div class="col-sm-10">
+						@if(isset($video->banner_image) && !empty($video->banner_image))
+							<img class="photo mb-2" style="max-width:100px;" src='{{url("$video->banner_image")}}' /><br />
+						@endif
+                       <input type="file" id="video_banner" name="banner_image">
+						<small class="form-text mb-4">
+							.jpg .png .bmp  |  Size max >= 2mb<br>
+						</small>
+					</div>
+                </div>
                     <div class="form-group">
                         <label>Video Description</label>
                         <textarea class="form-control" name="description" rows="3" required>{{$video->description}}</textarea>

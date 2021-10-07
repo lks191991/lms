@@ -102,6 +102,18 @@
                             <span class="custom-control-label">Video by File</span>
                         </label> 
                     </div>-->
+					<div class="form-inline mb-4">
+					 <label class="custom-control custom-radio justify-content-start mr-2">
+                            <input name="video_upload_type"checked type="radio" class="custom-control-input " value="main" >
+                            <span class="custom-control-label">Main Video</span>
+                        </label> 
+                        <label class="custom-control custom-radio justify-content-start mr-2">
+                            <input name="video_upload_type" type="radio" class="custom-control-input" value="demo" required="">
+                            <span class="custom-control-label">Demo Video</span>
+                        </label>
+                    
+                    </div>
+					
                      <input name="video_type" type="hidden" class="custom-control-input video_type" value="url">
                     <div class="form-group video_url_section" style="display: none;">
                         <label>Video URL</label>
@@ -109,7 +121,14 @@
                         <small class="form-text text-muted">Example - https://vimeo.com/{video_id} </small>
                     </div>
 
-                    
+                    <div class="form-group video_url_section" style="display: none;">
+                        <label>Banner Image</label><br>
+                         <input type="file" id="banner_image" name="banner_image">
+                        <small class="form-text text-muted">.jpg .png .bmp  |  Size max >= 2mb</small>
+                    </div>
+					
+					
+				
                     <div class="form-group">
                         <label>Video Description</label>
                         <textarea class="form-control" name="description" rows="3" required>{{old('description')}}</textarea>
@@ -128,13 +147,13 @@
                           </div>
                         </div>
                     </div> 
-
+					
                     <div class="form-group">
                         <label>Keywords</label>
                         <input type="text" value="{{old('keywords')}}" name="keywords" id="keywords" data-role="tagsinput" class="form-control" />
                     </div>
                     
-                    <div class="form-group row">
+                    <div class="form-group ">
                         <label class="col-sm-3">Status</label>
                         <div class="col-sm-6">
                             <label class="switcher switcher-lg switcher-success">
