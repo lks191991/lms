@@ -28,7 +28,7 @@ class LoginController extends Controller
 	public function logout(Request $request)
 	{
 		$this->performLogout($request);
-		return redirect('/admin');
+		return redirect('/login');
 	}
     /**
      * Where to redirect users after login.
@@ -56,10 +56,9 @@ class LoginController extends Controller
 	{
 		
 		$validator = Validator::make($request->all(), [
-			'username' => 'required|string|min:4|max:255|regex:/^(?=.*[a-z]).+$/',
+			'email' => 'required|string|min:4|max:255|email',
 			'password' => 'required|min:6',
 		],[
-			'username.regex' => "Username contains <li>At least one lowercase</li>"
 		]);
 
         if ($validator->fails()) {
@@ -68,11 +67,12 @@ class LoginController extends Controller
 		
 		$remember_me = $request->has('remember_me') ? true : false; 
 		
-		if (auth()->attempt(['username' => $request->input('username'), 'password' => $request->input('password')], $remember_me))
+		if (auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')], $remember_me))
 		{
-			return $this->sendLoginResponse($request);
+			//return $this->sendLoginResponse($request);
+			return redirect()->route('frontend.profile')->with('success','You have successfully logged in');
 		}else{
-			return redirect()->route('login')->with('error','your username and password are wrong.');
+			return redirect()->route('login')->with('error','your email and password are wrong.');
 		}
 	}
 	
@@ -97,7 +97,7 @@ class LoginController extends Controller
                 return redirect()->route('login')->with('error', 'Currently, your account is not active. Please contact to site administrator.');
             } elseif (\Auth::user()->hasRole(['student','tutor'])) {
                 return redirect()->route('home');
-            } elseif (\Auth::user()->hasRole(['superadmin', 'admin', 'subadmin', 'school'])) {
+            } elseif (\Auth::user()->hasRole(['superadmin', 'admin'])) {
                 // && \Auth::user()->hasPermission('browse.admin')
                 return redirect()->route('backend.dashboard');
             }

@@ -1,0 +1,231 @@
+@media only screen and (max-width: 1199px) {
+	.theme-owl-style {
+        padding: 0 40px;
+    }
+    
+    .theme-owl-style .owl-nav > button {
+        width: 30px;
+        height: 30px;
+    }
+
+    .product-thumbnail {
+        height: 170px;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+
+    .navbar-toggler i {
+        color: #094d96;
+    }
+
+    .custom-navbar .navbar-nav .nav-item .nav-link {
+        padding: 15px 10px;
+        text-align: center;
+    }
+    
+    .custom-navbar .navbar-nav .nav-item {
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .custom-navbar .navbar-nav .nav-item .btn {
+        margin-top: 15px;
+        width: 100%;
+    }
+
+    .navbar-nav {
+        border-top: solid 1px #ddd;
+        margin-top: 15px;
+    }
+
+    .top-courses .row+.row {
+        margin-top: 0;
+    }
+    
+    .top-courses .product-block {
+        margin-top: 30px;
+    }
+    
+    .key-benefits-cnt h4 {
+        font-size: 20px;
+    }
+    
+    .key-benefits-cnt p {
+        font-size: 14px;
+    }
+
+    .subscribe-newsletter .custom-form-style {
+        margin-top: 30px;
+    }
+
+    .table-responsive .table {
+        width: 696px;
+    }
+
+    .contact-form {
+        padding-left: 30px;
+    }
+    
+    .page_title {
+        font-size: 28px;
+    }
+
+}
+
+@media only screen and (max-width: 767px) {
+
+    .top-strip .social-icon, .top-strip .contact-list {
+        justify-content: center;
+    }
+    
+    .top-strip .social-icon {
+        margin-bottom: 20px !important;
+    }
+
+    .banner-form select {
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+    
+    .banner-form button[type=submit] {
+        right: 12px;
+    }
+    
+    .banner-form input {
+        border-radius: 4px;
+    }
+
+    .section-padding {
+        padding: 50px 0;
+    }
+
+    .less-padding {
+        padding: 20px 0 50px;
+    }
+    
+    .section-heading {
+        font-size: 26px;
+    }
+    
+    .with-bottom-line::after {
+        margin-bottom: 20px;
+    }
+    
+    .key-benifts-block {height: auto;margin-top: 70px;}
+    
+    .col-md-4:first-child .key-benifts-block {
+        margin-top: 20px;
+    }
+    
+    .theme-owl-style .owl-nav > button.owl-next {
+        right: 25px;
+    }
+    
+    .theme-owl-style .owl-nav > button.owl-prev {
+        left: 25px;
+    }
+    
+    .footer-block li {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .footer-block .list-gap li+li {
+        margin-left: 0;
+        margin-top: 15px;
+    }
+
+    .login-signup-form-block {
+        padding: 30px 15px;
+    }
+
+    .didnt-have-account .link {
+        display: block;
+    }
+
+    .form-check-inline {
+        display: block;
+    }
+    
+    .form-check-inline+.form-check-inline {
+        margin-top: 20px;
+    }
+    
+    .dashboard-detail-outer .col-md-6+.col-md-6 {
+        margin-top: 1.5rem;
+    }
+
+    .dashboard-detail-outer div[class^=col-]+div[class^=col-] {
+        margin-top: 1.5rem;
+    }
+
+    .my-courses .col-md-6+.col-md-6 {
+        margin-top: 0;
+    }
+
+    .product-thumbnail {
+        height: 200px;
+    }
+
+    .product-block h3 {
+        height: auto;
+        display: block;
+        text-overflow: inherit;
+    }
+
+    .banner-course-price {
+        font-size: 44px;
+        margin-top: 20px;
+    }
+    
+    .product-detail-banner {
+        min-height: 400px;
+    }
+    
+    .product-detail-banner::before {
+        background: rgba(0, 0 , 0, 0.6);
+    }
+
+    .custom-tabbing .nav-tabs .nav-link {
+        padding: 10px 25px;
+    }
+
+    .contact-form {
+        padding-left: 0;
+        margin-top: 30px;
+    }
+    
+    .contact-us-section .border-start {
+        border: 0 !important;
+    }
+
+    .left-side-icons li {
+        display: flex;
+        text-align: left;
+    }
+    
+    .left-side-icons li strong {
+        margin: 0 0 7px;
+        font-size: 18px;
+    }
+    
+    .left-side-icons li i {
+        font-size: 18px;
+        margin-right: 10px;
+        margin-top: 5px;
+    }
+    
+    .left-side-icons li a {
+        text-align: left;
+    }
+
+    .page_title {
+        font-size: 26px;
+    }
+
+    .white-cont-block {
+        padding: 20px;
+    }
+
+}

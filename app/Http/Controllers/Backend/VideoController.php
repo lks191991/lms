@@ -162,7 +162,7 @@ class VideoController extends Controller
                 $note = new Note();
                 $note->tutor_id = $request->tutor;
                 $note->file_url = $path;
-                $note->storage = 's3';
+                $note->storage = 'local';
                 $note->status = 1;
                 $note->save();
             } 
@@ -326,7 +326,7 @@ class VideoController extends Controller
                 $note = new Note();
                 $note->tutor_id = $request->tutor;
                 $note->file_url = $path;
-                $note->storage = 's3';
+                $note->storage = 'local';
                 $note->status = 1;
                 $note->save();                
                 

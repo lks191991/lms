@@ -13,6 +13,36 @@
 
 
 Auth::routes();
+Route::get('/', 'HomeController@index')->name('front');
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/course-list/{CourseId}', 'HomeController@courseList')->name('course-list');
+
+/* ----------------------------------------------------------------------- */
+
+/*
+ * Frontend Routes
+ * Namespaces indicate folder structure
+ */
+Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
+
+    /* Student Profiule Route */
+    Route::get('/profile', 'StudentController@profile')->name('profile');
+	Route::post('/profile', 'StudentController@updateProfileTutor')->name('updateProfileTutor');
+	Route::post('/profile-student', 'StudentController@updateProfileStudent')->name('updateProfileStudent');
+    /* Student favourites Route */
+    Route::post('/upload-urofile', 'StudentController@uploadProfile')->name('uploadProfile');
+    Route::post('/change-avatar', 'StudentController@changeAvatar')->name('changeAvatar');
+	Route::get('/change-password', 'StudentController@changePassword')->name('changePassword');
+	Route::post('/change-password', 'StudentController@changePasswordSave')->name('changePasswordSave');
+
+
+   
+
+    
+
+
+});
+
 Route::group(['prefix' => 'admin', 'as' => 'admin'], function () {
 Route::namespace('Auth')->group(function () {
     /* Below route for all register get routes land on that route */

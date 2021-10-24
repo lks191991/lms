@@ -1,73 +1,118 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+ <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+		integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-        <!-- CSRF Token -->
-        <meta name="csrf-token" content="{{ csrf_token() }}">		
-		@yield('metaData')
-        <title>
-            @if(View::hasSection('title'))@yield('title') - @endif{{ config('app.name', 'Laravel')}}
-        </title>
-        @yield('before-styles')
-        <!-- Scripts -->
-        <!--<script src="{{ asset('js/app.js') }}" defer></script>-->
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="{{ asset('css/front/owl.carousel.min.css')}}" type="text/css">
 
-        <!-- Fonts -->
-        <link href="//fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+	<!-- Bootstrap CSS -->
+	<link href="{{ asset('css/front/bootstrap.min.css')}}" type="text/css" rel="stylesheet">
 
-        <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<!-- Style CSS -->
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/front/style.css')}}">
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+	<!-- Responsive CSS -->
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/front/responsive.css')}}">
+   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
-        <link href="{{ asset('css/owl.theme.default.min.css') }}" rel="stylesheet">
-
-
-
-        <!-- Developer Styles Css -->
-        <link href="{{ asset('css/developer.css') }}" rel="stylesheet">
-        <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
-        
-        @yield('after-styles')
-        @yield('header-styles')
-        <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-        @if(Session::has('jsError'))
-
-       
-        @endif
-
-        @if(Session::has('jsSuccess'))
-
-        <script>
-        
-        @endif
-
-    </head>
-    <body class="register-banner">
+    <title>Home</title>
+	
+		
+  </head>
+  
+    <body>
+	@include('frontend.includes.header')
         <div id="app" >
             
             @yield('content')
 
 
         </div>
+	@include('frontend.includes.footer')
+	<script type="text/javascript" src="{{ asset('js/front/bootstrap.bundle.min.js') }}"></script>
+	 <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+	 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	  @if(Session::has('error'))
 
-        <!-- Loader div -->
-        <div id="cover-spin"> 
-            <div>	
-                <div class="spinner-grow spinner-grow-lg"></div>
-                <b>Please wait.....</b>
-            </div>
-        </div>
+        <script>
+        $(function () {
+            toastr['error']('{{ Session::get("error") }}')
+            toastr.options = {
+                "closeButton": true,
+                "debug": true,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": true,
+                "showDuration": "200",
+                "hideDuration": "2000",
+                "timeOut": "6000",
+                "extendedTimeOut": "2000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        });
+        </script>
+        @endif
 
+        @if(Session::has('success'))
 
-        <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+        <script>
+            $(function () {
+                toastr['success']('{{ Session::get("success") }}')
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": true,
+                    "newestOnTop": true,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": true,
+                    "showDuration": "200",
+                    "hideDuration": "2000",
+                    "timeOut": "6000",
+                    "extendedTimeOut": "2000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            });
+        </script>
+        @endif
+	<script type="text/javascript" src="{{ asset('js/front/owl.carousel.min.js') }}"></script>
+	<script>
+		$(document).ready(function () {
+			var owl = $('.owl-carousel');
+			owl.owlCarousel({
+				loop: true,
+				margin: 30,
+				nav: true,
+				navRewind: false,
+				navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
+				responsive: {
+					0: {
+						items: 1
+					},
+					600: {
+						items: 3
+					},
+					1000: {
+						items: 4
+					}
+				}
+			})
+		})
+	</script>
 
-
-        @yield('scripts')
-        @yield('footer-scripts')
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
     </body>
 </html>

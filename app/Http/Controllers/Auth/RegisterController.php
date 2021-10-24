@@ -49,7 +49,7 @@ class RegisterController extends Controller
     //protected $redirectTo = RouteServiceProvider::HOME;
 
     /* Redirect to step 2 after register */
-    protected $redirectTo = '/register/step2';
+    protected $redirectTo = '/register';
 
     /**
      * Create a new controller instance.
@@ -58,7 +58,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => array('step', 'step2', 'step3', 'step4')]);
+        $this->middleware('guest', ['except' => array()]);
 
         /* Below Auth middleware use check auth on it */
         //$this->middleware('auth', ['except' => array('showRegistrationForm', 'step1')]);
@@ -76,15 +76,17 @@ class RegisterController extends Controller
 			return Validator::make($data, [
 						'first_name' => 'required|regex:/^[a-zA-Z_\-]*$/',
 						'last_name' => 'nullable|regex:/^[a-zA-Z_\-]*$/',
-						'username' => 'required|string|min:4|max:255|regex:/^[a-zA-Z0-9_\-]*$/|unique:users',
 						'password' => 'required|confirmed|string|min:6',
 						'email' => 'email|max:255|unique:users',
 						'mobile' => 'required|numeric|unique:students',
+						'tutor_subject' => 'required',
 						'rejister_as' => 'required'
 							], [
 						'first_name.regex' => "First Name contains <li>The first name must contain alpha characters only</li>",
+						'tutor_subject.required' => "Please Enter your subject",
 						'last_name.regex' => "Last Name contains <li>The last name must contain alpha characters only</li>",
 						'username.regex' => "Username contains <li>Username can only contain alphanumeric characters</li>",
+						'rejister_as.required' => "Register as required.",
 							// 'password.regex' => "Password contains <ul><li>At least one lowercase</li><li>At least one uppercase</li><li>At least one digit</li><li>At least one special character</li><li>At least it should have 8 characters long</li></ul>",
 			]);
 		} else  {
@@ -92,33 +94,22 @@ class RegisterController extends Controller
 			return Validator::make($data, [
 						'first_name' => 'required|regex:/^[a-zA-Z_\-]*$/',
 						'last_name' => 'nullable|regex:/^[a-zA-Z_\-]*$/',
-						'username' => 'required|string|min:4|max:255|regex:/^[a-zA-Z0-9_\-]*$/|unique:users',
 						'password' => 'required|confirmed|string|min:6',
 						'email' => 'email|max:255|unique:users',
 						'mobile' => 'required|numeric|unique:tutors',
+						'tutor_subject' => 'required',
 						'rejister_as' => 'required'
 							], [
 						'first_name.regex' => "First Name contains <li>The first name must contain alpha characters only</li>",
 						'last_name.regex' => "Last Name contains <li>The last name must contain alpha characters only</li>",
-						'username.regex' => "Username contains <li>Username can only contain alphanumeric characters</li>",
+						'rejister_as.required' => "Register as required.",
+						'tutor_subject.required' => "Please Enter your subject",
 							// 'password.regex' => "Password contains <ul><li>At least one lowercase</li><li>At least one uppercase</li><li>At least one digit</li><li>At least one special character</li><li>At least it should have 8 characters long</li></ul>",
 			]);
 		}
     }
 
-    /**
-     * Show the application registration form.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showRegistrationForm()
-    {
-        /* $user = \App\User::find(33)->userData;
-          if(!empty($user->email))
-          Mail::to('te@dotsquares.com', "New registration on ".env('APP_NAME', 'XtraClass'))->send(new sendEmailtoNewuser($user)); */
-        session()->forget('tempCustomer');
-        return $this->step(1);
-    }
+    
 
     /**
      * Show registration froms according to step number.
@@ -126,57 +117,10 @@ class RegisterController extends Controller
      * @param  int  $num
      * @return form view
      */
-    public function step($num = null)
+    public function showRegistrationForm($num = null)
     {
-        $sessionUser = (object) array();
-        $userRole = "student";
-		$diffMinutes  = '00:00';
-        if (isset($num) && !empty($num)) {
-
-            if ($num != 1 && empty(session()->get('newCustomer'))) {
-                return redirect()->route('frontend.profile');
-            } else if ($num == 1) {
-                
-            } else {
-
-                if (!empty(session('userId'))) {
-                    $sessionUser = User::find(session('userId'));
-                    $userRole = $sessionUser->userRole->role->slug;
-					$otpdetails = DB::table("mobile_verifications")
-                                            ->where('user_id', session('userId'))
-                                            ->orderBy('id','desc')->first();
-											
-					if(!empty($otpdetails->id)){
-							$diffMinutes = SiteHelpers::createdAtdiffInMinutes($otpdetails->created_at);
-							
-					}
-                } else {
-                    return redirect('/register')->with('jsError', "Please complete first step before you can access next steps");
-                }
-            }
-
-			
-            $geoplugin_country_name = GeoPlugin::locate();
-
-            if (isset($geoplugin_country_name) && !empty($geoplugin_country_name)) {
-
-                $country_details = DB::table("countries")->where('name', $geoplugin_country_name)->select('phonecode', 'name')->first();
-
-                if (!isset($country_details->phonecode) && empty($country_details->phonecode)) {
-                    $country_details = DB::table("countries")->where('phonecode', 233)->select('phonecode', 'name')->first();
-                }
-            } else {
-                $country_details = DB::table("countries")->where('phonecode', 233)->select('phonecode', 'name')->first();
-            }
-
-            $avataricons = DB::table("avatars")->where('status', 1)->select('id', 'avatar_name', 'file_url','icon')->get();
-            $courses = Course::where('status', 1)->select('id', 'name')->get();
-            $schoolCat = SchoolCategory::where('status', 1)->select('id', 'name')->get();
-            $schools = School::where('status', 1)->select('id', 'school_name')->get();
-            $classes = Classes::where('status', 1)->select('id', 'class_name')->get();
-
-            return view('auth.register', compact(['num', 'courses', 'schoolCat', 'schools', 'country_details', 'classes', 'avataricons', 'userRole', 'sessionUser','diffMinutes']));
-        }
+			$countries = Countries::where(['status' => 1])->select('id', 'name')->orderBy('name', 'ASC')->get();
+            return view('auth.register',compact('countries'));
     }
 
     /**
@@ -188,10 +132,9 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
-        $data['otp'] = mt_rand(10000, 99999);
 
         $user = User::create([
-                    'username' => $data['username'],
+                    'username' => $data['email'],
                     'email' => $data['email'],
                     'password' => Hash::make($data['password'])
         ]);
@@ -219,14 +162,14 @@ class RegisterController extends Controller
         //$sendOtp = SiteHelpers::sendOtpToUser($data['phone_code'], $data['mobile'], $data['otp']);
         
         /* Send verification to student or  tutor using TWILo */
-        $vsid = SiteHelpers::sendOtpUsingTwilio($user->id, $data['phone_code'], $data['mobile']);
+        //$vsid = SiteHelpers::sendOtpUsingTwilio($user->id, $data['phone_code'], $data['mobile']);
         
-        session(['vsid' => $vsid]);
-        session(['newCustomer' => 1]);
+       // session(['vsid' => $vsid]);
+        //session(['newCustomer' => 1]);
         session(['userId' => $user->id]);
 
         if (!empty($user->email))
-            Mail::to($user->email, "New registration on " . env('APP_NAME', 'Xtra Class'))->send(new sendEmailtoNewuser($user, $rejister_as));
+            //Mail::to($user->email, "New registration on " . env('APP_NAME', ''))->send(new sendEmailtoNewuser($user, $rejister_as));
 
         return $user;
     }
@@ -234,247 +177,28 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
+		$data = $request->all();
+       $user = $this->create($request->all());
 
-        event(new Registered($user = $this->create($request->all())));
+        $register_as = $data['rejister_as'];
+        if ($register_as == 'student') {
+            return redirect($this->redirectPath())->with('success', 'You are successfully registered please login.');;
+        }
 
-        //$this->guard()->login($user);
-        return redirect($this->redirectPath());
+        if ($register_as == 'tutor') {
+            return redirect($this->redirectPath())->with('success', 'You are successfully registered. Your detail is sent to admin once approved you can log in.');;
+        }
+        
         // return $this->registered($request, $user)
         //?: redirect($this->redirectPath());
     }
 
-    /**
-     * mobile verification after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    public function step2(Request $request)
-    {
-
-        if (!empty(session('userId'))) {
-            $sessionUser = User::find(session('userId'));
-        } else {
-            return redirect('/register')->with('jsError', "Please complete first step before you can access next steps");
-        }
-
-        $validator = Validator::make($request->all(), [
-                    'mobile' => 'required|numeric|unique:students,mobile,' . $sessionUser->id,
-                    'otp' => 'required|numeric',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->route('registerStep', 2)->withErrors($validator)->withInput();
-        }
-
-        $student = Student::where('mobile', $request->all('mobile'))->first();
-
-        if ($student) { 
-            if(!empty(session('vsid'))){
-                $vsid = session('vsid');
-                $code = $request->input('otp');
-                $status = SiteHelpers::verifyOtpUsingTwilio($vsid, $code);
-                
-                if($status == 'approved') {
-                    User::where('id', $student->user_id)->update(['mobile_verified_at' => Carbon::now()]);
-                    return redirect()->route('registerStep', 3);
-                } else {
-                    $validator->errors()->add('otp', 'Invalid Code or Expired.');
-                    return redirect()->route('registerStep', 2)->withErrors($validator)->withInput();
-                }
-                
-            } else {
-                $validator->errors()->add('otp', 'Invalid Code.');
-                return redirect()->route('registerStep', 2)->withErrors($validator)->withInput();                
-            }
-            
-        } else {
-            $validator->errors()->add('mobile', 'Invlid mobile number');
-
-            return redirect()->route('registerStep', 2)->withErrors($validator)->withInput();
-        }
-    }
-
-    /**
-     * Save extra user details after validate mobile.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    public function step3(Request $request)
-    {
-
-        if (!empty(session('userId'))) {
-            $sessionUser = User::find(session('userId'));
-        } else {
-            return redirect('/register')->with('jsError', "Please complete first step before you can access next steps");
-        }
-
-        $data = $request->all();
-        if (!empty($request->school_cat) && !empty($request->school_name) && $request->school_cat == School::BASIC_SCHOOL) {
-            $schools_details = School::where('school_name', trim($request->input('school_name')))->where('school_category', $request->input('school_cat'))->select('id')->first();
-
-            if (empty($request->course) && !empty($schools_details->id)) {
-                $school = School::find($schools_details->id);
-                $schoolcourses = Course::where('school_id', $school->id)->first();
-                if (!empty($schoolcourses->id)) {
-                    $data['course'] = $schoolcourses->id;
-                    //$request = collect($data);
-                }
-            }
-        }
-
- 
-        $userRole = "student";
-        $user = User::find(session('userId'));
-        $userRole = $user->userRole->role->slug;
-
-        if ($userRole == 'tutor') {
-            $validator = Validator::make($data, [
-                        'tutor_subject' => 'required|regex:/^[a-zA-Z0-9_\-]*$/|max:150',
-                        'school_name' => 'required|string|max:255',
-            ],[
-				'tutor_subject.regex' => "Subject Name contains <li>The subject name must contain alphanumeric characters only</li>",
-			]);
-        } else {
-            $validator = Validator::make($data, [
-                        'course' => 'required',
-                        'school_cat' => 'required',
-                        'class_level' => 'required',
-                        'school_name' => 'required|string|max:255',
-            ]);
-        }
-
-        if (empty($schools_details)) {
-            $schools_details = School::where('school_name', trim($request->input('school_name')))->where('school_category', $request->input('school_cat'))->select('id')->first();
-        }
-
-        if ($validator->fails()) {
-            return redirect()->route('registerStep', 3)->withErrors($validator)->withInput();
-        }
-
-
-        if (!isset($schools_details->id) && empty($schools_details->id)) {
-            session()->flash('invalid_school', 'Invalid School Name!');
-            return redirect()->route('registerStep', 3);
-        }
-        if ($userRole == 'tutor') {
-            $tutor = Tutor::where('user_id', session('userId'))->first();
-            $tutor->school_id = $schools_details->id;
-            $tutor->tutor_subject = $request->tutor_subject;
-            $tutor->save();
-        } else {
-            $student = Student::where('user_id', session('userId'))->first();
-            $student->school_id = $schools_details->id;
-            $student->course_id = $data['course'];
-            $student->school_category = $data['school_cat'];
-            $student->class_id = $data['class_level'];
-            $student->save();
-        }
-
-        return redirect()->route('registerStep', 4);
-    }
-
-    /**
-     * Save user avatar or image after validate mobile.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    public function step4(Request $request)
-    {
-
-        if (!empty(session('userId'))) {
-            $sessionUser = User::find(session('userId'));
-        } else {
-            return redirect('/register')->with('jsError', "Please complete first step before you can access next steps");
-        }
-        //dd($request->all());
-        $userRole = "student";
-        $user = User::find(session('userId'));
-        $userRole = $user->userRole->role->slug;
-
-
-        //tutor
-
-        if ($userRole == 'tutor') {
-            /** Below code for save tutor image * */
-            $destinationPath = public_path('/uploads/tutor/');
-            $oldImagePath = $sessionUser->userData->profile_image;
-            $student = Tutor::where('user_id', $sessionUser->id)->first();
-        } else {
-            /** Below code for save student image * */
-            $destinationPath = public_path('/uploads/student/');
-            $oldImagePath = $sessionUser->userData->profile_image;
-            $student = Student::where('user_id', $sessionUser->id)->first();
-        }
-
-        if (empty($request->input('avatarImage'))) {
-            $validator = Validator::make($request->all(), [
-                        'user_image' => 'required',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->route('/register', 3)->withErrors($validator)->withInput();
-            }
-
-
-            $newName = '';
-
-            if ($request->hasFile('user_image')) {
-                $fileName = $request->all()['user_image']->getClientOriginalName();
-                $file = request()->file('user_image');
-                $fileNameArr = explode('.', $fileName);
-                $fileNameExt = end($fileNameArr);
-                $newName = date('His') . rand() . time() . '__' . $fileNameArr[0] . '.' . $fileNameExt;
-
-                $file->move($destinationPath, $newName);
-
-                //** Below commented code for resize the image **//
-
-                /* $user_config = json_decode(options['user'],true);
-
-                  $img = Image::make(public_path('/uploads/users/'.$newName));
-                  $img->resize($user_config['image']['width'], $user_config['image']['height']);
-                  $img->save(public_path('/uploads/users/'.$newName)); */
-
-                //** Below code for unlink old image **//
-                $oldImage = public_path($oldImagePath);
-                if (!empty($oldImagePath) && file_exists($oldImage) && @getImageSize(url($oldImagePath))) {
-                    unlink($oldImage);
-                }
-            }
-            if ($userRole == 'tutor') {
-                $imagePath = 'uploads/tutor/' . $newName;
-            } else {
-                $imagePath = 'uploads/student/' . $newName;
-            }
-            $student->profile_image = $imagePath;
-        } else {
-            $avatar_id = $request->input('avatarImage');
-            $student->avatar_id = $avatar_id;
-        }
-        $student->save();
-        session()->forget('newCustomer');
-        session()->forget('userId');
-        return redirect('/login')->with('jsSuccess', "Successfully created your account.");
-    }
-
+    
     public function redirectTo()
     {
         return $this->redirectTo;
 
-        /* Bellow commented code for check extra condition before redirection */
-
-        /* if(empty(auth()->user()->mobile_verified_at)){
-          auth()->logout();
-
-          \Session::flash('success', 'Registration successfully, we have sent a verification link to your email for activate your profile.!');
-
-          return 'login';
-          }else{
-          return RouteServiceProvider::HOME;
-          } */
+        
     }
 
     /**

@@ -95,12 +95,13 @@ use HasRoleAndPermission;
     {
         $obj = new Student();
         $obj->user_id = $user->id;
-        $obj->username = $data['username'];
+        $obj->username = $data['email'];
         $obj->first_name = $data['first_name'];
         $obj->last_name = $data['last_name'];
         $obj->email = $data['email'];
         $obj->mobile = $data['mobile'];
-        $obj->country = $data['phone_code'];
+		$obj->avatar_id = 1;
+        $obj->country = $data['country'];
         $obj->save();
     }
 
@@ -111,9 +112,11 @@ use HasRoleAndPermission;
         $obj->first_name = $data['first_name'];
         $obj->last_name = $data['last_name'];
         $obj->email = $data['email'];
-        $obj->mobile = $data['mobile'];
+        $obj->mobile = $data['tutor_subject'];
+		$obj->tutor_subject = $data['tutor_subject'];
         $obj->avatar_id = 1;
-        $obj->country = $data['phone_code'];
+		$obj->status = 0;
+        $obj->country = $data['country'];
         $obj->save();
     }
 

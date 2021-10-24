@@ -18,7 +18,9 @@ class VerifyCsrfToken extends Middleware
      *
      * @var array
      */
+	
     protected $except = [
+		'api/*',
         '/get-institution-optinns.json',
         '/get-school-optinns.json',
         '/get-course-optinns.json',

@@ -111,7 +111,8 @@ class SubjectController extends Controller
 
         //form data is available in the request object
         
-
+		$class = Classes::findOrFail($request->input('class'));
+		$subject->course_id = $class->course_id;
         $subject->subject_name = $request->input('subject_name');
 		$subject->subject_price = $request->input('subject_price');
         $subject->class_id = $request->input('class');
@@ -252,6 +253,7 @@ class SubjectController extends Controller
             $imagePath = 'uploads/subject/' . $newName;
             $subject->banner_image = $imagePath;
         }
+		
 		
         $subject->subject_name = $request->input('subject_name');
 		$subject->subject_price = $request->input('subject_price');
