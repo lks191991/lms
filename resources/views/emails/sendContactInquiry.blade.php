@@ -39,12 +39,6 @@
                       <td width="75%"> {{$data->email,""}} </td>
                     </tr>
 					
-					
-					<tr>
-                      <td width="25%"> Sending as </td>
-                      <td width="75%"> {{$data->sending_as,""}} </td>
-                    </tr>
-
                     <tr>
                       <td width="25%"> Message </td>
                       <td width="75%"> {{$data->message,""}} </td>
@@ -56,7 +50,7 @@
             </tr>
             <tr>
               <td align="left" style="font-size:18px; font-weight: bold; padding:10px 0px; line-height: 24px;">Thanks, <br>
-                {{ env('APP_NAME', 'XtraClass') }} Team</td>
+                {{ env('APP_NAME', 'Bright Horizon') }} Team</td>
             </tr>
           </tbody>
         </table></td>
@@ -76,7 +70,7 @@
                   <tbody>
                     <tr>
                        
-                      <td style="font-family: 'arial';">{{ env('APP_NAME', 'XtraClass') }} (c) {{date('Y')}} All rights reserved </td>
+                      <td style="font-family: 'arial';">{{ env('APP_NAME', 'Bright Horizon') }} (c) {{date('Y')}} All rights reserved </td>
                     </tr>
                   </tbody>
                 </table>

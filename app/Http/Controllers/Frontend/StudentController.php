@@ -46,13 +46,14 @@ class StudentController extends Controller
     public function profile()
     {
 
-        session()->forget('newCustomer');
-        session()->forget('userId');
+       // session()->forget('newCustomer');
+       // session()->forget('userId');
         $student = User::find(Auth::user()->id);
 
         if (Auth::user()->userRole->role->slug == 'admin') {
             return redirect()->route('backend.dashboard');
         } else if (Auth::user()->userRole->role->slug == 'student') {
+			
             return $this->student();
         } else if (Auth::user()->userRole->role->slug == 'tutor') {
             return $this->tutor();
@@ -171,6 +172,7 @@ class StudentController extends Controller
     {
 
         $student = User::where("id",Auth::user()->id)->first();
+		
 		$countries = Countries::where(['status' => 1])->select('id', 'name')->orderBy('name', 'ASC')->get();
         return view('frontend.student.profile', compact('student','countries'));
     }

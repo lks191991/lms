@@ -27,6 +27,7 @@
 	<section class="product-listing section-padding less-padding">
 		<div class="container">
 			<div class="row">
+			@if($allCourses->count() > 0)
 			@foreach($allCourses as $subject)
 				<div class="col-lg-3 col-md-6">
 					<div class="product-block">
@@ -62,12 +63,14 @@
 					</div>
 				</div>
 				@endforeach
-				
+				@else
+					<div class="col-md-12" style="padding:42px 0px 40px 0;font-size:25px">No Record Found</div> 
+				@endif
 			</div>
 			<div class="row">
 				<div class="pagination-block mt-md-5 mt-4">
 					<nav aria-label="...">
-						{{ $allCourses->links() }}
+					{{$allCourses->appends(Request::all())->links()}}
 					</nav>
 				</div> 
 				

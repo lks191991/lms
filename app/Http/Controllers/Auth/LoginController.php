@@ -69,8 +69,13 @@ class LoginController extends Controller
 		
 		if (auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')], $remember_me))
 		{
-			//return $this->sendLoginResponse($request);
+			if (\Auth::user()->hasRole(['student','tutor'])) {
 			return redirect()->route('frontend.profile')->with('success','You have successfully logged in');
+			}
+			else{
+				return $this->sendLoginResponse($request);
+			}
+			
 		}else{
 			return redirect()->route('login')->with('error','your email and password are wrong.');
 		}
@@ -95,8 +100,8 @@ class LoginController extends Controller
             if (!$user->status) {
                 auth()->logout();
                 return redirect()->route('login')->with('error', 'Currently, your account is not active. Please contact to site administrator.');
-            } elseif (\Auth::user()->hasRole(['student','tutor'])) {
-                return redirect()->route('home');
+           // } elseif (\Auth::user()->hasRole(['student','tutor'])) {
+            //    return redirect()->route('frontend.profile')->with('success','You have successfully logged in');
             } elseif (\Auth::user()->hasRole(['superadmin', 'admin'])) {
                 // && \Auth::user()->hasPermission('browse.admin')
                 return redirect()->route('backend.dashboard');

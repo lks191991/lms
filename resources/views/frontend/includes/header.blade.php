@@ -53,7 +53,7 @@
 							<a class="nav-link" href="#">About</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Contact</a>
+							<a class="nav-link" href="{{route('frontend.contactUs')}}">Contact</a>
 						</li>
 						
 						@if(isset(Auth::user()->id))

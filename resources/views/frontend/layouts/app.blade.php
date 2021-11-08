@@ -21,8 +21,8 @@
 	<!-- Responsive CSS -->
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/front/responsive.css')}}">
    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-
-    <title>Home</title>
+@yield('styles')
+    <title>Bright Horizon</title>
 	
 		
   </head>
@@ -112,7 +112,8 @@
 			})
 		})
 	</script>
-
+  
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+@yield('scripts')
     </body>
 </html>

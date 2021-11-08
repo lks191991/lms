@@ -17,18 +17,21 @@
 						printer took a galley of type and scrambled it to make a type specimen book. It has survived not
 						only five centuries</p>
 					<div class="banner-form">
-						<form>
+							<form action="{{ route('course-search') }}" method="get">
+							{{ csrf_field() }}
 							<div class="form-group row">
 								<div class="col-md-3 px-md-0">
-									<select class="w-100">
-										<option>Select category</option>
-										<option>1</option>
-										<option>2</option>
-										<option>3</option>
+									<select class="w-100" required name="search_courses">
+										<option value="">Select Courses</option>
+										 @foreach($allCoursesList as $acl)
+										  <option value="{{$acl->id}}">
+										   {{$acl->name}}
+										  </option>
+										@endforeach
 									</select>
 								</div>
 								<div class="col-md-9 px-md-0 position-relative">
-									<input type="text" class="w-100" placeholder="What do you want to learn?" />
+									<input type="text" class="w-100" id="search" name="search_text" placeholder="What do you want to learn?" />
 									<button type="submit"><i class="fas fa-search"></i></button>
 								</div>
 							</div>
@@ -108,7 +111,7 @@
 							<i class="fas fa-bullseye"></i>
 						</div>
 						<div class="key-benefits-cnt">
-							<h4>4 Online courses</h4>
+							<h4>Many Online courses</h4>
 							<p class="mb-0">Explore a variety of fresh topics</p>
 						</div>
 					</div>

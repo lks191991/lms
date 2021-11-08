@@ -169,7 +169,7 @@ class RegisterController extends Controller
         session(['userId' => $user->id]);
 
         if (!empty($user->email))
-            //Mail::to($user->email, "New registration on " . env('APP_NAME', ''))->send(new sendEmailtoNewuser($user, $rejister_as));
+           Mail::to($user->email, "New registration on " . env('APP_NAME', ''))->send(new sendEmailtoNewuser($user, $rejister_as));
 
         return $user;
     }

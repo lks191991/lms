@@ -133,8 +133,8 @@ class TutorController extends Controller
         $user_more_info->mobile_verified_at = date('Y-m-d H:i:s');
         $user_more_info->save(); //persist the data
 
-        //if (!empty($user->email))
-          //  Mail::to($user->email, "New tutor on " . env('APP_NAME', 'BhiLearning'))->send(new sendEmailtoSchooltutor($tutordata));
+        if (!empty($user->email))
+          Mail::to($user->email, "New tutor on " . env('APP_NAME', 'Bright-Horizon'))->send(new sendEmailtoSchooltutor($tutordata));
 
 
         return redirect()->route('backend.tutors.index')->with('success', 'Tutor Created Successfully');

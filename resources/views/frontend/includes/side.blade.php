@@ -4,6 +4,12 @@
 							<li>
 								<a href="{{route('frontend.profile')}}" class="{{ request()->is('profile') ? 'active-tab' : '' }}"><i class="far fa-user me-2"></i> My Profile</a>
 							</li>
+							<li>
+								<a href="{{route('frontend.mylearningList')}}" class="{{ request()->is('my-mylearning-list') ? 'active-tab' : '' }}"><i class="far fa-bookmark me-2"></i> My Learning</a>
+							</li>
+							<li>
+								<a href="{{route('frontend.myPayment')}}" class="{{ request()->is('my-payment') ? 'active-tab' : '' }}"><i class="fas fa-history me-2"></i> Payment History</a>
+							</li>
 						
 							<li>
 								<a href="{{route('frontend.changePassword')}}" class="{{ request()->is('change-password') ? 'active-tab' : '' }}"><i class="far fa-bookmark me-2"></i> Change Password</a>

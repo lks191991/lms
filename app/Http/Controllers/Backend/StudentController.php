@@ -148,8 +148,8 @@ class StudentController extends Controller
         $user_more_info->mobile_verified_at = date('Y-m-d H:i:s');
         $user_more_info->save(); //persist the data
 
-        //if (!empty($user->email))
-           // Mail::to($user->email, "New student on " . env('APP_NAME', 'BhiLearning'))->send(new sendEmailtoSchoolstudent($studentdata));
+        if (!empty($user->email))
+            Mail::to($user->email, "New student on " . env('APP_NAME', 'Bright-Horizon'))->send(new sendEmailtoSchoolstudent($studentdata));
 
 
         return redirect()->route('backend.students.index')->with('success', 'Student Created Successfully');
