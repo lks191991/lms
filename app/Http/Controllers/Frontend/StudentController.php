@@ -14,6 +14,7 @@ use App\Models\Subject;
 use App\Models\Classes;
 use App\Models\Avatar;
 use App\Models\Countries;
+use App\Models\UserSubscription;
 use App\User;
 use App\Rules\MatchOldPassword;
 use Illuminate\Validation\Rule;
@@ -379,5 +380,40 @@ class StudentController extends Controller
         
         return view('frontend.tutor.upload_video_file', compact('video','video_thumb'));
     }
+	
+	
+	public function mylearningList(Request $request)
+    {
+		$user = Auth::user();
+		$data = UserSubscription::with('course','subject','user')->where("user_id",$user->id)->paginate(20);
+		
+		return view('frontend.my-learning',compact('data'));
+	}
+	
+	public function mylearningStart(Request $request,$id,$subjectId,$videoUid=null)
+    {
+		$user = Auth::user();
+		$data = UserSubscription::where("id",$id)->where("user_id",$user->id)->where("subject_id",$subjectId)->first();
+		if(!$data)
+		{
+			return redirect()->route('mylearningList')->with('error', 'Course not available currently');
+		}
+		
+		$subject = Subject::with('topics','topics.videos','subject_class')->where('id', '=', $subjectId)->where('status', '=', 1)->orderBy('created_at','DESC')->first();
+		
+		$course = Course::where('status', '=', 1)->where('id', '=', $subject->course_id)->first();
+		if($videoUid==null)
+		{
+			$video = Video::where('status', '=', 1)->where('subject_id', '=', $subject->id)->where('video_upload_type', '=', 'demo')->first();
+		}
+		else{
+		$video = Video::where('uuid', '=', $videoUid)->where('status', '=', 1)->where('subject_id', '=', $subject->id)->first();	
+		}
+		
+		
+		return view('frontend.my-learning-details',compact('subject','course','video','data'));
+	}
+	
+	
     
 }

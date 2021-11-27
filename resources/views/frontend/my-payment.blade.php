@@ -52,12 +52,14 @@
 											<th scope="row">{{$dt->payment->transaction_id}}</th>
 											<td>{{$dt->subject->subject_name}}</td>
 											<td>{{$dt->price}}</td>
-											<td>{{date('d-M-Y',strtotime($dt->payment->create_at))}}</td>
+											<td>{{ \Carbon\Carbon::parse($dt->payment->created_at)->format('d-M-Y')}}</td>
 										</tr>
 										@endforeach
 									</tbody>
 								</table>
-								<div class="row">
+								
+							</div>
+							<div class="row">
 								<div class="pagination-block mt-md-5 mt-4">
 									<nav aria-label="...">
 										{{ $data->links() }}
@@ -65,7 +67,6 @@
 								</div> 
 				
 			</div>
-							</div>
 						</div>
 					</div>
 				</div>

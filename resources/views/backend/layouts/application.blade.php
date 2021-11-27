@@ -29,6 +29,7 @@
         <link rel="stylesheet" href="{{ mix('/assets/vendor/libs/datatables/datatables.css') }}">
 		
 		<link href="{{ asset('css/backend.css') }}" rel="stylesheet">
+		<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
         <!-- Load polyfills -->
         <script src="{{ mix('/assets/vendor/js/polyfills.js') }}"></script>
         <script>document['documentMode'] === 10 && document.write('<script src="https://polyfill.io/v3/polyfill.min.js?features=Intl.~locale.en"><\/script>')</script>
@@ -73,16 +74,12 @@
         
         <!-- Core scripts -->
         <script src="{{ mix('/assets/vendor/js/pace.js') }}"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
 
         <!-- Libs -->
         <link rel="stylesheet" href="{{ mix('/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}">
 
-        <!-- To include time picker on period page. -->
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>    
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
+       
         
         <style>
             .theme-settings-open-btn{display: none !important;}
@@ -98,7 +95,8 @@
         <script src="{{ mix('/assets/vendor/libs/popper/popper.js') }}"></script>
         <script src="{{ mix('/assets/vendor/js/bootstrap.js') }}"></script>
         <script src="{{ mix('/assets/vendor/js/sidenav.js') }}"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
         <!-- Scripts -->
         <script src="{{ mix('/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
         <script src="{{ mix('/assets/js/demo.js') }}"></script>

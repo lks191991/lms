@@ -40,15 +40,30 @@ Route::post('/contact-us', 'PageController@sendContact')->name('contactUsPost');
     Route::get('/profile', 'StudentController@profile')->name('profile');
 	Route::post('/profile', 'StudentController@updateProfileTutor')->name('updateProfileTutor');
 	Route::post('/profile-student', 'StudentController@updateProfileStudent')->name('updateProfileStudent');
-	Route::get('/my-mylearning-list', 'PaymentController@mylearningList')->name('mylearningList');
-	Route::get('/my-mylearning-details/{id}/{subjectId}', 'PaymentController@mylearningStart')->name('mylearningStart');
+	Route::get('/my-mylearning-list', 'StudentController@mylearningList')->name('mylearningList');
+	Route::get('/my-mylearning-details/{id}/{subjectId}/{videoUid?}', 'StudentController@mylearningStart')->name('mylearningStart');
+	
 	Route::get('/my-payment', 'PaymentController@myPayment')->name('myPayment');
     Route::post('/upload-urofile', 'StudentController@uploadProfile')->name('uploadProfile');
     Route::post('/change-avatar', 'StudentController@changeAvatar')->name('changeAvatar');
 	Route::get('/change-password', 'StudentController@changePassword')->name('changePassword');
 	Route::post('/change-password', 'StudentController@changePasswordSave')->name('changePasswordSave');
 //});
-
+	//Topic routes
+	Route::get('/topics', 'TutorController@index')->name('topics');
+    Route::get('/topic/create', 'TutorController@create')->name('topic.create');
+    Route::post('/topic/store', 'TutorController@store')->name('topic.store');
+    Route::get('topic/edit/{id}', 'TutorController@edit')->name('topic.edit');
+    Route::post('topic/update/{id}', 'TutorController@update')->name('topic.update');
+    Route::delete('topic/delete/{id}', 'TutorController@destroy')->name('topic.destroy');
+	
+	//Topic routes
+	Route::get('/videos', 'TutorController@indexVideo')->name('videos');
+    Route::get('/video/create', 'TutorController@createVideo')->name('video.create');
+    Route::post('/video/store', 'TutorController@storeVideo')->name('video.store');
+    Route::get('video/edit/{id}', 'TutorController@editVideo')->name('video.edit');
+    Route::post('video/update/{id}', 'TutorController@updateVideo')->name('video.update');
+    Route::delete('video/delete/{id}', 'TutorController@destroyVideo')->name('video.destroy');
    
 
     
@@ -81,6 +96,7 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'ajax.'], f
     Route::post('/class-subject', 'AjaxController@getClassSubjects')->name('class.subject');
     Route::post('/class-periods', 'AjaxController@getClassPeriods')->name('class.period');
     Route::post('/subject-topics', 'AjaxController@getSubjectTopics')->name('subject.topics');
+	Route::post('/subject-topics-tutor', 'AjaxController@getSubjectTopicsTutor')->name('subject.topics.tutor');
     Route::post('/school-classsubjects', 'AjaxController@getSchoolClassSubjects')->name('school.classsubjects');
     Route::post('/school-filterclasssubjects', 'AjaxController@getSchoolfilterClassSubjects')->name('school.filterclasssubjects');
     Route::post('/school-tutors', 'AjaxController@getSchoolTutors')->name('school.tutors');

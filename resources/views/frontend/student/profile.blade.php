@@ -74,7 +74,7 @@
 									<div class="row">
 										<div class="col-md-6">
 											<label class="form-label">Country</label>
-											 <select class="form-select" id="country" name="country">
+											 <select class="form-control" id="country" name="country">
 							  <option class="text-white bg-warning">
 								Select Country
 							  </option>

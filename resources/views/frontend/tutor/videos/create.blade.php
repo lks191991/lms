@@ -1,4 +1,4 @@
-@extends('backend.layouts.layout-2')
+@extends('frontend.layouts.app')
 @section('styles')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.css')}}">
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/dropzone/dropzone.css')}}">
@@ -8,81 +8,99 @@
     }
 </style>
 @endsection
-
 @section('content')
-<h4 class="font-weight-bold py-3 mb-4">
-    <span class="text-muted font-weight-light">Videos /</span> Create Video
-</h4>
 
-@includeif('backend.message')
-<form action="{{route('backend.videos.store')}}" method = "post" enctype="multipart/form-data">
-    @csrf
-    <div class="row">
+    <!-- Breadcrumbs -->
+
+	<section class="breadcrumbs bg-light py-3">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<ul class="m-0 p-0 list-unstyled d-flex flex-wrap">
+						<li>
+							<a href="/">Home</a>
+						</li>
+						<li>
+							<span class="mx-2">></span> Create Video
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Breadcrumbs Ends-->
+<section class="user-dashboard section-padding">
+		<div class="container">
+			<div class="row gx-lg-5">
+				@include('frontend.includes.side')
+				<div class="col-lg-8">
+					<div class="dashboard-main-content mt-lg-0 mt-5">
+						<div class="section-title">
+							<h1 class="section-heading with-bottom-line text-center">Add Video</h1>
+						</div>
+						<div class="dashboard-detail-outer pt-4">
+						 <form action="{{route('frontend.video.store')}}"  enctype="multipart/form-data" method = "post">
+            @csrf
+
+              <div class="row">
         <div class="col">
             <div class="card mb-4">
                 <div class="card-header">Video General Details</div>
                 <hr class="border-light m-0">
                 <div class="card-body">                   
                     
-                    <div class="form-group @role('school') d-none @endrole">
-                        <label>Institution</label>
-                        <select name="institute_type" id="institute_type" class="custom-select" required>
+                    <div class="form-group">
+                        <label class="form-label">Institution</label>
+                        <select name="institute_type" id="institute_type" class="form-control" required>
                             <option value="" selected="" disabled="">Choose Institute Type</option>
                             @foreach($institutes as $id => $type)
                             <option value="{{$id}}">{{$type}}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group @role('school') d-none @endrole">
-                        <label>School</label>
-                        <select name="school" id="school" class="custom-select" required>
+                    <div class="form-group">
+                        <label class="form-label">School</label>
+                        <select name="school" id="school" class="form-control" required>
                             <option value="" disabled selected="">Select School</option>                        
                         </select>
                     </div>  
                   
                     <div class="form-group course_wrapper">
-                        <label>Course</label>
-                        <select name="course" id="school_course" class="custom-select" required>
+                       <label class="form-label">Course</label>
+                        <select name="course" id="school_course" class="form-control" required>
                             <option value="" disabled selected="">Select Course</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Class</label>
-                        <select name="class" id="class" class="custom-select" required>
+                        <label class="form-label">Class</label>
+                        <select name="class" id="class" class="form-control" required>
                             <option value="" disabled selected="">Select Class</option>                        
                         </select>
                     </div>
                 
                     <div class="form-group date_field_group">
-                        <label>Date</label>
+                        <label class="form-label">Date</label>
                         <input class="flatpickr flatpickr-input date form-control" value="{{old('date')}}" type="text" name="date" id="date" required />
                     </div>
                  
                     
                     <div class="form-group">
-                        <label>Subject</label>
-                        <select name="subject" id="subject" class="custom-select" required>
+                       <label class="form-label">Subject</label>
+                        <select name="subject" id="subject" class="form-control" required>
                             <option value="" selected="" disabled="">Choose Subject</option>                                
                         </select>               
                     </div>
                     
                     <div class="form-group">
-                        <label>Topic</label>
-                        <select name="topic" id="topic" class="custom-select" required>
+                        <label class="form-label">Topic</label>
+                        <select name="topic" id="topic" class="form-control" required>
                             <option value="" selected="" disabled="">Choose Topic</option>                                
                         </select>                
                     </div>
 
-                    <div class="form-group course_wrapper">
-                        <label>Tutor</label>
-                        <select name="tutor" id="tutor" class="custom-select" required>
-                            <option value="" disabled selected="">Select Tutor</option>
-							 @foreach($tutors as $id => $type)
-                            <option value="{{$type->id}}">{{$type->first_name}} {{$type->last_name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                   
                        
                 </div>
             </div>
@@ -92,16 +110,7 @@
                 <div class="card-header">Video Details</div>
                 <hr class="border-light m-0">
                 <div class="card-body">
-                    <!--  <div class="form-inline mb-4">
-                        <label class="custom-control custom-radio justify-content-start mr-2">
-                            <input name="video_type" type="radio" class="custom-control-input video_type" value="url" required="">
-                            <span class="custom-control-label">Video by URL</span>
-                        </label>
-                     <label class="custom-control custom-radio justify-content-start mr-2">
-                            <input name="video_type" type="radio" class="custom-control-input video_type" value="file" >
-                            <span class="custom-control-label">Video by File</span>
-                        </label> 
-                    </div>-->
+                   
 					<div class="form-inline mb-4">
 					 <label class="custom-control custom-radio justify-content-start mr-2">
                             <input name="video_upload_type"checked type="radio" class="custom-control-input " value="main" >
@@ -116,30 +125,27 @@
 					
                      <input name="video_type" type="hidden" class="custom-control-input video_type" value="url">
                     <div class="form-group video_url_section" >
-                        <label>Video URL</label>
+                        <label class="form-label">Video URL</label>
                         <input type="url" value="{{old('video_url')}}" placeholder="Video URL" class="form-control" name="video_url" />
-                        <small class="form-text text-muted">Example - https://vimeo.com/{video_id} </small>
+                        <small class="form-text text-muted"></small>
                     </div>
 
-                    <div class="form-group video_url_section">
+                    <div class="form-group video_url_section" >
                         <label>Banner Image</label><br>
-                         <input type="file" id="banner_image" name="banner_image">
+						<div class="fallback"><input type="file" id="banner_image" name="banner_image"></div>
                         <small class="form-text text-muted">.jpg .png .bmp  |  Size max >= 2mb</small>
+
                     </div>
 					
 					
 				
-                    <div class="form-group">
-                        <label>Video Description</label>
-                        <textarea class="form-control" name="description" rows="3" required>{{old('description')}}</textarea>
-                    </div> 
+                    
 
                     <div class="form-group">
-                        <label>Upload Note (If any)</label>
+                        <label class="form-label">Upload Note (If any)</label>
                         <input type="hidden" name="note_file" id="uplodedNoteFile" value="{{old('note_file')}}"/>
                         <div id="noteFileUpload" class="dropzone">
                           <div class="dz-message needsclick" >
-                            Drop files here or click to upload
                             <span class="note needsclick"><small class="form-text text-muted">Allowed file types: jpeg, png, pdf, doc, docx, ppt, pptx, zip and up to 50 MB</small></span>
                           </div>
                           <div class="fallback">
@@ -147,24 +153,16 @@
                           </div>
                         </div>
                     </div> 
-					
+					<div class="form-group">
+                        <label class="form-label">Video Description</label>
+                        <textarea class="form-control" name="description" rows="3" required>{{old('description')}}</textarea>
+                    </div> 
                     <div class="form-group">
-                        <label>Keywords</label>
+                        <label class="form-label">Keywords</label>
                         <input type="text" value="{{old('keywords')}}" name="keywords" id="keywords" data-role="tagsinput" class="form-control" />
                     </div>
                     
-                    <div class="form-group ">
-                        <label class="col-sm-3">Status</label>
-                        <div class="col-sm-6">
-                            <label class="switcher switcher-lg switcher-success">
-                                <input type="checkbox" name="status" value="1" class="switcher-input status">
-                                <span class="switcher-indicator">
-                                    <span class="switcher-yes"><span class="ion ion-md-checkmark"></span></span>
-                                    <span class="switcher-no"><span class="ion ion-md-close"></span></span>
-                                </span>
-                            </label>
-                        </div>
-                    </div>
+                   
                 </div>
                 <hr class="border-light m-0">
                 <div class="card-footer d-block text-center">
@@ -173,7 +171,16 @@
             </div>
         </div>
     </div>
-</form>
+
+
+          
+        </form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 @php
 $url = '';$size = 0;
 if(old('note_file')) {
@@ -182,16 +189,10 @@ if(old('note_file')) {
 }
 @endphp
 @endsection
-
 @section('scripts')
 
 <script src="{{asset('assets/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/dropzone/dropzone.js')}}"></script>
- <!-- To include time picker on period page. -->
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>    
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
 <script>
 var category_id = "{{old('institute_type')}}";
 var school_id = "{{old('school')}}";
@@ -199,7 +200,7 @@ var class_id = "{{old('class')}}";
 var course_id = "{{old('course')}}";
 var subject_id = "{{old('subject')}}";
 var topic_id = "{{old('topic')}}";
-var tutor_id = "{{old('tutor')}}";
+var tutor_id = "{{Auth::user()->id}}";
 </script>
 
 <script>
@@ -300,8 +301,8 @@ var tutor_id = "{{old('tutor')}}";
             if(subject_id) {                
                 $.ajax({
                     type: "POST",
-                    url: '{{ route("ajax.subject.topics") }}',
-                    data: {'subject_id' : subject_id, '_token': '{{ csrf_token() }}'},
+                    url: '{{ route("ajax.subject.topics.tutor") }}',
+                    data: {'subject_id' : subject_id,'user_id' : tutor_id, '_token': '{{ csrf_token() }}'},
                     success: function (data) {
                         $("#topic").html(data);
                         if(topic_id){

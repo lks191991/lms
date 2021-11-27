@@ -12,7 +12,7 @@
 							<a href="/">Home</a>
 						</li>
 						<li>
-							<span class="mx-2">></span>All courses
+							<span class="mx-2">></span>{{$subject->subject_name}}
 						</li>
 					</ul>
 				</div>
@@ -22,60 +22,74 @@
 
 	<!-- Breadcrumbs Ends-->
 
-	<!-- Product Listing -->
-
-	<section class="product-listing section-padding less-padding">
+	<section class="product-detail-main py-5">
 		<div class="container">
-			<div class="row">
-			@foreach($allCourses as $subject)
-				<div class="col-lg-3 col-md-6">
-					<div class="product-block">
-						<div class="product-thumbnail">
-							<img src="{{ asset($subject->banner_image)}}" alt="product" />
-						</div>
-						<div class="product-content">
-							<h3>{{$subject->subject_name}}</h3>
-							<ul class="p-0 mt-0 list-unstyled d-flex rating-stars">
-								<li>
-									<i class="fas fa-star"></i>
+			<div class="row gx-lg-5">
+				<div class="col-lg-8">
+					<div class="course-product-block">
+						<iframe width="100%" height="500" src="{{$video->video_url}}"
+							title="YouTube video player" frameborder="0"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowfullscreen></iframe>
+					</div>
+					<div class="product-detail-block mt-5">
+						<div class="custom-tabbing">
+							<ul class="nav nav-tabs" id="myTab" role="tablist">
+								<li class="nav-item" role="presentation">
+									<button class="nav-link active" id="home-tab" data-bs-toggle="tab"
+										data-bs-target="#home" type="button" role="tab" aria-controls="home"
+										aria-selected="true">Descriptions</button>
 								</li>
-								<li>
-									<i class="fas fa-star"></i>
-								</li>
-								<li>
-									<i class="fas fa-star"></i>
-								</li>
-								<li>
-									<i class="fas fa-star"></i>
-								</li>
-								<li>
-									<i class="far fa-star"></i>
-								</li>
+								
 							</ul>
-							<div class="price">
-								<span class="regular-price"><i class="fas fa-rupee-sign"></i>{{$subject->subject_price}}</span>
-							</div>
-							<div class="view-product-detail mt-3 mb-2">
-								<a href="{{route('course-details',['subjectId'=>$subject->id])}}" class="btn btn-primary w-100">View</a>
+							<div class="tab-content" id="myTabContent">
+								<div class="tab-pane fade show active" id="home" role="tabpanel"
+									aria-labelledby="home-tab">
+									<div class="tabbing-block">
+										<p class="description">{{$course->description}}</p>
+									</div>
+									
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				@endforeach
-				
-			</div>
-			<div class="row">
-				<div class="pagination-block mt-md-5 mt-4">
-					<nav aria-label="...">
-						{{ $allCourses->links() }}
-					</nav>
-				</div> 
-				
+				<div class="col-lg-4">
+					<div class="product-details-action-btn-block">
+						<h2 class="section-heading">Course content</h2>
+						<div class="accordion mt-4" id="accordionExample">
+						@foreach($subject->topics as $key => $topic)
+							
+							<div class="accordion-item">
+								<h2 class="accordion-header" id="heading{{$key}}">
+									<button class="accordion-button" type="button" data-bs-toggle="collapse"
+										data-bs-target="#collapse{{$key}}" aria-expanded="true" aria-controls="collapseOne">
+										{{$topic->topic_name}}
+									</button>
+								</h2>
+								<div id="collapse{{$key}}" class="accordion-collapse collapse @if($key==0)show @endif"
+									aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+									<div class="accordion-body">
+										<ul class="mb-0 my-courses-cont-link">
+										@foreach($topic['videos'] as $key => $video)
+										@if($video->video_upload_type=='main')
+											<li>
+												<a href="{{route('frontend.mylearningStart',['id'=> $data->id,'subjectId'=>$video->subject_id,'videoUid'=>$video->uuid])}}" class="link">{{$video->title}}</a>
+											</li>
+											@endif
+											@endforeach
+										</ul>
+									</div>
+								</div>
+							</div>
+						
+						@endforeach	
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
-
-	<!-- Product Listing Ends-->
 
 
 @endsection

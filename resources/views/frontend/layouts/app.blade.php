@@ -39,6 +39,11 @@
 	<script type="text/javascript" src="{{ asset('js/front/bootstrap.bundle.min.js') }}"></script>
 	 <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 	 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	  <!-- To include time picker on period page. -->
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
 	  @if(Session::has('error'))
 
         <script>

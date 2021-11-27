@@ -65,10 +65,12 @@
 							<ul class="dropdown-menu p-0" aria-labelledby="navbarDropdown">
 								<li><a class="dropdown-item p-2" href="{{route('frontend.profile')}}"><i class="far fa-user me-2"></i> Profile</a>
 								</li>
+								<li><a class="dropdown-item p-2" href="{{route('frontend.mylearningList')}}"><i class="far fa-bookmark me-2"></i> My Learning</a>
+								</li>
 								<li>
 									<hr class="dropdown-divider my-1">
 								</li>
-								<li><a class="dropdown-item p-2" href="{{route('frontend.changePassword')}}"><i class="far fa-user me-2"></i> Change Password</a>
+								<li><a class="dropdown-item p-2" href="{{route('frontend.changePassword')}}"><i class="fa fa-lock me-2"></i> Change Password</a>
 								</li>
 								<li>
 									<hr class="dropdown-divider my-1">

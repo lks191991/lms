@@ -91,9 +91,7 @@
                 <div class="row">
                     <div class="col-sm-6 col-xl-3 mb-2"><strong>School Name</strong></div>
                     <div class="col-sm-6 col-xl-9">
-                        @if(isset($video->school->logo) && $video->school->logo != 'noimage.jpg')
-                        <img class="school_logo mb-2" height="24" src='{{url("uploads/schools/".$video->school->logo)}}' />
-			@endif
+                      
                         {{$video->school->school_name}} <small>({{$video->school->category->name}})</small>
                     </div>
                 </div>
@@ -126,7 +124,7 @@
             
             <div class="col-sm-6 col-xl-5 text-center">
                 <div class="lesson-video" id="video_player_box">
-                    <iframe class="bg-dark" src="{{$video->videoURL()}}?byline=false" id="videoPlayer" width="100%" height="250" frameborder="0" allow="autoplay; fullscreen"  allowfullscreen></iframe>
+                    <iframe class="bg-dark" src="{{$video->video_url}}?byline=false" id="videoPlayer" width="100%" height="250" frameborder="0" allow="autoplay; fullscreen"  allowfullscreen></iframe>
                 </div>
                 @if($video->video_type == 'file')
                 <a class="btn btn-primary my-4 align-center" href="{{route('backend.video.upload.files',$video->uuid)}}" ><i class="fas fa-upload"></i> <span>Upload New Video file</span></a>

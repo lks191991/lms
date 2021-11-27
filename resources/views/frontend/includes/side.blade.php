@@ -4,6 +4,13 @@
 							<li>
 								<a href="{{route('frontend.profile')}}" class="{{ request()->is('profile') ? 'active-tab' : '' }}"><i class="far fa-user me-2"></i> My Profile</a>
 							</li>
+							
+							<li>
+								<a href="{{route('frontend.topics')}}" class="{{ request()->is('topics') ? 'active-tab' : '' }}"><i class="far fa-bookmark me-2"></i> Topics</a>
+							</li>
+							<li>
+								<a href="{{route('frontend.videos')}}" class="{{ request()->is('videos') ? 'active-tab' : '' }}"><i class="far fa-bookmark me-2"></i> Videos</a>
+							</li>
 							<li>
 								<a href="{{route('frontend.mylearningList')}}" class="{{ request()->is('my-mylearning-list') ? 'active-tab' : '' }}"><i class="far fa-bookmark me-2"></i> My Learning</a>
 							</li>
@@ -12,7 +19,7 @@
 							</li>
 						
 							<li>
-								<a href="{{route('frontend.changePassword')}}" class="{{ request()->is('change-password') ? 'active-tab' : '' }}"><i class="far fa-bookmark me-2"></i> Change Password</a>
+								<a href="{{route('frontend.changePassword')}}" class="{{ request()->is('change-password') ? 'active-tab' : '' }}"><i class="fa fa-lock me-2"></i> Change Password</a>
 							</li>
 							<li>
 								<a  href="javascript:;" onclick="$('#logoutForm').submit()"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>

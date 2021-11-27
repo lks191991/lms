@@ -122,30 +122,7 @@ class PaymentController extends Controller
 		return view('frontend.payment-faild');
 	}
 	
-	public function mylearningList(Request $request)
-    {
-		$user = Auth::user();
-		$data = UserSubscription::with('course','subject','user')->where("user_id",$user->id)->paginate(20);
-		
-		return view('frontend.my-learning',compact('data'));
-	}
 	
-	public function mylearningStart(Request $request,$id,$subjectId)
-    {
-		$user = Auth::user();
-		$data = UserSubscription::where("id",$id)->where("user_id",$user->id)->where("subject_id",$subjectId)->first();
-		if(!$data)
-		{
-			return redirect()->route('mylearningList')->with('error', 'Course not available currently');
-		}
-		
-		$subject = Subject::with('topics','subject_class')->where('id', '=', $subjectId)->where('status', '=', 1)->orderBy('created_at','DESC')->first();
-		
-		$course = Course::where('status', '=', 1)->where('id', '=', $subject->course_id)->first();
-		$video = Video::where('status', '=', 1)->where('subject_id', '=', $subject->id)->groupBy('topic_id')->get();
-		
-		return view('frontend.my-learning-details',compact('subject','course','video');
-	}
 	
 	public function myPayment(Request $request)
     {

@@ -28,7 +28,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-		session()->forget('newCustomer');
+		//session()->forget('newCustomer');
 		$topCourses = Course::where('status', '=', 1)->limit(4)->get();
 		$allCoursesList = Course::where('status', '=', 1)->get();
 		$latestCourses = Course::where('status', '=', 1)->limit(8)->orderBy('created_at','DESC')->get();

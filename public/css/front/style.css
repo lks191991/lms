@@ -142,7 +142,7 @@ h3 {
 }
 
 .custom-arrow-select {
-    background: #fff url(../img/down-arrow.png) no-repeat;
+    background: #fff url(../../images/down-arrow.png) no-repeat;
 	background-size: 16px;
 	background-position: 96% 50%;
     -webkit-appearance: none;
@@ -271,7 +271,7 @@ footer {
 
 .hero-banner {
 	min-height: 600px;
-	background: url(../img/home-banner.jpg) no-repeat right bottom;
+	background: url(../../images/home-banner.jpg) no-repeat right bottom;
 	background-attachment: fixed;
 	background-size: cover;
 	color: var(--colorWhite);
@@ -303,7 +303,7 @@ footer {
     border-bottom-left-radius: 4px;
 	-webkit-appearance: none;
 	appearance: none;
-	background: #fff url(../img/down-arrow.png) no-repeat;
+	background: #fff url(../../images/down-arrow.png) no-repeat;
 	background-size: 16px;
 	background-position: 96% 50%;
 }
@@ -562,7 +562,7 @@ section > div> .row+.row {
 .product-detail-banner {
     min-height: 360px;
     padding: 20px 0px;
-    background: url(../img/product-detail.jpg) no-repeat center;
+    background: url(../../images/product-detail.jpg) no-repeat center;
     background-size: cover;
     position: relative;
 }
@@ -716,7 +716,7 @@ section > div> .row+.row {
     line-height: 1.5;
     color: #495057;
     vertical-align: middle;
-    background: #fff url(../img/form-entities.svg) right .75rem center/8px 10px no-repeat;
+    background: #fff url(../../images/form-entities.svg) right .75rem center/8px 10px no-repeat;
     border: 1px solid #ced4da;
     border-radius: .25rem;
     -webkit-appearance: none;

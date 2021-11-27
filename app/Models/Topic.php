@@ -18,6 +18,12 @@ class Topic extends Model
         return $this->hasOne(Subject::Class, 'id', 'subject_id')->withDefault();
     }
 	
+	public function videos()
+    {
+
+        return $this->hasMany(Video::class, 'topic_id');
+    }
+	
 	/*
      * Get referenced record.
      */

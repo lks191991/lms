@@ -127,7 +127,6 @@ class Video extends Model
     {
         if(isset($this->note->file_url) && !empty($this->note->file_url)){
             $file_url = $this->note->file_url;
-            
             if($this->note->storage == 's3') {
                 $storage = 's3';
             } else {

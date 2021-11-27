@@ -406,6 +406,35 @@ class AjaxController extends Controller
 
         return $options;
     }
+	
+	public function getSubjectTopicsTutor(Request $request, $default = 0)
+    {
+        $options = '<option value="" disabled selected>Select Topic</option>';
+
+        $subject_id = $request->subject_id;
+		$user_id = $request->user_id;
+
+        if ($subject_id) {
+            $topics = Topic::where('status', 1)
+                            ->where('subject_id', '=', $subject_id)
+							->where('user_id', $user_id)
+                            ->orderBy('weight','ASC')
+                            ->select('id', 'topic_name')->get();
+
+            if (!$topics->isEmpty()) {
+                foreach ($topics as $topic) {
+                    $selected = '';
+                    if ($default > 0 && $default == $topic->id) {
+                        $selected = 'selected';
+                    }
+
+                    $options .= '<option value="' . $topic->id . '" ' . $selected . '>' . $topic->topic_name . '</option>';
+                }
+            }
+        }
+
+        return $options;
+    }
 
     /**
      * Image Upload Code
