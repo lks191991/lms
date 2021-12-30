@@ -517,7 +517,9 @@ class VideoController extends Controller
 							
 							foreach ($importData_arr as $importData) {
 							$j++;
-							$topicData = Topic::where("topic_name",$importData[0])->where("subject_id",$request->subject)->first();
+							$topicName = trim(ucwords(strtolower($importData[0])));
+							$videoDescription = trim(ucwords(strtolower($importData[1])));
+							$topicData = Topic::where("topic_name",$topicName)->where("subject_id",$request->subject)->first();
 							if(isset($topicData))
 							{
 								$toipic_id= $topicData->id;
@@ -526,7 +528,7 @@ class VideoController extends Controller
 							{
 							$topic = new Topic();
 							$topic->subject_id = $request->subject;
-							$topic->topic_name = $importData[0];
+							$topic->topic_name = $topicName;
 							$topic->status = 0;
 							$topic->save();
 							$toipic_id= $topic->id;
@@ -539,7 +541,7 @@ class VideoController extends Controller
 							$video->video_id = 1;
 							$video->video_url = $importData[2];
 							$video->video_type = $request->video_type;
-							$video->description = $importData[1];
+							$video->description = $videoDescription;
 							$video->subject_id = $request->subject;
 							$video->topic_id = $toipic_id;
 							$video->keywords = '';
