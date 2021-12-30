@@ -539,7 +539,7 @@ class VideoController extends Controller
 							$video->class_id = $request->class;
 							$video->play_on = $request->date;
 							$video->video_id = 1;
-							$video->video_url = $importData[2];
+							$video->video_url = trim($importData[2]);
 							$video->video_type = $request->video_type;
 							$video->description = $videoDescription;
 							$video->subject_id = $request->subject;
