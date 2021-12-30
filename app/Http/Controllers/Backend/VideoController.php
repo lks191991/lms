@@ -12,12 +12,13 @@ use App\Models\Note;
 use App\Models\Course;
 use App\Models\Classes;
 use App\Models\Tutor;
+use App\Models\Topic;
 use Validator;
 use Illuminate\Support\Facades\Redirect;
 use Auth;
 use SiteHelpers;
 use Illuminate\Support\Facades\Storage;
-
+use DB;
 use Illuminate\Support\Facades\Mail;
 
 class VideoController extends Controller
@@ -425,4 +426,154 @@ class VideoController extends Controller
         $video_thumb = $video->getVimeoThumb();
         return view('backend.videos.upload_files', compact('video','video_thumb'));
     }
+	
+	
+	
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function csvUploadVideo()
+    {
+        $query = SchoolCategory::where('status','=',1);
+        $school_id = 0;
+        $category_id = 0;
+        $tutors = Tutor::where('status','=',1)->select('first_name','last_name','id')->get();
+   
+        $institutes = $query->orderBy('name')
+                        ->pluck('name','id');
+        
+        
+        
+        return view('backend.videos.csv',  compact('institutes','school_id','category_id','tutors'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function csvUploadVideoPost(Request $request)
+    {        
+        $validator = Validator::make($request->all(), [
+            'school' => 'required',
+            'course' => 'required',
+            'class' => 'required',
+            'date' => 'required',
+            'subject' => 'required',
+            'tutor' => 'required',
+            'video_type' => 'required',
+            
+        ]);
+        
+
+        // if the validator fails, redirect back to the form
+        if ($validator->fails()) {    
+            
+            return Redirect::back()
+                ->withErrors($validator) // send back all errors to the form
+                ->withInput();
+        } else {
+            
+						
+						$file = $request->file('uploaded_file_csv');
+						if ($file) {
+							$filename = $file->getClientOriginalName();
+							$extension = $file->getClientOriginalExtension(); //Get extension of uploaded file
+							$tempPath = $file->getRealPath();
+							$fileSize = $file->getSize(); //Get size of uploaded file in bytes
+							//Check for file extension and size
+							$this->checkUploadedFileProperties($extension, $fileSize);
+							//Where uploaded file will be stored on the server 
+							$location = 'uploads'; //Created an "uploads" folder for that
+							// Upload file
+							$file->move($location, $filename);
+							// In case the uploaded file path is to be stored in the database 
+							$filepath = public_path($location . "/" . $filename);
+							// Reading file
+							$file = fopen($filepath, "r");
+							$importData_arr = array(); // Read through the file and store the contents as an array
+							$i = 0;
+							//Read the contents of the uploaded file 
+							while (($filedata = fgetcsv($file, 1000, ",")) !== FALSE) {
+							$num = count($filedata);
+							// Skip first row (Remove below comment if you want to skip the first row)
+							if ($i == 0) {
+							$i++;
+							continue;
+							}
+							for ($c = 0; $c < $num; $c++) {
+							if(!empty($filedata[$c][0]))
+							{
+							$importData_arr[$i][] = $filedata[$c];
+							}
+							}
+							$i++;
+							}
+							fclose($file); //Close after reading
+							$j = 0;
+							
+							foreach ($importData_arr as $importData) {
+							$j++;
+							$topicData = Topic::where("topic_name",$importData[0])->where("subject_id",$request->subject)->first();
+							if(isset($topicData))
+							{
+								$toipic_id= $topicData->id;
+							}
+							else
+							{
+							$topic = new Topic();
+							$topic->subject_id = $request->subject;
+							$topic->topic_name = $importData[0];
+							$topic->status = 0;
+							$topic->save();
+							$toipic_id= $topic->id;
+							}
+							$video = new Video();
+							$video->school_id = $request->school;
+							$video->course_id = $request->course;
+							$video->class_id = $request->class;
+							$video->play_on = $request->date;
+							$video->video_id = 1;
+							$video->video_url = $importData[2];
+							$video->video_type = $request->video_type;
+							$video->description = $importData[1];
+							$video->subject_id = $request->subject;
+							$video->topic_id = $toipic_id;
+							$video->keywords = '';
+							$video->tutor_id = $request->tutor;
+							$video->video_upload_type = $request->video_upload_type;
+							$video->note_id = 0;
+							$video->user_id = Auth::user()->id;
+							$video->status = 1;            
+							$video->save();
+
+							}
+							return response()->json([
+							'message' => "$j records successfully uploaded"
+							]);
+							} 
+							         
+            
+            
+            //return redirect()->route('backend.videos.index')->with('success', 'Video created Successfully');
+        }
+    }
+	
+	public function checkUploadedFileProperties($extension, $fileSize)
+	{
+		$valid_extension = array("csv", "xlsx"); //Only want csv and excel files
+		$maxFileSize = 2097152; // Uploaded file size limit is 2mb
+		if (in_array(strtolower($extension), $valid_extension)) {
+		if ($fileSize <= $maxFileSize) {
+		} else {
+		throw new \Exception('No file was uploaded', Response::HTTP_REQUEST_ENTITY_TOO_LARGE); //413 error
+		}
+		} else {
+		throw new \Exception('Invalid file extension', Response::HTTP_UNSUPPORTED_MEDIA_TYPE); //415 error
+		}
+		}
+		
 }

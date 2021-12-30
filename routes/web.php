@@ -151,7 +151,8 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.',
 
     //Videos routes
     Route::resource('videos', 'VideoController');
-
+	 Route::get('video/upload-csv', 'VideoController@csvUploadVideo')->name('video.upload.csv');
+	 Route::post('video/upload-csv/save', 'VideoController@csvUploadVideoPost')->name('video.upload.csv.save');
     Route::get('video/upload-files/{uuid}', 'VideoController@uploadFiles')->name('video.upload.files');
 
     //Students routes
