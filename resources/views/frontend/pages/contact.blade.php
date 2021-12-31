@@ -33,7 +33,13 @@
 								<li>
 									<span><i class="fas fa-map-marker-alt"></i></span>
 									<span><strong>Address</strong>
-										Lorem ipsum dolor, <br /> sit amet consectetur, <br /> adipisicing elit.</span>
+										Board of Intermediate Education,<br /> 
+										Andhra Pradesh <br /> 
+										D.No. 48-18-2/A, Nagarjuna Nagar Colony<br /> 
+										Opp. NTR Health University,<br /> 
+										Vijayawada - 520008
+										Krishna District, <br /> Andhra Pradesh, India
+										</span>
 								</li>
 								<li>
 									<span>
@@ -41,8 +47,7 @@
 									</span>
 									<span>
 										<strong>Phone</strong>
-										<a href="tel:123456798">+123456798</a>
-										<a href="tel:6545454552">+6545454552</a>
+										<a href="tel:0866-2974130">0866-2974130</a>
 									</span>
 								</li>
 								<li>
@@ -51,8 +56,7 @@
 									</span>
 									<span>
 										<strong>Email</strong>
-										<a href="mailto:test@gmail.com">test@gmail.com</a>
-										<a href="mailto:info@gmail.com">info@gmail.com</a>
+										<a href="mailto:test@gmail.com">bieap1819@gmail.com</a>
 									</span>
 								</li>
 							</ul>
@@ -61,8 +65,7 @@
 					<div class="col-md-8 border-start">
 						<div class="contact-form">
 							<h1 class="page_title mb-3 text-primary">Send us a message</h1>
-							<p class="description mb-4">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque
-								earum deserunt iste, aliquam dignissimos distinctio et corporis modi totam tempora.</p>
+							<p class="description mb-4"></p>
 							 <form action="{{route('frontend.contactUsPost')}}" method="POST" id="registerForm" >@csrf
 							
 								<div class="form-group mb-3">

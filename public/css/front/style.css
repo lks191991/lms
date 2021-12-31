@@ -390,7 +390,7 @@ section > div> .row+.row {
 .product-thumbnail img {
     height: 100%;
     width: 100%;
-    object-fit: cover;
+    /* object-fit: cover; */
 }
 
 .product-block h3 {

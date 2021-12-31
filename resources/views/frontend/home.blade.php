@@ -10,12 +10,7 @@
 			<div class="row">
 				<div class="col-lg-8 mx-auto text-center">
 					<h1 class="font-heading text-uppercase">Learn what you want to</h1>
-					<p class="mt-md-4 mb-md-5 mt-3 mb-4">Lorem Ipsum is simply dummy text of the printing and
-						typesetting
-						industry.
-						Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-						printer took a galley of type and scrambled it to make a type specimen book. It has survived not
-						only five centuries</p>
+					<p class="mt-md-4 mb-md-5 mt-3 mb-4"></p>
 					<div class="banner-form">
 							<form action="{{ route('course-search') }}" method="get">
 							{{ csrf_field() }}
