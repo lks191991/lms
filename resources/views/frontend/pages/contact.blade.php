@@ -47,7 +47,7 @@
 									</span>
 									<span>
 										<strong>Phone</strong>
-										<a href="tel:0866-2974130">0866-2974130</a>
+										<a href="tel:+91-0866-2974130">+91-0866-2974130</a>
 									</span>
 								</li>
 								<li>

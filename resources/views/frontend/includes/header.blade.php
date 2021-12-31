@@ -26,11 +26,11 @@ $menus=GLB::getAllCourse();
 					<div class="col-md-6">
 						<ul class="p-0 m-0 d-flex justify-content-md-end list-unstyled list-gap contact-list flex-wrap">
 							<li>
-								<a href="tel:1234567890"><i class="fas fa-phone-alt ms-md-2 me-1"></i> 1234567890</a>
+								<a href="tel:+91-0866-2974130"><i class="fas fa-phone-alt ms-md-2 me-1"></i> +91-0866-2974130</a>
 							</li>
 							<li>
-								<a href="mailto:info@mail.com"><i class="fas fa-envelope ms-md-2 me-1"></i>
-									info@mail.com</a>
+								<a href="mailto:bieap1819@gmail.com"><i class="fas fa-envelope ms-md-2 me-1"></i>
+									bieap1819@gmail.com</a>
 							</li>
 						</ul>
 					</div>
