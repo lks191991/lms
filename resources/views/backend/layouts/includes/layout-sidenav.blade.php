@@ -10,7 +10,7 @@ $routeName = Route::currentRouteName();
         <span class="app-brand-logo demo bg-primary">
             <img src="{{asset('images/xt_white.png')}}" width="24" />
         </span>
-        <a href="/admin" class="app-brand-text demo sidenav-text font-weight-normal ml-2">{{ config('app.name', 'Bright-Horizon')}}</a>
+        <a href="/admin" class="app-brand-text demo sidenav-text font-weight-normal ml-2">{{ config('app.name', 'BIEAP')}}</a>
         <a href="javascript:void(0)" class="layout-sidenav-toggle sidenav-link text-large ml-auto">
             <i class="ion ion-md-menu align-middle"></i>
         </a>

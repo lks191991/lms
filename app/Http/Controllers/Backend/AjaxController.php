@@ -94,7 +94,7 @@ class AjaxController extends Controller
                     if ($default > 0 && $default == $course->id) {
                         $selected = 'selected';
                     }
-
+					
                     $options .= '<option value="' . $course->id . '" ' . $selected . '>' . $course->name . '</option>';
                 }
             }
@@ -107,7 +107,7 @@ class AjaxController extends Controller
      * get courses options for a School in student filter. 
      * return string $options
      */
-    public function getStudentfilterCourses(Request $request)
+    public function getStudentfilterCourses(Request $request, $for_id = '')
     {
         $options = '<option value=""  selected>All</option>';
 
@@ -121,8 +121,11 @@ class AjaxController extends Controller
 
             if (!$courses->isEmpty()) {
                 foreach ($courses as $course) {
-                    
+                    if(!empty($for_id))
+					$options .= '<option value="' . $course->id . '" data-id="' . $course->id . '">' . $course->name . '</option>';
+					else
 					$options .= '<option value="' . $course->name . '" data-id="' . $course->id . '">' . $course->name . '</option>';
+				
                 }
             }
         }
@@ -224,7 +227,7 @@ class AjaxController extends Controller
      * get class in student filter. 
      * return string $options
      */
-    public function getStudentfilterCourseclasses(Request $request)
+    public function getStudentfilterCourseclasses(Request $request, $for_id = '')
     {
         $options = '<option value="" selected>All</option>';
 
@@ -240,7 +243,10 @@ class AjaxController extends Controller
 
             if (!$classes->isEmpty()) {
                 foreach ($classes as $cls) {
-                    $options .= '<option value="' . $cls->class_name . '" data-id="' . $cls->id . '">' . $cls->class_name . '</option>';
+					if(!empty($for_id))
+					$options .= '<option value="' . $cls->id . '" data-id="' . $cls->id . '">' . $cls->class_name . '</option>';
+					else
+					$options .= '<option value="' . $cls->class_name . '" data-id="' . $cls->id . '">' . $cls->class_name . '</option>';
                 }
             }
         }
@@ -280,7 +286,7 @@ class AjaxController extends Controller
      * get filter school subjects. 
      * return status true / false with error message
      */
-    public function getSchoolfilterClassSubjects(Request $request, $default = 0)
+    public function getSchoolfilterClassSubjects(Request $request, $default = '')
     {
         $options = '<option value="" selected>All</option>';
 
@@ -296,7 +302,10 @@ class AjaxController extends Controller
 
             if (!$subjects->isEmpty()) {
                 foreach ($subjects as $sub) {
-                    $options .= '<option value="' . $sub->subject_name . '" data-id="' . $sub->id . '">' . $sub->subject_name . '</option>';
+					if(!empty($default))
+					$options .= '<option value="' . $sub->id . '" data-id="' . $sub->id . '">' . $sub->subject_name . '</option>';
+					else
+					$options .= '<option value="' . $sub->subject_name . '" data-id="' . $sub->id . '">' . $sub->subject_name . '</option>';
                 }
             }
         }

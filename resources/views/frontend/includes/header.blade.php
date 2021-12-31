@@ -1,5 +1,8 @@
 <!-- Header -->
+@php 
+$menus=GLB::getAllCourse();
 
+ @endphp
 	<header class="header-main">
 		<div class="top-strip border-bottom py-2">
 			<div class="container">
@@ -49,6 +52,25 @@
 						<li class="nav-item">
 							<a class="nav-link active" aria-current="page" href="{{route('home')}}">Home</a>
 						</li>
+						 <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Courses
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								@foreach($menus as $menu)
+                                <li class="mega-menu-tree">
+                                    <a class="dropdown-item" href="{{route('course-list',['CourseId'=>$menu->id])}}">{{$menu->class_name}} <i
+                                            class="fas fa-caret-down d-lg-none"></i></a>
+                                    <ul class="mega-menu-tree-list p-0 list-unstyled">
+									@foreach($menu->subject as $sub)
+                                        <li><a class="dropdown-item" href="{{route('course-details',['subjectId'=>$sub->id])}}">{{$sub->subject_name}}</a></li>
+                                      @endforeach  
+                                    </ul>
+                                </li>
+								 @endforeach  
+                            </ul>
+                        </li>
 						<li class="nav-item">
 							<a class="nav-link" href="#">About</a>
 						</li>

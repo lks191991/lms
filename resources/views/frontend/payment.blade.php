@@ -93,14 +93,14 @@
                             id="payment-form">
                         @csrf
   
-                        <div class='form-row row'>
+                        <div class='form-row row' style="display:none">
                             <div class='col-xs-12 form-group required'>
                                 <label class='control-label'>Name on Card</label> <input
                                     class='form-control'  size='4' value="Test" type='text'>
                             </div>
                         </div>
   
-                        <div class='row'>
+                        <div class='row' style="display:none">
                             <div class='col-xs-12 form-group card required'>
                                 <label class='control-label'>Card Number</label> <input
                                     autocomplete='off' class='form-control card-number' value="4242424242424242"  size='20'
@@ -108,18 +108,18 @@
                             </div>
                         </div>
   
-                        <div class='row'>
+                        <div class='row' style="display:none">
                             <div class='col-xs-12 col-md-4 form-group cvc required'>
                                 <label class='control-label'>CVC</label> <input autocomplete='off'
                                     class='form-control card-cvc'  value="123" placeholder='ex. 311' size='4'
                                     type='text'>
                             </div>
-                            <div class='col-xs-12 col-md-4 form-group expiration required'>
+                            <div class='col-xs-12 col-md-4 form-group expiration required' style="display:none">
                                 <label class='control-label'>Expiration Month</label> <input
                                     class='form-control card-expiry-month' value="12" placeholder='MM' size='2'
                                     type='text'>
                             </div>
-                            <div class='col-xs-12 col-md-4 form-group expiration required'>
+                            <div class='col-xs-12 col-md-4 form-group expiration required' style="display:none">
                                 <label class='control-label'>Expiration Year</label> <input
                                     class='form-control card-expiry-year' value="2024"  placeholder='YYYY' size='4'
                                     type='text'>

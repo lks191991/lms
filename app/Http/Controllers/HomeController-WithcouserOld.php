@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Subject;
-use App\Models\Classes;
 use App\Models\Video;
 use DB;
 use Carbon\Carbon;
@@ -30,9 +29,9 @@ class HomeController extends Controller
     public function index()
     {
 		//session()->forget('newCustomer');
-		$topCourses = Subject::where('status', '=', 1)->limit(4)->get();
-		$allCoursesList = Classes::where('status', '=', 1)->get();
-		$latestCourses = Subject::where('status', '=', 1)->limit(8)->orderBy('created_at','DESC')->get();
+		$topCourses = Course::where('status', '=', 1)->limit(4)->get();
+		$allCoursesList = Course::where('status', '=', 1)->get();
+		$latestCourses = Course::where('status', '=', 1)->limit(8)->orderBy('created_at','DESC')->get();
 		
         return view('frontend.home',compact('topCourses','latestCourses','allCoursesList'));
     }
@@ -40,7 +39,7 @@ class HomeController extends Controller
 	public function courseList(Request $request,$CourseId)
     {
 		
-		$allCourses = Subject::where('class_id', '=', $CourseId)->where('status', '=', 1)->orderBy('created_at','DESC')->paginate(20);
+		$allCourses = Subject::where('course_id', '=', $CourseId)->where('status', '=', 1)->orderBy('created_at','DESC')->paginate(20);
 		
         return view('frontend.list',compact('allCourses'));
     }
@@ -52,7 +51,7 @@ class HomeController extends Controller
 		$query = Subject::where('status', '=', 1);
 		if(isset($data['search_courses']) and !empty($data['search_courses']))
 		{
-			$query->where('class_id', '=', $data['search_courses']);
+			$query->where('course_id', '=', $data['search_courses']);
 		}
 		if(isset($data['search_text']) and !empty($data['search_text']))
 		{

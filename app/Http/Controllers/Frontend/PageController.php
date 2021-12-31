@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\ContactInquiry;
 use App\Models\Setting;
 use App\Mail\sendContactInquiry;
+use App\Models\Newsletter;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Auth;
@@ -91,5 +92,31 @@ class PageController extends Controller
 
     }
     
+    public function saveNewsletter(Request $request)
+    {	
+
+        $validator = Validator::make($request->all(), [
+			'email' => 'required|email|max:255',
+		]);
+
+        if ($validator->fails()) {
+            return redirect()->route('home')->withErrors($validator)->withInput();
+        }
+
+        $data = Newsletter::where("email",$request->input('email'))->first();
+        if(isset($data))
+        {
+            return redirect()->route('home')->with('success',"Your email has been successfully saved.");
+        }
+         else
+         {
+            $contactInquiry =  new Newsletter;
+            $contactInquiry->email   = $request->input('email');
+            $contactInquiry->save();
+     
+            return redirect()->route('home')->with('success',"Your email has been successfully saved.");
+         }
+
+    }
     
 }

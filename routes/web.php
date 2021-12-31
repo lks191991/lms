@@ -29,6 +29,7 @@ Route::get('/auto-search', 'HomeController@autoSearch')->name('auto-search');
 Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
 Route::get('/contact-us', 'PageController@getContact')->name('contactUs');
 Route::post('/contact-us', 'PageController@sendContact')->name('contactUsPost');
+Route::post('/save-newsletter', 'PageController@saveNewsletter')->name('newsletterSave');
 
 //Route::namespace('Auth')->group(function () {
 	 /* Payment Route */
@@ -41,7 +42,7 @@ Route::post('/contact-us', 'PageController@sendContact')->name('contactUsPost');
 	Route::post('/profile', 'StudentController@updateProfileTutor')->name('updateProfileTutor');
 	Route::post('/profile-student', 'StudentController@updateProfileStudent')->name('updateProfileStudent');
 	Route::get('/my-mylearning-list', 'StudentController@mylearningList')->name('mylearningList');
-	Route::get('/my-mylearning-details/{id}/{subjectId}/{videoUid?}', 'StudentController@mylearningStart')->name('mylearningStart');
+	Route::get('/my-mylearning-details/{id}/{subjectId}/{videoUid?}/{tab?}', 'StudentController@mylearningStart')->name('mylearningStart');
 	
 	Route::get('/my-payment', 'PaymentController@myPayment')->name('myPayment');
     Route::post('/upload-urofile', 'StudentController@uploadProfile')->name('uploadProfile');
@@ -89,16 +90,16 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'ajax.'], f
     Route::post('/category/schools/{std_filter?}', 'AjaxController@getSchools')->name('category.schools');
     Route::post('/school-departments', 'AjaxController@getSchoolDepartments')->name('school.departments');
     Route::post('/school-courses', 'AjaxController@getSchoolCourses')->name('school.courses');
-    Route::post('/stdfilter-courses', 'AjaxController@getStudentfilterCourses')->name('school.stdfiltercourses');
+    Route::post('/stdfilter-courses/{std_filter?}', 'AjaxController@getStudentfilterCourses')->name('school.stdfiltercourses');
     Route::post('/department-courses', 'AjaxController@getDepartmentCourses')->name('department.courses');
     Route::post('/school-courseclasses', 'AjaxController@getSchoolCourseclasses')->name('school.courseclasses');
-    Route::post('/stdfilter-courseclasses', 'AjaxController@getStudentfilterCourseclasses')->name('school.stdfiltercourseclasses');
+    Route::post('/stdfilter-courseclasses/{std_filter?}', 'AjaxController@getStudentfilterCourseclasses')->name('school.stdfiltercourseclasses');
     Route::post('/class-subject', 'AjaxController@getClassSubjects')->name('class.subject');
     Route::post('/class-periods', 'AjaxController@getClassPeriods')->name('class.period');
     Route::post('/subject-topics', 'AjaxController@getSubjectTopics')->name('subject.topics');
 	Route::post('/subject-topics-tutor', 'AjaxController@getSubjectTopicsTutor')->name('subject.topics.tutor');
     Route::post('/school-classsubjects', 'AjaxController@getSchoolClassSubjects')->name('school.classsubjects');
-    Route::post('/school-filterclasssubjects', 'AjaxController@getSchoolfilterClassSubjects')->name('school.filterclasssubjects');
+    Route::post('/school-filterclasssubjects/{std_filter?}', 'AjaxController@getSchoolfilterClassSubjects')->name('school.filterclasssubjects');
     Route::post('/school-tutors', 'AjaxController@getSchoolTutors')->name('school.tutors');
     Route::post('/upload-video', 'AjaxController@dropzoneStore')->name('dropzone.upload.video');
     Route::post('/upload-note', 'AjaxController@dropzoneNoteStore')->name('dropzone.upload.note');
@@ -151,6 +152,7 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.',
 
     //Videos routes
     Route::resource('videos', 'VideoController');
+	 Route::get('videos/lists', 'VideoController@csvUploadVideo')->name('videos.list');
 	 Route::get('video/upload-csv', 'VideoController@csvUploadVideo')->name('video.upload.csv');
 	 Route::post('video/upload-csv/save', 'VideoController@csvUploadVideoPost')->name('video.upload.csv.save');
     Route::get('video/upload-files/{uuid}', 'VideoController@uploadFiles')->name('video.upload.files');

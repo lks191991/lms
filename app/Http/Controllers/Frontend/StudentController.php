@@ -390,7 +390,7 @@ class StudentController extends Controller
 		return view('frontend.my-learning',compact('data'));
 	}
 	
-	public function mylearningStart(Request $request,$id,$subjectId,$videoUid=null)
+	public function mylearningStart(Request $request,$id,$subjectId,$videoUid=null,$tab=0)
     {
 		$user = Auth::user();
 		$data = UserSubscription::where("id",$id)->where("user_id",$user->id)->where("subject_id",$subjectId)->first();
@@ -411,7 +411,7 @@ class StudentController extends Controller
 		}
 		
 		
-		return view('frontend.my-learning-details',compact('subject','course','video','data'));
+		return view('frontend.my-learning-details',compact('subject','course','video','data','tab'));
 	}
 	
 	

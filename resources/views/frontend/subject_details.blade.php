@@ -1,4 +1,32 @@
 @extends('frontend.layouts.app')
+@section('styles')
+<link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css" />
+<style>
+    #video_player_box{
+        --plyr-video-controls-background: linear-gradient(rgba(255, 255, 255, 0.8),rgba(220, 220, 220, 0.8)) ;
+        --plyr-video-control-color: #333333; 
+        height: 350px;
+    }
+    .plyr--video .plyr__controls{
+        padding-top: 15px !important;
+    }
+</style>
+@endsection
+
+@section('scripts')
+
+
+<script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
+<script>
+    const player = new Plyr('#video_player_box',{
+        settings: ['captions', 'quality', 'speed', 'loop'],        
+      });
+      
+      player.on('ended', event => {
+        player.restart();
+      });
+</script>
+@endsection
 
 @section('content')
 <!-- Breadcrumbs -->
@@ -28,11 +56,10 @@
 			<div class="row gx-lg-5">
 				<div class="col-lg-8">
 					<h2 class="section-heading">{{$subject->subject_name}}</h2>
-					<div class="course-product-block mt-4">
-						<iframe width="100%" height="315" src="{{$video->video_url}}"
-							title="YouTube video player" frameborder="0"
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-							allowfullscreen></iframe>
+					<div class="course-product-block mt-4 lesson-video" id="video_player_box">
+					<iframe class="bg-dark" src="{{$video->video_url}}?byline=false"  id="videoPlayer" width="100%" height="315"  frameborder="0" allow="autoplay; fullscreen"  allowfullscreen></iframe>
+					
+						
 					</div>
 					<div class="product-detail-block mt-5">
 						<h2 class="section-heading">Topics</h2>
@@ -93,7 +120,7 @@
 								<span>
 									<img src="{{asset('images/p-icon3.svg')}}" style="height: 35px;" alt="Icon" /> Price : 
 								</span>
-								<span><i class="fas fa-rupee-sign"></i>{{$subject->subject_price}}</span>
+								<span><i class="fas fa-rupee-sign"></i>@if($subject->subject_price==0) Free @else {{$subject->subject_price}} @endif</span>
 							</li>
 						</ul>
 						@if(isset(Auth::user()->id))

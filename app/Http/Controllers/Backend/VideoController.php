@@ -13,6 +13,7 @@ use App\Models\Course;
 use App\Models\Classes;
 use App\Models\Tutor;
 use App\Models\Topic;
+use App\Models\Subject;
 use Validator;
 use Illuminate\Support\Facades\Redirect;
 use Auth;
@@ -28,14 +29,32 @@ class VideoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+
         //SiteHelpers::updateUUID('periods');
+		$filter = $request->all();
 		
 		$courses = array();
 		$classes = array();
         
         $query = Video::where('id','<>',0);
+		if(isset($filter['school']) && !empty($filter['school']))
+		{
+			$query->where('school_id','=',$filter['school']);
+		}
+		if(isset($filter['school_course']) && !empty($filter['school_course']))
+		{
+			$query->where('course_id','=',$filter['school_course']);
+		}
+		if(isset($filter['class']) && !empty($filter['class']))
+		{
+			$query->where('class_id','=',$filter['class']);
+		}
+		if(isset($filter['subject']) && !empty($filter['subject']))
+		{
+			$query->where('subject_id','=',$filter['subject']);
+		}
         
         if(Auth::user()->hasRole('school')){
             $profile = Auth::user()->profile;
@@ -55,7 +74,7 @@ class VideoController extends Controller
 			
 		} 
         
-        $videos = $query->orderBy('id', 'desc')->get();
+        $videos = $query->orderBy('id', 'desc')->paginate(20);
 		
 		$repoted_count = array();
 		
@@ -76,8 +95,10 @@ class VideoController extends Controller
         
         $schools = $query->orderBy('school_name')
                         ->pluck('school_name','id');
+	$subjects = Subject::where('status','=',1)->select('subject_name','id')->get();
+						
 		
-		return view('backend.videos.index', compact('videos', 'repoted_count', 'schools', 'courses', 'classes'));
+		return view('backend.videos.index', compact('videos', 'repoted_count', 'schools', 'courses', 'classes','subjects'));
     }
 
     /**
@@ -517,8 +538,13 @@ class VideoController extends Controller
 							
 							foreach ($importData_arr as $importData) {
 							$j++;
-							$topicName = trim(ucwords(strtolower($importData[0])));
-							$videoDescription = trim(ucwords(strtolower($importData[1])));
+							$topicName = str_replace("'", "\'", $importData[0]);
+							$topicName = str_replace('"', "'+String.fromCharCode(34)+'", $importData[0]);
+							$videoDescription = str_replace("'", "\'", $importData[1]);
+							$videoDescription = str_replace('"', "'+String.fromCharCode(34)+'", $importData[1]);
+							
+							$topicName = addslashes(trim(ucwords(strtolower($topicName))));
+							$videoDescription = addslashes(trim(ucwords(strtolower($videoDescription))));
 							$topicData = Topic::where("topic_name",$topicName)->where("subject_id",$request->subject)->first();
 							if(isset($topicData))
 							{

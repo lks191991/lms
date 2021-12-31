@@ -25,7 +25,7 @@
 										<option value="">Select Courses</option>
 										 @foreach($allCoursesList as $acl)
 										  <option value="{{$acl->id}}">
-										   {{$acl->class_name}}
+										   {{$acl->name}}
 										  </option>
 										@endforeach
 									</select>
@@ -64,7 +64,7 @@
 							<img src="{{ asset($topCourse->banner_image)}}" alt="product" />
 						</div>
 						<div class="product-content">
-							<h3>{{$topCourse->subject_name}}</h3>
+							<h3>{{$topCourse->name}}</h3>
 							<ul class="p-0 mt-0 list-unstyled d-flex rating-stars">
 								<li>
 									<i class="fas fa-star"></i>
@@ -87,7 +87,7 @@
 								<span class="regular-price"></span>
 							</div>-->
 							<div class="view-product-detail mt-3 mb-2">
-								<a href="{{route('course-details',['subjectId'=>$topCourse->id])}}" class="btn btn-primary w-100">View</a>
+								<a href="{{route('course-list',['CourseId'=>$topCourse->id])}}" class="btn btn-primary w-100">View</a>
 							</div>
 						</div>
 					</div>
@@ -165,7 +165,7 @@
 								<img src="{{ asset($topCourse->banner_image)}}" alt="product" />
 							</div>
 							<div class="product-content">
-								<h3>{{$topCourse->subject_name}}</h3>
+								<h3>{{$topCourse->name}}</h3>
 								<ul class="p-0 mt-0 list-unstyled d-flex rating-stars">
 									<li>
 										<i class="fas fa-star"></i>
@@ -188,7 +188,7 @@
 									<span class="regular-price">$999</span>
 								</div>-->
 								<div class="view-product-detail mt-3 mb-2">
-									<a href="{{route('course-details',['subjectId'=>$topCourse->id])}}" class="btn btn-primary w-100">View</a>
+									<a href="{{route('course-list',['CourseId'=>$topCourse->id])}}" class="btn btn-primary w-100">View</a>
 								</div>
 							</div>
 						</div>

@@ -22,7 +22,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/front/responsive.css')}}">
    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 @yield('styles')
-    <title>Bright Horizon</title>
+    <title>BIEAP</title>
 	
 		
   </head>
@@ -117,7 +117,7 @@
 			})
 		})
 	</script>
-  
+  <script type="text/javascript" src="{{ asset('js/front/custom.js') }}"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 @yield('scripts')
     </body>

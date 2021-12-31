@@ -71,7 +71,7 @@ class PaymentController extends Controller
 		$data = $request->all();
 		
 		$subject = Subject::with('topics','subject_class')->where('uuid', '=', $data['sid'])->where('status', '=', 1)->orderBy('created_at','DESC')->first();
-		$price = $subject->subject_price;
+		$price = 1;//$subject->subject_price;
 		$amount = $price * 100;
         Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
         $result = Stripe\Charge::create ([

@@ -6,6 +6,8 @@ use App\User;
 use App\Models\StudentHistory;
 use App\Models\Video;
 use App\Models\Classes;
+use App\Models\Course;
+use App\Models\Subject;
 use App\Models\SchoolCategory;
 use Auth;
 use Session;
@@ -188,6 +190,16 @@ class GlobleHelper
 			return '';
 		}
 		
+	}
+	
+	public static function getAllCourse(){
+		
+		$menus = Classes::with('subject')->whereHas('subject', function($q){
+		$q->where('status', 1);
+		})->where('status', 1)->get();
+		
+		return $menus;
+			
 	}
 	
 

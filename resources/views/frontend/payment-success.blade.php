@@ -30,7 +30,8 @@
                 <div class="col-lg-6 mx-auto">
                     <div class="thankyou-block p-4 border border-success text-center rounded-2">
                         <h1 class="section-heading text-success">Thank You !!</h1>
-                        <p class="decription my-4">Your payment has been successfully processed.</p>
+                        <!--<p class="decription my-4">Your payment has been successfully processed.</p>-->
+						<p class="decription my-4">Your has been successfully addedd in your Learning List.</p>
                     </div>
                 </div>
             </div>

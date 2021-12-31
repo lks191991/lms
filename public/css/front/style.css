@@ -234,6 +234,45 @@ h3 {
 	display: none;
 }
 
+.mega-menu-tree {
+    position: relative;
+}
+
+.mega-menu-tree 
+ > .mega-menu-tree-list {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    border: 1px solid rgba(0,0,0,.15);
+    background-color: #fff;
+    border-radius: 0.25rem;
+    display: none;
+}
+
+.mega-menu-tree:hover 
+ > .mega-menu-tree-list {
+    display: block;
+}
+
+.mega-menu-tree > .dropdown-item {
+    position: relative;
+}
+
+.mega-menu-tree > .dropdown-item::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    right: 4px;
+    border: solid 0.3em transparent;
+    border-left-color: var(--textColor);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.dropdown-menu .dropdown-item {
+    padding: 0.5rem 1rem;
+}
+
 /*********************Header Ends*************************/
 
 /*******************Footer***************************/
