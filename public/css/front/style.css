@@ -734,6 +734,8 @@ section > div> .row+.row {
     padding: 20px 15px;
     position: sticky;
     top: 40px;
+    max-height: 100vh;
+    overflow-y: auto;
 }
 
 /****************Product Detail Ends***************/
